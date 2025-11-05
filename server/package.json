@@ -1,0 +1,24 @@
+{
+  "name": "prepair-admin-gate",
+  "version": "1.0.0",
+  "description": "IP-approval gate service for PrePair admin access",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "NODE_ENV=development node index.js",
+    "cli": "node cli.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["prepair", "admin", "ip-gate", "access-control"],
+  "author": "PrePair",
+  "license": "MIT"
+}
