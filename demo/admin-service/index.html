@@ -214,6 +214,87 @@
     .hidden {
       display: none;
     }
+
+    .code-generator {
+      margin-top: 16px;
+    }
+
+    .generate-btn {
+      background: var(--clay);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .generate-btn:hover {
+      background: #d86342;
+    }
+
+    .code-display {
+      background: #f0f9ff;
+      border: 1px solid #0ea5e9;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .code-display h4 {
+      margin: 0 0 12px;
+      font-family: "Space Grotesk", Inter, sans-serif;
+      color: #0369a1;
+    }
+
+    .code-result {
+      font-family: Monaco, 'Courier New', monospace;
+      font-size: 32px;
+      font-weight: bold;
+      letter-spacing: 8px;
+      text-align: center;
+      color: #0369a1;
+      background: white;
+      border: 2px solid #0ea5e9;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 12px 0;
+    }
+
+    .code-info {
+      font-size: 14px;
+      color: #0369a1;
+      margin: 8px 0 0;
+    }
+
+    .active-code-item {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .active-code-item .code {
+      font-family: Monaco, 'Courier New', monospace;
+      font-weight: bold;
+      font-size: 18px;
+      color: var(--clay);
+    }
+
+    .active-code-item .name {
+      font-weight: 500;
+    }
+
+    .active-code-item .time {
+      font-size: 12px;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
@@ -263,9 +344,29 @@
         <p>Welcome to the PrePair admin area.</p>
 
         <div class="admin-panel">
-          <h3>Quick Actions</h3>
-          <p>Admin tools and controls will be added here as needed.</p>
-          <p>This is a simple password-protected admin interface.</p>
+          <h3>Access Code Generator</h3>
+          <p>Generate 6-digit access codes for users:</p>
+          
+          <div class="code-generator">
+            <div class="form-group">
+              <label for="generator-name">Name/Description</label>
+              <input type="text" id="generator-name" placeholder="Enter name or description">
+            </div>
+            <button onclick="generateAccessCode()" class="generate-btn">Generate Code</button>
+            
+            <div id="generated-code" class="code-display" style="display: none;">
+              <h4>Generated Code:</h4>
+              <div class="code-result"></div>
+              <p class="code-info"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-panel">
+          <h3>Active Codes</h3>
+          <div id="active-codes">
+            <p>No codes generated yet.</p>
+          </div>
         </div>
       </div>
     </main>
@@ -279,6 +380,9 @@
     // Admin credentials
     const ADMIN_USERNAME = 'admin_service';
     const ADMIN_PASSWORD = 'Shoti2422';
+
+    // Access codes storage
+    let accessCodes = JSON.parse(localStorage.getItem('prepair_access_codes') || '[]');
 
     // Check if already logged in
     window.addEventListener('load', () => {
@@ -317,6 +421,73 @@
       document.getElementById('login-section').classList.remove('hidden');
       document.getElementById('admin-section').classList.add('hidden');
       document.getElementById('login-form').reset();
+    }
+
+    function generateAccessCode() {
+      const name = document.getElementById('generator-name').value.trim();
+      if (!name) {
+        alert('Please enter a name or description');
+        return;
+      }
+
+      // Generate random 6-digit code
+      const code = Math.floor(100000 + Math.random() * 900000).toString();
+      
+      // Create code object
+      const newCode = {
+        code: code,
+        name: name,
+        timestamp: new Date().toLocaleString(),
+        created: Date.now()
+      };
+
+      // Add to storage
+      accessCodes.push(newCode);
+      localStorage.setItem('prepair_access_codes', JSON.stringify(accessCodes));
+
+      // Display generated code
+      const codeDisplay = document.getElementById('generated-code');
+      const codeResult = codeDisplay.querySelector('.code-result');
+      const codeInfo = codeDisplay.querySelector('.code-info');
+      
+      codeResult.textContent = code;
+      codeInfo.textContent = `Generated for: ${name}`;
+      codeDisplay.style.display = 'block';
+
+      // Clear input
+      document.getElementById('generator-name').value = '';
+
+      // Update active codes list
+      updateActiveCodesList();
+    }
+
+    function updateActiveCodesList() {
+      const container = document.getElementById('active-codes');
+      
+      if (accessCodes.length === 0) {
+        container.innerHTML = '<p>No codes generated yet.</p>';
+        return;
+      }
+
+      // Sort by most recent first
+      const sortedCodes = [...accessCodes].reverse();
+      
+      container.innerHTML = sortedCodes.map(code => `
+        <div class="active-code-item">
+          <div>
+            <div class="name">${code.name}</div>
+            <div class="time">Generated: ${code.timestamp}</div>
+          </div>
+          <div class="code">${code.code}</div>
+        </div>
+      `).join('');
+    }
+
+    // Load active codes when admin panel is shown
+    function showAdminPanel() {
+      document.getElementById('login-section').classList.add('hidden');
+      document.getElementById('admin-section').classList.remove('hidden');
+      updateActiveCodesList();
     }
   </script>
 </body>
