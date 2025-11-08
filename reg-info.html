@@ -143,9 +143,15 @@
     }
 
     .registration-details p {
-      margin: 0;
+      margin: 4px 0;
       color: var(--muted);
       font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .registration-details p strong {
+      color: var(--text);
+      font-weight: 600;
     }
 
     .registration-number {
@@ -237,11 +243,25 @@
       `;
 
       registrations.forEach((registration, index) => {
+        // Handle both old and new data formats
+        const displayTime = registration.date_readable || registration.timestamp || 'Unknown time';
+        const ipAddress = registration.ip_address || 'Unknown IP';
+        const userAgent = registration.user_agent ? 
+          (registration.user_agent.includes('Chrome') ? 'Chrome' :
+           registration.user_agent.includes('Safari') ? 'Safari' :
+           registration.user_agent.includes('Firefox') ? 'Firefox' :
+           registration.user_agent.includes('Edge') ? 'Edge' : 'Other Browser') : 'Unknown Browser';
+        const accessCode = registration.access_code_used || '902341';
+        
         html += `
           <div class="registration-card">
             <div class="registration-details">
               <h3>${registration.name}</h3>
-              <p>Registered: ${registration.timestamp}</p>
+              <p><strong>Time:</strong> ${displayTime}</p>
+              <p><strong>IP Address:</strong> ${ipAddress}</p>
+              <p><strong>Browser:</strong> ${userAgent}</p>
+              <p><strong>Access Code:</strong> ${accessCode}</p>
+              <p><strong>Entry Method:</strong> ${registration.entry_method || 'Access Code'}</p>
             </div>
             <div class="registration-number">#${registrations.length - index}</div>
           </div>

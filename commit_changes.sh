@@ -7,7 +7,7 @@ cd "/Users/shotisikharulidze/Desktop/PrePair"
 git add .
 
 # Commit with message
-git commit -m "fix: increase gap between access code input boxes for better spacing
+git commit -m "Update registration info page to display all user details - IP address, browser, timestamp, access code used
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 

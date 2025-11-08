@@ -41,7 +41,7 @@ def main():
         sys.exit(1)
     
     # Commit with message
-    commit_message = """fix: increase gap between access code input boxes for better spacing
+    commit_message = """Update registration info page to display all user details - IP address, browser, timestamp, access code used
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
