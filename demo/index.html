@@ -585,20 +585,23 @@
         // Create registration data
         const registration = {
           name: name,
-          timestamp: new Date().toISOString(),
-          date_readable: new Date().toLocaleString(),
           ip_address: ipAddress,
-          user_agent: navigator.userAgent,
-          entry_method: 'access_code',
+          browser_info: navigator.userAgent,
           access_code_used: '902341'
         };
 
-        // Save to GitHub
-        await saveToGitHub(registration);
+        // Save to Supabase
+        await saveToSupabase(registration);
 
         // Also keep local backup
         const localRegistrations = JSON.parse(localStorage.getItem('prepair_registrations') || '[]');
-        localRegistrations.push(registration);
+        localRegistrations.push({
+          ...registration,
+          timestamp: new Date().toISOString(),
+          date_readable: new Date().toLocaleString(),
+          user_agent: navigator.userAgent,
+          entry_method: 'access_code'
+        });
         localStorage.setItem('prepair_registrations', JSON.stringify(localRegistrations));
         
         // Grant access
@@ -615,38 +618,32 @@
       }
     }
 
-    async function saveToGitHub(newRegistration) {
-      // For security, we'll use a serverless function approach
-      // This prevents exposing the GitHub token in public code
+    async function saveToSupabase(registration) {
+      const supabaseUrl = 'https://aezybthbsmpihbyzfiqi.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
+      
       try {
-        // Try to save via GitHub API proxy (more secure)
-        const response = await fetch('https://api.github.com/repos/shsikharulidze/prepairus/issues', {
+        const response = await fetch(`${supabaseUrl}/rest/v1/user_registrations`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`
           },
-          body: JSON.stringify({
-            title: `New Registration: ${newRegistration.name}`,
-            body: `**Registration Details:**\n\n` +
-                  `- **Name:** ${newRegistration.name}\n` +
-                  `- **Time:** ${newRegistration.date_readable}\n` +
-                  `- **IP:** ${newRegistration.ip_address}\n` +
-                  `- **Browser:** ${newRegistration.user_agent}\n` +
-                  `- **Access Code Used:** ${newRegistration.access_code_used}\n\n` +
-                  `*Timestamp: ${newRegistration.timestamp}*`,
-            labels: ['registration', 'new-user']
-          })
+          body: JSON.stringify(registration)
         });
 
         if (response.ok) {
-          console.log('Registration saved as GitHub issue');
+          console.log('Registration saved to Supabase successfully');
           return;
         } else {
-          throw new Error('GitHub API failed');
+          const errorData = await response.text();
+          console.error('Supabase error:', errorData);
+          throw new Error('Supabase save failed');
         }
       } catch (error) {
-        console.log('GitHub save failed, using local storage only:', error);
-        // Fallback to localStorage only if GitHub fails
+        console.log('Supabase save failed, using local storage only:', error);
+        // Fallback handled in submitRegistration with localStorage
       }
     }
 

@@ -585,20 +585,23 @@
         // Create registration data
         const registration = {
           name: name,
-          timestamp: new Date().toISOString(),
-          date_readable: new Date().toLocaleString(),
           ip_address: ipAddress,
-          user_agent: navigator.userAgent,
-          entry_method: 'access_code',
+          browser_info: navigator.userAgent,
           access_code_used: '902341'
         };
 
-        // Save to GitHub
-        await saveToGitHub(registration);
+        // Save to Supabase
+        await saveToSupabase(registration);
 
         // Also keep local backup
         const localRegistrations = JSON.parse(localStorage.getItem('prepair_registrations') || '[]');
-        localRegistrations.push(registration);
+        localRegistrations.push({
+          ...registration,
+          timestamp: new Date().toISOString(),
+          date_readable: new Date().toLocaleString(),
+          user_agent: navigator.userAgent,
+          entry_method: 'access_code'
+        });
         localStorage.setItem('prepair_registrations', JSON.stringify(localRegistrations));
         
         // Grant access
@@ -612,6 +615,35 @@
       } catch (error) {
         console.error('Registration error:', error);
         showError('Registration failed. Please try again.');
+      }
+    }
+
+    async function saveToSupabase(registration) {
+      const supabaseUrl = 'https://aezybthbsmpihbyzfiqi.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
+      
+      try {
+        const response = await fetch(`${supabaseUrl}/rest/v1/user_registrations`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`
+          },
+          body: JSON.stringify(registration)
+        });
+
+        if (response.ok) {
+          console.log('Registration saved to Supabase successfully');
+          return;
+        } else {
+          const errorData = await response.text();
+          console.error('Supabase error:', errorData);
+          throw new Error('Supabase save failed');
+        }
+      } catch (error) {
+        console.log('Supabase save failed, using local storage only:', error);
+        // Fallback handled in submitRegistration with localStorage
       }
     }
 

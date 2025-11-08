@@ -214,8 +214,45 @@
   </style>
 
   <script>
-    function loadRegistrations() {
-      const registrations = JSON.parse(localStorage.getItem('prepair_registrations') || '[]');
+    const supabaseUrl = 'https://aezybthbsmpihbyzfiqi.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
+
+    async function loadRegistrations() {
+      const container = document.getElementById('registrations-container');
+      
+      try {
+        // Load from Supabase
+        const response = await fetch(`${supabaseUrl}/rest/v1/user_registrations?order=created_at.desc`, {
+          headers: {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`
+          }
+        });
+
+        if (response.ok) {
+          const supabaseRegistrations = await response.json();
+          
+          // Also load localStorage as fallback/backup
+          const localRegistrations = JSON.parse(localStorage.getItem('prepair_registrations') || '[]');
+          
+          // Combine both sources (prioritize Supabase)
+          const allRegistrations = [...supabaseRegistrations, ...localRegistrations];
+          
+          displayRegistrations(allRegistrations);
+        } else {
+          // Fallback to localStorage only
+          const localRegistrations = JSON.parse(localStorage.getItem('prepair_registrations') || '[]');
+          displayRegistrations(localRegistrations);
+        }
+      } catch (error) {
+        console.error('Error loading registrations:', error);
+        // Fallback to localStorage
+        const localRegistrations = JSON.parse(localStorage.getItem('prepair_registrations') || '[]');
+        displayRegistrations(localRegistrations);
+      }
+    }
+
+    function displayRegistrations(registrations) {
       const container = document.getElementById('registrations-container');
       
       if (registrations.length === 0) {
@@ -232,25 +269,36 @@
         return;
       }
 
-      // Sort by most recent first
-      registrations.sort((a, b) => b.date - a.date);
+      // Remove duplicates and sort by most recent first
+      const uniqueRegistrations = registrations.filter((reg, index, self) => 
+        index === self.findIndex(r => r.name === reg.name && r.ip_address === reg.ip_address)
+      );
+      
+      uniqueRegistrations.sort((a, b) => {
+        const aTime = new Date(a.created_at || a.timestamp || 0);
+        const bTime = new Date(b.created_at || b.timestamp || 0);
+        return bTime - aTime;
+      });
 
       let html = `
         <div class="total-count">
-          <h2>${registrations.length}</h2>
+          <h2>${uniqueRegistrations.length}</h2>
           <p>Total Registrations</p>
         </div>
       `;
 
-      registrations.forEach((registration, index) => {
-        // Handle both old and new data formats
-        const displayTime = registration.date_readable || registration.timestamp || 'Unknown time';
+      uniqueRegistrations.forEach((registration, index) => {
+        // Handle both Supabase and localStorage formats
+        const displayTime = registration.created_at ? 
+          new Date(registration.created_at).toLocaleString() :
+          (registration.date_readable || registration.timestamp || 'Unknown time');
         const ipAddress = registration.ip_address || 'Unknown IP';
-        const userAgent = registration.user_agent ? 
-          (registration.user_agent.includes('Chrome') ? 'Chrome' :
-           registration.user_agent.includes('Safari') ? 'Safari' :
-           registration.user_agent.includes('Firefox') ? 'Firefox' :
-           registration.user_agent.includes('Edge') ? 'Edge' : 'Other Browser') : 'Unknown Browser';
+        const browserInfo = registration.browser_info || registration.user_agent;
+        const userAgent = browserInfo ? 
+          (browserInfo.includes('Chrome') ? 'Chrome' :
+           browserInfo.includes('Safari') ? 'Safari' :
+           browserInfo.includes('Firefox') ? 'Firefox' :
+           browserInfo.includes('Edge') ? 'Edge' : 'Other Browser') : 'Unknown Browser';
         const accessCode = registration.access_code_used || '902341';
         
         html += `
@@ -263,7 +311,7 @@
               <p><strong>Access Code:</strong> ${accessCode}</p>
               <p><strong>Entry Method:</strong> ${registration.entry_method || 'Access Code'}</p>
             </div>
-            <div class="registration-number">#${registrations.length - index}</div>
+            <div class="registration-number">#${uniqueRegistrations.length - index}</div>
           </div>
         `;
       });
@@ -271,15 +319,27 @@
       container.innerHTML = html;
     }
 
-    function clearRegistrations() {
+    async function clearRegistrations() {
       if (confirm('Are you sure you want to clear all registration data? This action cannot be undone.')) {
-        localStorage.removeItem('prepair_registrations');
-        loadRegistrations();
+        try {
+          // Clear Supabase data (this will require proper permissions)
+          // For now, just clear localStorage
+          localStorage.removeItem('prepair_registrations');
+          alert('Local registration data cleared. Supabase data remains for backup.');
+          loadRegistrations();
+        } catch (error) {
+          console.error('Error clearing registrations:', error);
+          localStorage.removeItem('prepair_registrations');
+          loadRegistrations();
+        }
       }
     }
 
     // Load registrations on page load
     loadRegistrations();
+    
+    // Refresh every 30 seconds to show new registrations
+    setInterval(loadRegistrations, 30000);
   </script>
 </body>
 </html>
