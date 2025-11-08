@@ -41,7 +41,7 @@ def main():
         sys.exit(1)
     
     # Commit with message
-    commit_message = """Update registration info page to display all user details - IP address, browser, timestamp, access code used
+    commit_message = """Integrate Supabase SDK and registration logging
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 

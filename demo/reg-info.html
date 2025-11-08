@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Bricolage+Grotesque:wght@600;700;800&family=Plus+Jakarta+Sans:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/site.css">
+  
+  <!-- Supabase JavaScript SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <div class="container">
@@ -214,39 +217,36 @@
   </style>
 
   <script>
+    // Initialize Supabase client
     const supabaseUrl = 'https://aezybthbsmpihbyzfiqi.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
     async function loadRegistrations() {
       const container = document.getElementById('registrations-container');
       
       try {
-        // Load from Supabase
-        const response = await fetch(`${supabaseUrl}/rest/v1/user_registrations?order=created_at.desc`, {
-          headers: {
-            'apikey': supabaseKey,
-            'Authorization': `Bearer ${supabaseKey}`
-          }
-        });
+        // Load from Supabase using the official SDK
+        const { data: supabaseRegistrations, error } = await supabase
+          .from('user_registrations')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-        if (response.ok) {
-          const supabaseRegistrations = await response.json();
-          
-          // Also load localStorage as fallback/backup
-          const localRegistrations = JSON.parse(localStorage.getItem('prepair_registrations') || '[]');
-          
-          // Combine both sources (prioritize Supabase)
-          const allRegistrations = [...supabaseRegistrations, ...localRegistrations];
-          
-          displayRegistrations(allRegistrations);
-        } else {
-          // Fallback to localStorage only
-          const localRegistrations = JSON.parse(localStorage.getItem('prepair_registrations') || '[]');
-          displayRegistrations(localRegistrations);
+        if (error) {
+          console.error('Supabase error:', error);
+          throw error;
         }
+        
+        // Also load localStorage as fallback/backup
+        const localRegistrations = JSON.parse(localStorage.getItem('prepair_registrations') || '[]');
+        
+        // Combine both sources (prioritize Supabase)
+        const allRegistrations = [...(supabaseRegistrations || []), ...localRegistrations];
+        
+        displayRegistrations(allRegistrations);
       } catch (error) {
         console.error('Error loading registrations:', error);
-        // Fallback to localStorage
+        // Fallback to localStorage only
         const localRegistrations = JSON.parse(localStorage.getItem('prepair_registrations') || '[]');
         displayRegistrations(localRegistrations);
       }
