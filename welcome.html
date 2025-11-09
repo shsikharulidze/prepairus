@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PrePair — Welcome</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Supabase JavaScript SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <style>
+    :root{
+      --bg:#FAF7F2; --text:#0F0F0F; --muted:#4A4A4A; --clay:#E6764D;
+      --sage:#CFE1D9; --lilac:#DCD8F2; --sand:#EDE4D9; --card:#F5EFE7;
+      --border:#E8E2D9; --radius-lg:20px; --shadow:0 6px 24px rgba(15,15,15,.06);
+      --container:1120px;
+    }
+    
+    html,body{height:100%}
+    body{
+      margin:0; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      line-height:1.5; 
+      min-height:100vh; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    
+    .welcome-container{
+      width:100%; 
+      max-width:480px;
+    }
+    
+    .welcome-card{
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius:var(--radius-lg); 
+      padding:48px 40px;
+      box-shadow: 0 20px 40px rgba(15,15,15,.1), 0 0 0 1px rgba(255,255,255,.2);
+      border:1px solid rgba(255,255,255,.3);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .welcome-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.8), transparent);
+    }
+    
+    .welcome-header{
+      margin-bottom: 32px;
+    }
+    
+    .welcome-title{
+      font-family:"Space Grotesk",Inter,sans-serif; 
+      font-size: clamp(28px, 5vw, 36px); 
+      font-weight:700;
+      line-height:1.1; 
+      letter-spacing:-.02em; 
+      margin:0 0 16px; 
+      color:var(--text);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .user-info{
+      margin-bottom: 32px;
+    }
+    
+    .info-item{
+      margin-bottom: 12px;
+      padding: 12px 20px;
+      background: rgba(102, 126, 234, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+    
+    .info-label{
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    
+    .info-value{
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+      word-break: break-word;
+    }
+    
+    .provider-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .provider-google{
+      background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+      color: white;
+    }
+    
+    .provider-email{
+      background: linear-gradient(135deg, var(--clay) 0%, #d86b42 100%);
+      color: white;
+    }
+    
+    .google-icon{
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      padding: 2px;
+    }
+    
+    .btn-signout{
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-signout:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(238, 90, 90, 0.4);
+    }
+    
+    .btn-signout:active{
+      transform: translateY(0);
+    }
+    
+    .btn-signout:disabled{
+      background: var(--muted);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .loading-state{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    
+    .spinner{
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(102, 126, 234, 0.2);
+      border-top: 2px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .no-user-state{
+      color: var(--muted);
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+    
+    .back-to-login{
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--clay) 0%, #d86b42 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    
+    .back-to-login:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(230, 118, 77, 0.4);
+      text-decoration: none;
+      color: white;
+    }
+    
+    @media (max-width: 480px) {
+      .welcome-card{
+        padding: 32px 24px;
+      }
+      
+      .welcome-title{
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome-container">
+    <div class="welcome-card">
+      <div id="loading" class="loading-state">
+        <div class="spinner"></div>
+        <span>Loading user information...</span>
+      </div>
+      
+      <div id="user-content" style="display: none;">
+        <div class="welcome-header">
+          <h1 id="welcome-title" class="welcome-title">Hello!</h1>
+        </div>
+        
+        <div class="user-info">
+          <div class="info-item">
+            <div class="info-label">Email</div>
+            <div id="user-email" class="info-value">—</div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-label">Sign-in Method</div>
+            <div id="user-provider" class="info-value">—</div>
+          </div>
+        </div>
+        
+        <button id="signout-btn" class="btn-signout">
+          Sign Out
+        </button>
+      </div>
+      
+      <div id="no-user-content" style="display: none;">
+        <div class="welcome-header">
+          <h1 class="welcome-title">Welcome to PrePair</h1>
+        </div>
+        
+        <div class="no-user-state">
+          No user logged in.
+        </div>
+        
+        <a href="login.html" class="back-to-login">
+          Sign In
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Supabase
+    const supabaseUrl = 'https://aezybthbsmpihbyzfiqi.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    // DOM elements
+    const loadingEl = document.getElementById('loading');
+    const userContentEl = document.getElementById('user-content');
+    const noUserContentEl = document.getElementById('no-user-content');
+    const welcomeTitleEl = document.getElementById('welcome-title');
+    const userEmailEl = document.getElementById('user-email');
+    const userProviderEl = document.getElementById('user-provider');
+    const signoutBtn = document.getElementById('signout-btn');
+
+    // Load user information
+    async function loadUserInfo() {
+      try {
+        // Get current user
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error) {
+          console.error('Error getting user:', error);
+          showNoUser();
+          return;
+        }
+
+        if (!user) {
+          showNoUser();
+          return;
+        }
+
+        // Display user information
+        displayUserInfo(user);
+        
+      } catch (error) {
+        console.error('Error in loadUserInfo:', error);
+        showNoUser();
+      }
+    }
+
+    // Display user information
+    function displayUserInfo(user) {
+      // Hide loading, show user content
+      loadingEl.style.display = 'none';
+      userContentEl.style.display = 'block';
+      
+      // Get user's full name
+      let fullName = 'User';
+      
+      if (user.user_metadata) {
+        // Try different name fields from metadata
+        fullName = user.user_metadata.full_name || 
+                  user.user_metadata.name ||
+                  (user.user_metadata.given_name && user.user_metadata.family_name 
+                    ? `${user.user_metadata.given_name} ${user.user_metadata.family_name}` 
+                    : null) ||
+                  user.user_metadata.given_name ||
+                  user.email?.split('@')[0] ||
+                  'User';
+      }
+      
+      // Set welcome title
+      welcomeTitleEl.textContent = `Hello, ${fullName}!`;
+      
+      // Set email
+      userEmailEl.textContent = user.email || 'No email available';
+      
+      // Set provider with badge
+      const provider = user.app_metadata?.provider || 'email';
+      let providerHTML = '';
+      
+      if (provider === 'google') {
+        providerHTML = `
+          <span class="provider-badge provider-google">
+            <svg class="google-icon" viewBox="0 0 24 24">
+              <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Google
+          </span>
+        `;
+      } else {
+        providerHTML = `<span class="provider-badge provider-email">Email</span>`;
+      }
+      
+      userProviderEl.innerHTML = providerHTML;
+    }
+
+    // Show no user state
+    function showNoUser() {
+      loadingEl.style.display = 'none';
+      noUserContentEl.style.display = 'block';
+    }
+
+    // Sign out function
+    async function signOut() {
+      signoutBtn.disabled = true;
+      signoutBtn.textContent = 'Signing out...';
+      
+      try {
+        const { error } = await supabase.auth.signOut();
+        
+        if (error) {
+          console.error('Sign out error:', error);
+          alert('Failed to sign out. Please try again.');
+          signoutBtn.disabled = false;
+          signoutBtn.textContent = 'Sign Out';
+          return;
+        }
+        
+        // Redirect to login page
+        window.location.href = 'login.html';
+        
+      } catch (error) {
+        console.error('Sign out error:', error);
+        alert('Failed to sign out. Please try again.');
+        signoutBtn.disabled = false;
+        signoutBtn.textContent = 'Sign Out';
+      }
+    }
+
+    // Event listeners
+    signoutBtn.addEventListener('click', signOut);
+
+    // Listen for auth state changes
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        // User signed out, redirect to login
+        window.location.href = 'login.html';
+      } else if (event === 'SIGNED_IN' && session) {
+        // User signed in, refresh user info
+        loadUserInfo();
+      }
+    });
+
+    // Load user info on page load
+    loadUserInfo();
+  </script>
+</body>
+</html>
