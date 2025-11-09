@@ -41,7 +41,7 @@ def main():
         sys.exit(1)
     
     # Commit with message
-    commit_message = """Integrate Supabase SDK and registration logging
+    commit_message = """Add Google authentication to login and signup pages
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
