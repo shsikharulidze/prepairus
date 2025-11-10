@@ -113,6 +113,35 @@
       color: var(--text);
     }
 
+    .sign-out-btn {
+      appearance: none;
+      border: 2px solid var(--clay);
+      background: transparent;
+      color: var(--clay);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sign-out-btn:hover {
+      background: var(--clay);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .sign-out-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     /* Main Content */
     .profile-container {
       max-width: 720px;
@@ -457,7 +486,7 @@
         </div>
         <span class="wordmark">PrePair</span>
       </a>
-      <a href="index.html" class="back-link">← Back to Home</a>
+      <button id="signOutBtn" class="sign-out-btn">Sign Out</button>
     </header>
 
     <div class="profile-container">
@@ -567,10 +596,16 @@
     const profileForm = document.getElementById('profileForm');
     const saveBtn = document.getElementById('saveBtn');
     const loadingOverlay = document.getElementById('loadingOverlay');
+    const signOutBtn = document.getElementById('signOutBtn');
 
     // Initialize page
     document.addEventListener('DOMContentLoaded', async function() {
       await initializePage();
+    });
+
+    // Sign out functionality
+    signOutBtn.addEventListener('click', async function() {
+      await handleSignOut();
     });
 
     async function initializePage() {
@@ -834,6 +869,40 @@
         }
       }
     });
+
+    // Handle sign out
+    async function handleSignOut() {
+      try {
+        // Disable button and show loading state
+        signOutBtn.disabled = true;
+        signOutBtn.textContent = 'Signing out...';
+
+        // Sign out from Supabase
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+          console.error('Sign out error:', error);
+          showToast('Failed to sign out. Please try again.', 'error');
+          return;
+        }
+
+        // Show success message
+        showToast('Successfully signed out!', 'success');
+
+        // Redirect to home page after a brief delay
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1000);
+
+      } catch (error) {
+        console.error('Sign out error:', error);
+        showToast('Failed to sign out. Please try again.', 'error');
+      } finally {
+        // Reset button state
+        signOutBtn.disabled = false;
+        signOutBtn.textContent = 'Sign Out';
+      }
+    }
   </script>
 </body>
 </html>
