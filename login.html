@@ -259,7 +259,7 @@
 
         if (user) {
           // User is already signed in, redirect to profile
-          window.location.href = 'https://prepairus.co/profile.html';
+          window.location.href = 'profile.html';
           return;
         }
 
@@ -322,7 +322,7 @@
 
         showSuccess('Successfully signed in! Redirecting...');
         setTimeout(() => {
-          window.location.href = 'https://prepairus.co/profile.html';
+          window.location.href = 'profile.html';
         }, 1000);
 
       } catch (error) {
@@ -345,7 +345,7 @@
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: 'https://prepairus.co/profile.html'
+            redirectTo: `${window.location.origin}/profile.html`
           }
         });
 
@@ -373,7 +373,7 @@
         
         // Redirect to profile page
         if (window.location.pathname !== '/profile.html') {
-          window.location.href = 'https://prepairus.co/profile.html';
+          window.location.href = 'profile.html';
         }
       }
     });
