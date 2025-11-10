@@ -698,9 +698,12 @@
         const { data: { user }, error: userError } = await supabase.auth.getUser();
         
         if (userError || !user) {
+          console.error('User authentication error:', userError);
           showToast('Authentication error. Please sign in again.', 'error');
           return;
         }
+
+        console.log('User authenticated:', user.id, user.email);
 
         // Collect form data
         const formData = new FormData(profileForm);
@@ -725,6 +728,8 @@
           }
         });
 
+        console.log('Profile data to save:', profile);
+
         // Save to Supabase
         const { data, error } = await supabase
           .from('student_profiles')
@@ -736,7 +741,8 @@
 
         if (error) {
           console.error('Supabase error:', error);
-          showToast('Failed to save profile. Please try again.', 'error');
+          console.error('Error details:', error.message, error.code, error.details);
+          showToast(`Failed to save profile: ${error.message}`, 'error');
           return;
         }
 
