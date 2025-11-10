@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PrePair — Profile Setup</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Supabase JavaScript SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg: #FAF7F2;
+      --text: #0F0F0F;
+      --muted: #4A4A4A;
+      --clay: #E6764D;
+      --sage: #CFE1D9;
+      --lilac: #DCD8F2;
+      --sand: #EDE4D9;
+      --card: #F5EFE7;
+      --border: #E8E2D9;
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 6px 24px rgba(15,15,15,.06);
+      --shadow-lg: 0 12px 32px rgba(15,15,15,.12);
+      --container: 1120px;
+      --success: #10B981;
+      --error: #EF4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo svg {
+      stroke: var(--text);
+      stroke-width: 2.5;
+      fill: transparent;
+      vector-effect: non-scaling-stroke;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .wordmark {
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-weight: 700;
+      font-size: 30px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      position: relative;
+      top: 1px;
+    }
+
+    .back-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--text);
+    }
+
+    /* Main Content */
+    .profile-container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .welcome-section {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .user-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      background: var(--sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .welcome-title {
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .welcome-subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+
+    /* Form */
+    .profile-form {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .form-header {
+      margin-bottom: 32px;
+    }
+
+    .form-title {
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .form-subtitle {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    input, select, textarea {
+      appearance: none;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-family: inherit;
+      font-size: 16px;
+      color: var(--text);
+      background: white;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--clay);
+      box-shadow: 0 0 0 3px rgba(230, 118, 77, 0.1);
+    }
+
+    input:read-only {
+      background: #f8f9fa;
+      color: var(--muted);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 12px center;
+      background-repeat: no-repeat;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    /* Buttons */
+    .btn {
+      appearance: none;
+      border: 2px solid var(--text);
+      background: var(--text);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      min-width: 160px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(15, 15, 15, 0.15);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn.loading {
+      position: relative;
+      color: transparent;
+    }
+
+    .btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Toast Messages */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      color: white;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      max-width: 350px;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.success {
+      background: var(--success);
+    }
+
+    .toast.error {
+      background: var(--error);
+    }
+
+    .toast-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast-icon {
+      font-size: 18px;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-form, .welcome-section {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 16px;
+      }
+
+      header {
+        padding: 16px 0 24px;
+        margin-bottom: 24px;
+      }
+
+      .wordmark {
+        font-size: 24px;
+      }
+
+      .logo {
+        width: 32px;
+        height: 32px;
+      }
+
+      .welcome-section, .profile-form {
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .welcome-title {
+        font-size: 24px;
+      }
+
+      .form-title {
+        font-size: 20px;
+      }
+
+      .toast {
+        right: 16px;
+        left: 16px;
+        max-width: none;
+        transform: translateY(-100px);
+      }
+
+      .toast.show {
+        transform: translateY(0);
+      }
+    }
+
+    /* Loading states */
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-lg);
+    }
+
+    .loading-overlay.active {
+      display: flex;
+    }
+
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--clay);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <a class="brand" href="index.html">
+        <div class="logo">
+          <svg viewBox="0 0 64 64" width="40" height="40" preserveAspectRatio="xMidYMid meet" role="img" aria-label="PrePair sprout logo">
+            <path d="M32 56V20m0 0c6 0 10-5 10-10M32 20c-6 0-10-5-10-10M24 36c4 0 8-4 8-8M40 44c4 0 8-4 8-8" />
+            <path d="M20 48c-4 2-6 5-7 8m6-4c2 0 5-1 8-3" />
+          </svg>
+        </div>
+        <span class="wordmark">PrePair</span>
+      </a>
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </header>
+
+    <div class="profile-container">
+      <!-- Welcome Section -->
+      <div class="welcome-section">
+        <div class="user-avatar" id="userAvatar">
+          <!-- Avatar will be populated by JavaScript -->
+        </div>
+        <h2 class="welcome-title" id="welcomeTitle">Welcome to PrePair!</h2>
+        <p class="welcome-subtitle" id="welcomeSubtitle">Let's set up your student profile</p>
+      </div>
+
+      <!-- Profile Form -->
+      <div class="profile-form">
+        <div class="loading-overlay" id="loadingOverlay">
+          <div class="loading-spinner"></div>
+        </div>
+
+        <div class="form-header">
+          <h3 class="form-title">Complete Your Profile</h3>
+          <p class="form-subtitle">Help businesses understand your background and goals</p>
+        </div>
+
+        <form id="profileForm">
+          <div class="form-grid">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="university">University</label>
+                <select id="university" name="university" required>
+                  <option value="">Select your university</option>
+                  <option value="fordham">Fordham University</option>
+                  <option value="nyu">New York University</option>
+                  <option value="columbia">Columbia University</option>
+                  <option value="pace">Pace University</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="campus">Campus</label>
+                <input type="text" id="campus" name="campus" placeholder="e.g., Lincoln Center">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="graduationYear">Graduation Year</label>
+                <select id="graduationYear" name="graduationYear" required>
+                  <option value="">Select year</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                  <option value="2027">2027</option>
+                  <option value="2028">2028</option>
+                  <option value="2029">2029</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="major">Major / Program</label>
+                <input type="text" id="major" name="major" placeholder="e.g., Business Administration" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="location">City / Country</label>
+              <input type="text" id="location" name="location" placeholder="e.g., New York, NY" required>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="bio">Short Bio</label>
+              <textarea id="bio" name="bio" placeholder="Tell us a bit about yourself, your interests, and what you're looking for in an internship..."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn" id="saveBtn">
+            Save Profile
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Supabase
+    const supabaseUrl = 'https://aezybthbsmpihbyzfiqi.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    // DOM Elements
+    const userAvatar = document.getElementById('userAvatar');
+    const welcomeTitle = document.getElementById('welcomeTitle');
+    const welcomeSubtitle = document.getElementById('welcomeSubtitle');
+    const profileForm = document.getElementById('profileForm');
+    const saveBtn = document.getElementById('saveBtn');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', async function() {
+      await initializePage();
+    });
+
+    async function initializePage() {
+      try {
+        loadingOverlay.classList.add('active');
+        
+        // Get current user
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error) {
+          console.error('Error getting user:', error);
+          showToast('Please sign in to access your profile', 'error');
+          setTimeout(() => window.location.href = 'login.html', 2000);
+          return;
+        }
+
+        if (!user) {
+          showToast('Please sign in to access your profile', 'error');
+          setTimeout(() => window.location.href = 'login.html', 2000);
+          return;
+        }
+
+        // Setup user greeting
+        setupUserGreeting(user);
+
+        // Load existing profile if available
+        await loadExistingProfile(user.id);
+
+      } catch (error) {
+        console.error('Initialization error:', error);
+        showToast('Something went wrong. Please try again.', 'error');
+      } finally {
+        loadingOverlay.classList.remove('active');
+      }
+    }
+
+    function setupUserGreeting(user) {
+      let avatarContent = '';
+      let title = '';
+      let subtitle = '';
+
+      if (user.app_metadata?.provider === 'google') {
+        // Google sign-in user
+        const name = user.user_metadata?.full_name || 'Student';
+        const firstName = user.user_metadata?.name || name.split(' ')[0] || 'Student';
+        const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture;
+        
+        if (avatar) {
+          avatarContent = `<img src="${avatar}" alt="${name}" onerror="this.style.display='none'; this.parentNode.textContent='${firstName.charAt(0).toUpperCase()}'">`;
+        } else {
+          avatarContent = firstName.charAt(0).toUpperCase();
+        }
+        
+        title = `Welcome, ${firstName}!`;
+        subtitle = `Signed in with Google (${user.email})`;
+        
+        // Pre-fill form with Google data
+        document.getElementById('email').value = user.email || '';
+        document.getElementById('email').readOnly = true;
+        
+        if (user.user_metadata?.full_name) {
+          const nameParts = user.user_metadata.full_name.split(' ');
+          document.getElementById('firstName').value = nameParts[0] || '';
+          document.getElementById('lastName').value = nameParts.slice(1).join(' ') || '';
+        }
+        
+      } else {
+        // Manual sign-up user
+        const email = user.email || '';
+        const firstName = email.split('@')[0] || 'Student';
+        
+        avatarContent = firstName.charAt(0).toUpperCase();
+        title = `Welcome, ${firstName}!`;
+        subtitle = `Signed up with ${email}`;
+        
+        // Pre-fill email
+        document.getElementById('email').value = email;
+      }
+
+      userAvatar.innerHTML = avatarContent;
+      welcomeTitle.textContent = title;
+      welcomeSubtitle.textContent = subtitle;
+    }
+
+    async function loadExistingProfile(userId) {
+      try {
+        const { data, error } = await supabase
+          .from('student_profiles')
+          .select('*')
+          .eq('user_id', userId)
+          .single();
+
+        if (error && error.code !== 'PGRST116') {
+          console.error('Error loading profile:', error);
+          return;
+        }
+
+        if (data) {
+          // Populate form with existing data
+          Object.keys(data).forEach(key => {
+            const field = document.getElementById(key);
+            if (field && data[key]) {
+              field.value = data[key];
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error loading existing profile:', error);
+      }
+    }
+
+    // Handle form submission
+    profileForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      await saveProfile();
+    });
+
+    async function saveProfile() {
+      try {
+        // Show loading state
+        saveBtn.classList.add('loading');
+        saveBtn.disabled = true;
+        
+        // Get current user
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        
+        if (userError || !user) {
+          showToast('Authentication error. Please sign in again.', 'error');
+          return;
+        }
+
+        // Collect form data
+        const formData = new FormData(profileForm);
+        const profile = {
+          user_id: user.id,
+          email: formData.get('email'),
+          firstName: formData.get('firstName'),
+          lastName: formData.get('lastName'),
+          university: formData.get('university'),
+          campus: formData.get('campus'),
+          graduationYear: formData.get('graduationYear'),
+          major: formData.get('major'),
+          location: formData.get('location'),
+          bio: formData.get('bio'),
+          updated_at: new Date().toISOString()
+        };
+
+        // Remove empty values
+        Object.keys(profile).forEach(key => {
+          if (profile[key] === '' || profile[key] === null) {
+            delete profile[key];
+          }
+        });
+
+        // Save to Supabase
+        const { data, error } = await supabase
+          .from('student_profiles')
+          .upsert(profile, { 
+            onConflict: 'user_id',
+            ignoreDuplicates: false 
+          })
+          .select();
+
+        if (error) {
+          console.error('Supabase error:', error);
+          showToast('Failed to save profile. Please try again.', 'error');
+          return;
+        }
+
+        console.log('Profile saved successfully:', data);
+        showToast('Profile saved successfully! 🎉', 'success');
+        
+        // Optional: Update welcome section with new data
+        if (profile.firstName) {
+          welcomeTitle.textContent = `Welcome, ${profile.firstName}!`;
+        }
+
+      } catch (error) {
+        console.error('Save profile error:', error);
+        showToast('Something went wrong. Please try again.', 'error');
+      } finally {
+        // Reset loading state
+        saveBtn.classList.remove('loading');
+        saveBtn.disabled = false;
+      }
+    }
+
+    // Toast notification system
+    function showToast(message, type = 'success') {
+      // Remove existing toast
+      const existingToast = document.querySelector('.toast');
+      if (existingToast) {
+        existingToast.remove();
+      }
+
+      // Create new toast
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      const icon = type === 'success' ? '✓' : '✕';
+      toast.innerHTML = `
+        <div class="toast-content">
+          <span class="toast-icon">${icon}</span>
+          <span>${message}</span>
+        </div>
+      `;
+
+      document.body.appendChild(toast);
+
+      // Show toast
+      setTimeout(() => toast.classList.add('show'), 100);
+
+      // Auto remove after 4 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // Handle form validation
+    const requiredFields = ['firstName', 'lastName', 'email', 'university', 'graduationYear', 'major', 'location'];
+    
+    requiredFields.forEach(fieldId => {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        field.addEventListener('blur', validateField);
+        field.addEventListener('input', clearFieldError);
+      }
+    });
+
+    function validateField(e) {
+      const field = e.target;
+      if (field.hasAttribute('required') && !field.value.trim()) {
+        field.style.borderColor = 'var(--error)';
+      } else {
+        field.style.borderColor = 'var(--border)';
+      }
+    }
+
+    function clearFieldError(e) {
+      e.target.style.borderColor = 'var(--border)';
+    }
+
+    // Handle university "Other" option
+    document.getElementById('university').addEventListener('change', function(e) {
+      if (e.target.value === 'other') {
+        // Could add logic to show a custom input field
+        const customInput = prompt('Please enter your university name:');
+        if (customInput) {
+          // For now, just use the custom value
+          // In a real implementation, you'd want to handle this more elegantly
+          e.target.value = customInput;
+        } else {
+          e.target.value = '';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

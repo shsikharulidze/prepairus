@@ -18,6 +18,48 @@
       --border:#E8E2D9; --radius-lg:20px; --shadow:0 6px 24px rgba(15,15,15,.06);
       --container:1120px;
     }
+
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--clay);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    .loading-text {
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     
     html,body{height:100%}
     body{
@@ -141,6 +183,12 @@
   </style>
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading your dashboard...</div>
+  </div>
+
   <div class="auth-container">
     <a href="index.html" class="back-link">← Back to Home</a>
     
@@ -200,11 +248,48 @@
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
     // DOM elements
+    const loadingScreen = document.getElementById('loadingScreen');
     const signupForm = document.getElementById('signup-form');
     const signupBtn = document.getElementById('signup-btn');
     const googleSignupBtn = document.getElementById('google-signup-btn');
     const errorMessage = document.getElementById('error-message');
     const successMessage = document.getElementById('success-message');
+
+    // Check authentication on page load
+    document.addEventListener('DOMContentLoaded', async function() {
+      await checkAuthenticationState();
+    });
+
+    // Check if user is already authenticated
+    async function checkAuthenticationState() {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error) {
+          console.error('Auth check error:', error);
+        }
+
+        if (user) {
+          // User is already signed in, redirect to profile
+          window.location.href = 'https://prepairus.co/profile.html';
+          return;
+        }
+
+        // User is not signed in, show the signup form
+        hideLoadingScreen();
+
+      } catch (error) {
+        console.error('Authentication check failed:', error);
+        hideLoadingScreen();
+      }
+    }
+
+    function hideLoadingScreen() {
+      loadingScreen.classList.add('hidden');
+      setTimeout(() => {
+        loadingScreen.style.display = 'none';
+      }, 300);
+    }
 
     // Show error message
     function showError(message) {
@@ -265,32 +350,34 @@
         }
 
         if (authData.user) {
-          // Create profile entry
+          // Create student profile entry
+          const nameParts = fullName.split(' ');
           const { error: profileError } = await supabase
-            .from('profiles')
+            .from('student_profiles')
             .insert([
               {
-                id: authData.user.id,
+                user_id: authData.user.id,
                 email: email,
-                full_name: fullName,
-                created_at: new Date().toISOString()
+                firstName: nameParts[0] || '',
+                lastName: nameParts.slice(1).join(' ') || '',
+                updated_at: new Date().toISOString()
               }
             ]);
 
           if (profileError) {
-            console.error('Profile creation error:', profileError);
+            console.error('Student profile creation error:', profileError);
             // Don't fail the signup if profile creation fails
           }
 
-          showSuccess('Account created successfully! Check your email to verify your account, then you can sign in.');
+          showSuccess('Account created successfully! Redirecting to complete your profile...');
           
           // Clear form
           signupForm.reset();
           
-          // Redirect to login after delay
+          // Redirect to profile after delay
           setTimeout(() => {
-            window.location.href = 'login.html';
-          }, 3000);
+            window.location.href = 'https://prepairus.co/profile.html';
+          }, 2000);
         }
 
       } catch (error) {
@@ -313,7 +400,7 @@
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: `${window.location.origin}/index.html`
+            redirectTo: 'https://prepairus.co/profile.html'
           }
         });
 
@@ -331,59 +418,62 @@
       }
     });
 
-    // Check if user is already signed in
+    // Handle authentication state changes
     supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session) {
         // Check if this is a new Google user and create profile if needed
         if (session.user.app_metadata.provider === 'google') {
-          await createProfileIfNeeded(session.user);
+          await createStudentProfileIfNeeded(session.user);
         }
         
-        // Redirect to home page
-        if (window.location.pathname !== '/index.html') {
-          window.location.href = 'index.html';
+        // Redirect to profile page
+        if (window.location.pathname !== '/profile.html') {
+          window.location.href = 'https://prepairus.co/profile.html';
         }
       }
     });
 
-    // Create profile for new Google users
-    async function createProfileIfNeeded(user) {
+    // Create student profile for new Google users
+    async function createStudentProfileIfNeeded(user) {
       try {
         // Check if profile already exists
         const { data: existingProfile, error: fetchError } = await supabase
-          .from('profiles')
-          .select('id')
-          .eq('id', user.id)
+          .from('student_profiles')
+          .select('user_id')
+          .eq('user_id', user.id)
           .single();
 
         if (fetchError && fetchError.code !== 'PGRST116') {
           // Error other than "not found"
-          console.error('Error checking profile:', fetchError);
+          console.error('Error checking student profile:', fetchError);
           return;
         }
 
         if (!existingProfile) {
-          // Create new profile
+          // Create new student profile with basic Google info
+          const fullName = user.user_metadata.full_name || user.user_metadata.name || '';
+          const nameParts = fullName.split(' ');
+          
           const { error: insertError } = await supabase
-            .from('profiles')
+            .from('student_profiles')
             .insert([
               {
-                id: user.id,
+                user_id: user.id,
                 email: user.email,
-                full_name: user.user_metadata.full_name || user.user_metadata.name || '',
-                avatar_url: user.user_metadata.avatar_url || '',
-                created_at: new Date().toISOString()
+                firstName: nameParts[0] || '',
+                lastName: nameParts.slice(1).join(' ') || '',
+                updated_at: new Date().toISOString()
               }
             ]);
 
           if (insertError) {
-            console.error('Error creating profile:', insertError);
+            console.error('Error creating student profile:', insertError);
           } else {
-            console.log('Profile created for new Google user');
+            console.log('Student profile created for new Google user');
           }
         }
       } catch (error) {
-        console.error('Error in createProfileIfNeeded:', error);
+        console.error('Error in createStudentProfileIfNeeded:', error);
       }
     }
   </script>
