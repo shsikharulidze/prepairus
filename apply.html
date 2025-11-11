@@ -140,6 +140,9 @@
           // Create student profile
           await createStudentProfileForNewUser(data.user);
           
+          // Set flag to prevent auth redirect
+          sessionStorage.setItem('just_signed_up', 'true');
+          
           showSuccess('Account created successfully! Please check your email to confirm your account, then sign in.');
           
           // Clear form
@@ -227,7 +230,7 @@
 
     // Handle authentication state changes (for OAuth redirects)
     supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
+      if (event === 'SIGNED_IN' && session && session.user.email_confirmed_at) {
         // For new Google users, create profile and redirect to profile setup
         if (session.user.app_metadata?.provider === 'google') {
           await createStudentProfileForNewUser(session.user);

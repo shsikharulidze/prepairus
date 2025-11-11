@@ -14,21 +14,21 @@ async function getSession() {
   try {
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error) {
-      console.error('[auth/getUser]', { error });
+      console.error('[auth/getUser] Error:', error.message || error);
       return null;
     }
     currentUser = user;
     return user;
   } catch (error) {
-    console.error('[auth/getUser]', { error });
+    console.error('[auth/getUser] Catch:', error.message || error);
     return null;
   }
 }
 
-// Get current session user or redirect
+// Get current session user or redirect (for protected pages only)
 async function requireAuth() {
   const { data: { user }, error } = await supabase.auth.getUser();
-  if (error || !user) {
+  if (error || !user || !user.email_confirmed_at) {
     window.location.href = '/signin.html';
     return null;
   }
@@ -171,7 +171,7 @@ async function initAuth() {
   const user = await getSession();
   const currentPath = location.pathname;
 
-  // Auth pages (should redirect if logged in)
+  // Auth pages (should redirect if logged in and confirmed)
   const authPages = ['/signin.html', '/apply.html', '/index.html'];
   // Protected pages (require login)
   const protectedPages = ['/dashboard.html', '/profile.html', '/applications.html', '/settings.html', '/opportunity.html', '/apply-opportunity.html', '/opportunities.html'];
@@ -182,8 +182,8 @@ async function initAuth() {
     return;
   }
 
-  // If user exists and on auth page, redirect to dashboard
-  if (user && authPages.some(page => currentPath.endsWith(page))) {
+  // If user exists, is confirmed, and on auth page, redirect appropriately
+  if (user && user.email_confirmed_at && authPages.some(page => currentPath.endsWith(page))) {
     const profile = await loadProfile(user.id);
     
     // If no profile, create minimal one
@@ -203,8 +203,8 @@ async function initAuth() {
     return;
   }
 
-  // If logged in but onboarding not complete, redirect to profile (except if already on profile)
-  if (user && !currentPath.endsWith('/profile.html')) {
+  // If logged in, confirmed, but onboarding not complete, redirect to profile (except if already on profile)
+  if (user && user.email_confirmed_at && !currentPath.endsWith('/profile.html')) {
     const profile = await loadProfile(user.id);
     
     if (!profile) {
@@ -506,4 +506,17 @@ if (typeof document !== 'undefined') {
 }
 
 // Initialize page on DOM load
-document.addEventListener('DOMContentLoaded', initAuth);
+document.addEventListener('DOMContentLoaded', () => {
+  // Skip auth init if we just completed a signup
+  const urlParams = new URLSearchParams(window.location.search);
+  const justSignedUp = sessionStorage.getItem('just_signed_up');
+  
+  if (justSignedUp) {
+    sessionStorage.removeItem('just_signed_up');
+    renderHeader();
+    renderFooter();
+    return;
+  }
+  
+  initAuth();
+});
