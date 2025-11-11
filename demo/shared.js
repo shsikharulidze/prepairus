@@ -171,6 +171,15 @@ async function initAuth() {
     history.replaceState(null, '', location.pathname);
   }
 
+  // Skip redirects if just signed up
+  const justSignedUp = sessionStorage.getItem('just_signed_up');
+  if (justSignedUp) {
+    console.log('Skipping auth redirects - user just signed up');
+    renderHeader();
+    renderFooter();
+    return;
+  }
+
   const user = await getSession();
   const currentPath = location.pathname;
 
@@ -510,16 +519,5 @@ if (typeof document !== 'undefined') {
 
 // Initialize page on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-  // Skip auth init if we just completed a signup
-  const urlParams = new URLSearchParams(window.location.search);
-  const justSignedUp = sessionStorage.getItem('just_signed_up');
-  
-  if (justSignedUp) {
-    sessionStorage.removeItem('just_signed_up');
-    renderHeader();
-    renderFooter();
-    return;
-  }
-  
   initAuth();
 });

@@ -137,19 +137,24 @@
         if (error) throw error;
 
         if (data.user) {
+          console.log('Signup successful for user:', data.user.email);
+          
           // Create student profile
           await createStudentProfileForNewUser(data.user);
           
           // Set flag to prevent auth redirect
           sessionStorage.setItem('just_signed_up', 'true');
+          console.log('Set just_signed_up flag');
           
           showSuccess('Account created successfully! Please check your email to confirm your account, then sign in.');
           
           // Clear form
           signupForm.reset();
           
-          // Redirect to sign in after delay
+          // Clear the flag after a delay and redirect
           setTimeout(() => {
+            console.log('Clearing just_signed_up flag and redirecting');
+            sessionStorage.removeItem('just_signed_up');
             window.location.href = 'signin.html';
           }, 3000);
         }
