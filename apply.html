@@ -159,12 +159,17 @@
         
         // Provide user-friendly error messages
         let errorMsg = 'Failed to create account. Please try again.';
-        if (error.message.includes('already registered')) {
+        if (error.message.includes('already registered') || error.message.includes('already been registered')) {
           errorMsg = 'An account with this email already exists. Please sign in instead.';
         } else if (error.message.includes('Password should be at least')) {
           errorMsg = 'Password must be at least 6 characters long.';
         } else if (error.message.includes('Invalid email')) {
           errorMsg = 'Please enter a valid email address.';
+        } else if (error.message.includes('signup is disabled')) {
+          errorMsg = 'Account creation is currently disabled. Please contact support.';
+        } else {
+          // Show actual error for debugging
+          errorMsg = `Signup failed: ${error.message}`;
         }
         
         showError(errorMsg);
@@ -219,7 +224,10 @@
           ]);
 
         if (error) {
-          console.error('[student_profiles/create]', { error });
+          // Don't error on duplicate - user may have signed up before
+          if (!error.message.includes('duplicate key')) {
+            console.error('[student_profiles/create]', { error });
+          }
         } else {
           console.log('Student profile created for new user');
         }

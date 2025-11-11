@@ -14,7 +14,10 @@ async function getSession() {
   try {
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error) {
-      console.error('[auth/getUser] Error:', error.message || error);
+      // Only log non-session errors (session missing is normal for logged out users)
+      if (error.message !== 'Auth session missing!' && !error.message.includes('session missing')) {
+        console.error('[auth/getUser] Error:', error.message || error);
+      }
       return null;
     }
     currentUser = user;
