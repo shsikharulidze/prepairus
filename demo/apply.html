@@ -76,12 +76,20 @@
 
   <script src="shared.js"></script>
   <script>
+    console.log('PrePair v1.3 - Apply.html script starting');
+    
     // DOM elements
     const signupForm = document.getElementById('signup-form');
     const signupBtn = document.getElementById('signup-btn');
     const googleSignupBtn = document.getElementById('google-signup-btn');
     const errorMessage = document.getElementById('error-message');
     const successMessage = document.getElementById('success-message');
+    
+    console.log('PrePair v1.3 - DOM elements found:', {
+      signupForm: !!signupForm,
+      signupBtn: !!signupBtn,
+      googleSignupBtn: !!googleSignupBtn
+    });
 
     // Show/hide messages
     function showError(message) {
@@ -102,10 +110,11 @@
     }
 
     // Email/Password Sign Up
-    signupForm.addEventListener('submit', async (e) => {
-      console.log('PrePair v1.2 - Signup form submitted');
-      e.preventDefault();
-      hideMessages();
+    if (signupForm) {
+      signupForm.addEventListener('submit', async (e) => {
+        console.log('PrePair v1.3 - Signup form submitted');
+        e.preventDefault();
+        hideMessages();
       
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
@@ -182,7 +191,10 @@
       } finally {
         setLoading(signupBtn, false);
       }
-    });
+      });
+    } else {
+      console.error('PrePair v1.3 - Signup form not found!');
+    }
 
     // Google Sign Up
     googleSignupBtn.addEventListener('click', async () => {
