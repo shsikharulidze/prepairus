@@ -221,46 +221,94 @@ async function initAuth() {
 
   // Render header after auth checks
   renderHeader();
+  renderFooter();
 }
 
-// Render auth-aware header
-function renderHeader(containerId = 'nav-container') {
-  const container = document.getElementById(containerId);
-  if (!container) return;
+// Render header matching homepage design
+function renderHeader() {
+  const headerShell = document.getElementById('header-shell');
+  if (!headerShell) return;
 
   const isAuthenticated = !!currentUser;
   
-  const nav = `
-    <nav class="global-nav">
-      <div class="nav-content">
-        <a href="/index.html" class="brand">
-          <div class="logo">
-            <svg viewBox="0 0 64 64" width="32" height="32">
-              <path d="M32 56V20m0 0c6 0 10-5 10-10M32 20c-6 0-10-5-10-10M24 36c4 0 8-4 8-8M40 44c4 0 8-4 8-8" />
-              <path d="M20 48c-4 2-6 5-7 8m6-4c2 0 5-1 8-3" />
-            </svg>
-          </div>
-          <span class="wordmark">PrePair</span>
-        </a>
+  const header = `
+    <header id="site-header">
+      <div class="nav-left">
+        <a href="how-it-works.html">How it works</a>
+        <a href="students.html">For Students</a>
+        <a href="business.html">For Businesses</a>
+      </div>
+
+      <a class="brand brand-center" href="index.html">
+        <div class="logo doodle" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="40" height="40" preserveAspectRatio="xMidYMid meet" role="img" aria-label="PrePair sprout logo">
+            <path d="M32 56V20m0 0c6 0 10-5 10-10M32 20c-6 0-10-5-10-10M24 36c4 0 8-4 8-8M40 44c4 0 8-4 8-8" />
+            <path d="M20 48c-4 2-6 5-7 8m6-4c2 0 5-1 8-3" />
+          </svg>
+        </div>
+        <span class="wordmark">PrePair</span>
+      </a>
+
+      <div class="nav-right">
+        <a href="about.html">About</a>
         
-        <div class="nav-links">
-          ${isAuthenticated ? `
-            <a href="/dashboard.html" class="nav-link">Dashboard</a>
-            <a href="/opportunities.html" class="nav-link">Opportunities</a>
-            <a href="/applications.html" class="nav-link">My Applications</a>
-            <a href="/profile.html" class="nav-link">Profile</a>
-            <a href="/settings.html" class="nav-link">Settings</a>
-            <button class="nav-link sign-out-btn" onclick="handleSignOut()">Sign Out</button>
-          ` : `
-            <a href="/signin.html" class="nav-link">Sign In</a>
-            <a href="/apply.html" class="nav-link-cta">Apply</a>
-          `}
+        <!-- Guest navigation (not signed in) -->
+        <div class="nav-guest">
+          <a href="signin.html">Sign in</a>
+          <a class="btn-chip" href="apply.html">Apply</a>
+        </div>
+        
+        <!-- Authenticated navigation (signed in) -->
+        <div class="nav-authenticated">
+          <a href="dashboard.html" class="profile-link">Dashboard</a>
+          <a href="profile.html" class="profile-link">My Profile</a>
+          <a href="applications.html" class="profile-link">Applications</a>
+          <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
         </div>
       </div>
-    </nav>
+    </header>
   `;
   
-  container.innerHTML = nav;
+  headerShell.innerHTML = header;
+  
+  // Apply auth state
+  if (isAuthenticated) {
+    document.body.classList.add('is-authenticated');
+  } else {
+    document.body.classList.remove('is-authenticated');
+  }
+
+  // Setup island header scroll effect
+  setupIslandHeader();
+}
+
+// Island header scroll effect
+function setupIslandHeader() {
+  const shell = document.getElementById('header-shell');
+  if (!shell) return;
+  
+  let floating = false;
+  
+  function onScroll() {
+    const want = window.scrollY > 8;
+    if (want !== floating) {
+      shell.classList.toggle('is-floating', want);
+      floating = want;
+    }
+  }
+  
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+// Render footer
+function renderFooter() {
+  const footer = document.querySelector('footer');
+  if (footer) {
+    footer.innerHTML = `
+      <small>© <span id="year">${new Date().getFullYear()}</span> PrePair. Preparing students, pairing them with opportunity.</small>
+    `;
+  }
 }
 
 // Sign out handler
