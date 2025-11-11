@@ -7,6 +7,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Global auth state
 let currentUser = null;
+let currentProfile = null;
 
 // Navigation component
 function renderNavigation(containerId = 'nav-container') {
@@ -31,8 +32,8 @@ function renderNavigation(containerId = 'nav-container') {
         <div class="nav-links">
           ${isAuthenticated ? `
             <a href="dashboard.html" class="nav-link">Dashboard</a>
-            <a href="opportunity.html" class="nav-link">Opportunities</a>
-            <a href="applications.html" class="nav-link">Applications</a>
+            <a href="opportunities.html" class="nav-link">Opportunities</a>
+            <a href="applications.html" class="nav-link">My Applications</a>
             <a href="profile.html" class="nav-link">Profile</a>
             <a href="settings.html" class="nav-link">Settings</a>
             <button class="nav-link sign-out-btn" onclick="handleSignOut()">Sign Out</button>
@@ -56,10 +57,16 @@ async function checkAuthAndRedirect() {
     
     const currentPath = window.location.pathname;
     const authPages = ['/signin.html', '/apply.html', '/index.html'];
-    const protectedPages = ['/dashboard.html', '/profile.html', '/applications.html', '/settings.html', '/opportunity.html', '/apply-opportunity.html'];
+    const protectedPages = ['/dashboard.html', '/profile.html', '/applications.html', '/settings.html', '/opportunity.html', '/apply-opportunity.html', '/opportunities.html'];
     
-    // If on auth page and logged in, redirect to dashboard
+    // If on auth page and logged in, redirect to dashboard  
     if (user && authPages.some(page => currentPath.endsWith(page))) {
+      // Check if onboarding is complete
+      const profile = await getUserProfile(user.id);
+      if (profile && !profile.onboarding_complete) {
+        window.location.href = 'profile.html';
+        return;
+      }
       window.location.href = 'dashboard.html';
       return;
     }
@@ -69,6 +76,15 @@ async function checkAuthAndRedirect() {
       window.location.href = 'signin.html';
       return;
     }
+
+    // If logged in but onboarding not complete, redirect to profile (except if already on profile)
+    if (user && !currentPath.endsWith('/profile.html')) {
+      const profile = await getUserProfile(user.id);
+      if (profile && !profile.onboarding_complete) {
+        window.location.href = 'profile.html';
+        return;
+      }
+    }
     
     // Render navigation after auth check
     renderNavigation();
@@ -76,6 +92,30 @@ async function checkAuthAndRedirect() {
   } catch (error) {
     console.error('Auth check failed:', error);
     renderNavigation();
+  }
+}
+
+// Get user profile
+async function getUserProfile(userId) {
+  if (!userId) return null;
+  
+  try {
+    const { data, error } = await supabase
+      .from('student_profiles')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
+
+    if (error && error.code !== 'PGRST116') {
+      console.error('Profile fetch error:', error);
+      return null;
+    }
+
+    currentProfile = data;
+    return data;
+  } catch (error) {
+    console.error('Get user profile failed:', error);
+    return null;
   }
 }
 
@@ -150,6 +190,10 @@ async function uploadFile(file, bucket, path) {
       });
 
     if (error) throw error;
+    
+    // Log to files_manifest
+    await logFileUpload(bucket, path, file.type, file.name);
+    
     return data;
   } catch (error) {
     console.error('Upload failed:', error);
@@ -164,6 +208,106 @@ function getFileUrl(bucket, path) {
     .getPublicUrl(path);
   
   return data.publicUrl;
+}
+
+// Log file upload to manifest
+async function logFileUpload(bucket, path, mimeType, originalName) {
+  try {
+    const { error } = await supabase
+      .from('files_manifest')
+      .insert({
+        user_id: currentUser?.id,
+        bucket_name: bucket,
+        file_path: path,
+        mime_type: mimeType,
+        original_name: originalName,
+        purpose: bucket === 'avatars' ? 'profile_avatar' : 'application_file'
+      });
+
+    if (error) console.error('File manifest logging failed:', error);
+  } catch (error) {
+    console.error('File manifest logging failed:', error);
+  }
+}
+
+// Profile completeness checker
+function checkProfileCompleteness(profile) {
+  const requiredFields = ['firstName', 'lastName', 'university', 'major'];
+  const missingFields = requiredFields.filter(field => !profile[field] || profile[field].trim() === '');
+  return {
+    isComplete: missingFields.length === 0,
+    missingFields,
+    completeness: Math.round(((requiredFields.length - missingFields.length) / requiredFields.length) * 100)
+  };
+}
+
+// Loading skeleton helper
+function showLoadingSkeleton(containerId, type = 'default') {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const skeletons = {
+    card: `
+      <div class="loading-skeleton">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-subtitle"></div>
+        <div class="skeleton-line skeleton-text"></div>
+        <div class="skeleton-line skeleton-text short"></div>
+      </div>
+    `,
+    list: `
+      <div class="loading-skeleton">
+        <div class="skeleton-line skeleton-text"></div>
+        <div class="skeleton-line skeleton-text"></div>
+        <div class="skeleton-line skeleton-text"></div>
+      </div>
+    `,
+    default: `
+      <div class="loading-skeleton">
+        <div class="skeleton-line skeleton-text"></div>
+      </div>
+    `
+  };
+
+  container.innerHTML = skeletons[type] || skeletons.default;
+}
+
+// Question type renderer
+function renderQuestion(question, value = '', error = '') {
+  const baseClass = error ? 'input error' : 'input';
+  
+  switch (question.type) {
+    case 'textarea':
+      return `
+        <div class="form-group">
+          <label for="${question.id}">${question.text}${question.required ? ' *' : ''}</label>
+          <textarea id="${question.id}" name="${question.id}" class="${baseClass}" 
+                    placeholder="Enter your response..." 
+                    ${question.required ? 'required' : ''}>${value}</textarea>
+          ${error ? `<div class="error-message">${error}</div>` : ''}
+        </div>
+      `;
+    case 'file':
+      return `
+        <div class="form-group">
+          <label for="${question.id}">${question.text}${question.required ? ' *' : ''}</label>
+          <input type="file" id="${question.id}" name="${question.id}" class="${baseClass}"
+                 accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
+                 ${question.required ? 'required' : ''}>
+          ${error ? `<div class="error-message">${error}</div>` : ''}
+        </div>
+      `;
+    default:
+      return `
+        <div class="form-group">
+          <label for="${question.id}">${question.text}${question.required ? ' *' : ''}</label>
+          <input type="text" id="${question.id}" name="${question.id}" class="${baseClass}"
+                 value="${value}" placeholder="Enter your response..."
+                 ${question.required ? 'required' : ''}>
+          ${error ? `<div class="error-message">${error}</div>` : ''}
+        </div>
+      `;
+  }
 }
 
 // Initialize page
