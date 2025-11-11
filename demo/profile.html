@@ -193,6 +193,102 @@
       margin-bottom: 0;
     }
 
+    /* Avatar Section */
+    .avatar-section {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .avatar-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .current-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--text);
+      overflow: hidden;
+      border: 4px solid var(--border);
+      position: relative;
+    }
+
+    .current-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .current-avatar.uploading::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .current-avatar.uploading::before {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border: 2px solid transparent;
+      border-top: 2px solid var(--clay);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--clay);
+      color: var(--clay);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Error message styling for inline errors */
+    .error-message {
+      color: var(--error);
+      font-size: 12px;
+      margin-top: 4px;
+      display: block;
+    }
+
     /* Form */
     .profile-form {
       background: white;
@@ -334,11 +430,6 @@
       border-top: 2px solid white;
       border-radius: 50%;
       animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
 
     /* Toast Messages */
@@ -511,33 +602,43 @@
         </div>
 
         <form id="profileForm">
+          <!-- Avatar Section -->
+          <div class="avatar-section">
+            <div class="avatar-upload">
+              <div class="current-avatar" id="currentAvatar">
+                <!-- Avatar will be populated by JavaScript -->
+              </div>
+              <div class="avatar-controls">
+                <input type="file" id="avatarFile" accept="image/*" style="display: none;">
+                <button type="button" id="avatarUploadBtn" class="btn-secondary" onclick="document.getElementById('avatarFile').click()">
+                  Change Photo
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div class="form-grid">
             <div class="form-row">
               <div class="form-group">
-                <label for="firstName">First Name</label>
+                <label for="firstName">First Name *</label>
                 <input type="text" id="firstName" name="firstName" required>
               </div>
               <div class="form-group">
-                <label for="lastName">Last Name</label>
+                <label for="lastName">Last Name *</label>
                 <input type="text" id="lastName" name="lastName" required>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" required>
-            </div>
-
             <div class="form-row">
               <div class="form-group">
-                <label for="university">University</label>
+                <label for="university">University *</label>
                 <select id="university" name="university" required>
                   <option value="">Select your university</option>
-                  <option value="fordham">Fordham University</option>
-                  <option value="nyu">New York University</option>
-                  <option value="columbia">Columbia University</option>
-                  <option value="pace">Pace University</option>
-                  <option value="other">Other</option>
+                  <option value="Fordham University">Fordham University</option>
+                  <option value="New York University">New York University</option>
+                  <option value="Columbia University">Columbia University</option>
+                  <option value="Pace University">Pace University</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
               <div class="form-group">
@@ -549,7 +650,7 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="graduationYear">Graduation Year</label>
-                <select id="graduationYear" name="graduationYear" required>
+                <select id="graduationYear" name="graduationYear">
                   <option value="">Select year</option>
                   <option value="2025">2025</option>
                   <option value="2026">2026</option>
@@ -559,35 +660,34 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="major">Major / Program</label>
+                <label for="major">Major / Program *</label>
                 <input type="text" id="major" name="major" placeholder="e.g., Business Administration" required>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="location">City / Country</label>
-              <input type="text" id="location" name="location" placeholder="e.g., New York, NY" required>
+              <label for="location">Location</label>
+              <input type="text" id="location" name="location" placeholder="e.g., New York, NY">
             </div>
 
             <div class="form-group full-width">
-              <label for="bio">Short Bio</label>
+              <label for="bio">Bio</label>
               <textarea id="bio" name="bio" placeholder="Tell us a bit about yourself, your interests, and what you're looking for in an internship..."></textarea>
             </div>
           </div>
 
           <button type="submit" class="btn" id="saveBtn">
-            Save Profile
+            Complete Profile
           </button>
         </form>
       </div>
     </div>
   </div>
 
+  <script src="shared.js"></script>
   <script>
-    // Initialize Supabase
-    const supabaseUrl = 'https://aezybthbsmpihbyzfiqi.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    // Global variables
+    let currentAvatarUrl = null;
 
     // DOM Elements
     const userAvatar = document.getElementById('userAvatar');
@@ -597,36 +697,24 @@
     const saveBtn = document.getElementById('saveBtn');
     const loadingOverlay = document.getElementById('loadingOverlay');
     const signOutBtn = document.getElementById('signOutBtn');
+    const avatarUploadBtn = document.getElementById('avatarUploadBtn');
 
     // Initialize page
     document.addEventListener('DOMContentLoaded', async function() {
+      // OAuth hash cleanup
+      if (location.hash.includes('access_token')) {
+        history.replaceState(null, '', location.pathname);
+      }
       await initializePage();
-    });
-
-    // Sign out functionality
-    signOutBtn.addEventListener('click', async function() {
-      await handleSignOut();
     });
 
     async function initializePage() {
       try {
         loadingOverlay.classList.add('active');
         
-        // Get current user
-        const { data: { user }, error } = await supabase.auth.getUser();
-        
-        if (error) {
-          console.error('Error getting user:', error);
-          showToast('Please sign in to access your profile', 'error');
-          setTimeout(() => window.location.href = 'login.html', 2000);
-          return;
-        }
-
-        if (!user) {
-          showToast('Please sign in to access your profile', 'error');
-          setTimeout(() => window.location.href = 'login.html', 2000);
-          return;
-        }
+        // Use shared auth utilities
+        const user = await requireAuth();
+        if (!user) return;
 
         // Setup user greeting
         setupUserGreeting(user);
@@ -635,7 +723,7 @@
         await loadExistingProfile(user.id);
 
       } catch (error) {
-        console.error('Initialization error:', error);
+        console.error('[profile/init]', { error });
         showToast('Something went wrong. Please try again.', 'error');
       } finally {
         loadingOverlay.classList.remove('active');
@@ -662,10 +750,6 @@
         title = `Welcome, ${firstName}!`;
         subtitle = `Signed in with Google (${user.email})`;
         
-        // Pre-fill form with Google data
-        document.getElementById('email').value = user.email || '';
-        document.getElementById('email').readOnly = true;
-        
         if (user.user_metadata?.full_name) {
           const nameParts = user.user_metadata.full_name.split(' ');
           document.getElementById('firstName').value = nameParts[0] || '';
@@ -680,42 +764,99 @@
         avatarContent = firstName.charAt(0).toUpperCase();
         title = `Welcome, ${firstName}!`;
         subtitle = `Signed up with ${email}`;
-        
-        // Pre-fill email
-        document.getElementById('email').value = email;
       }
 
       userAvatar.innerHTML = avatarContent;
       welcomeTitle.textContent = title;
       welcomeSubtitle.textContent = subtitle;
+      
+      // Set initial avatar display
+      document.getElementById('currentAvatar').innerHTML = avatarContent;
     }
 
     async function loadExistingProfile(userId) {
       try {
-        const { data, error } = await supabase
-          .from('student_profiles')
-          .select('*')
-          .eq('user_id', userId)
-          .single();
-
-        if (error && error.code !== 'PGRST116') {
-          console.error('Error loading profile:', error);
-          return;
-        }
-
-        if (data) {
+        const profile = await loadProfile(userId);
+        
+        if (profile) {
           // Populate form with existing data
-          Object.keys(data).forEach(key => {
+          Object.keys(profile).forEach(key => {
             const field = document.getElementById(key);
-            if (field && data[key]) {
-              field.value = data[key];
+            if (field && profile[key]) {
+              field.value = profile[key];
             }
           });
+          
+          // Update avatar display if exists
+          if (profile.avatar_url) {
+            const avatarUrl = getAvatarUrl(userId);
+            currentAvatarUrl = avatarUrl;
+            
+            document.getElementById('currentAvatar').innerHTML = 
+              `<img src="${avatarUrl}" alt="Current avatar">`;
+            userAvatar.innerHTML = 
+              `<img src="${avatarUrl}" alt="User avatar" onerror="this.style.display='none'; this.parentNode.textContent='${(profile.firstName || 'U').charAt(0).toUpperCase()}'">`;
+          }
         }
       } catch (error) {
-        console.error('Error loading existing profile:', error);
+        console.error('[student_profiles/load]', { error, userId });
       }
     }
+
+    // Avatar upload handling
+    document.getElementById('avatarFile').addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Validate file
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        showInlineError('File size must be less than 5MB', this);
+        this.value = '';
+        return;
+      }
+
+      if (!file.type.startsWith('image/')) {
+        showInlineError('Please select an image file', this);
+        this.value = '';
+        return;
+      }
+
+      try {
+        // Clear any previous errors
+        clearInlineError(this);
+        
+        // Show uploading state
+        const avatarContainer = document.getElementById('currentAvatar');
+        const uploadBtn = document.getElementById('avatarUploadBtn');
+        
+        avatarContainer.classList.add('uploading');
+        uploadBtn.disabled = true;
+        uploadBtn.textContent = 'Uploading...';
+
+        // Upload avatar using shared helper
+        const result = await uploadAvatar(file);
+        
+        if (result) {
+          currentAvatarUrl = result.publicUrl;
+          
+          // Update UI immediately
+          avatarContainer.innerHTML = `<img src="${result.publicUrl}" alt="Avatar preview">`;
+          userAvatar.innerHTML = `<img src="${result.publicUrl}" alt="User avatar">`;
+          
+          showToast('Avatar uploaded successfully!', 'success');
+        }
+
+      } catch (error) {
+        console.error('[profile/avatar-upload]', { error });
+        showInlineError('Avatar upload failed. Please try again.', this);
+        this.value = '';
+      } finally {
+        // Reset upload state
+        document.getElementById('currentAvatar').classList.remove('uploading');
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = 'Change Photo';
+      }
+    });
 
     // Handle form submission
     profileForm.addEventListener('submit', async function(e) {
@@ -725,144 +866,80 @@
 
     async function saveProfile() {
       try {
-        // Show loading state
-        saveBtn.classList.add('loading');
-        saveBtn.disabled = true;
+        setLoading(saveBtn, true);
         
         // Get current user
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
-        
-        if (userError || !user) {
-          console.error('User authentication error:', userError);
+        const user = await getSession();
+        if (!user) {
+          console.error('[auth/getUser]', { error: 'No authenticated user' });
           showToast('Authentication error. Please sign in again.', 'error');
           return;
         }
 
-        console.log('User authenticated:', user.id, user.email);
-
         // Collect form data
         const formData = new FormData(profileForm);
         
-        // Create profile with only basic fields that exist in your table
+        // Create profile object - ALWAYS include user_id
         const profile = {
           user_id: user.id,
           email: user.email,
           firstName: formData.get('firstName'),
           lastName: formData.get('lastName'),
+          university: formData.get('university'),
+          campus: formData.get('campus'),
+          graduationYear: formData.get('graduationYear'),
+          major: formData.get('major'),
+          location: formData.get('location'),
+          bio: formData.get('bio'),
+          avatar_url: currentAvatarUrl,
+          onboarding_complete: true,
           updated_at: new Date().toISOString()
         };
 
-        // Add optional fields if they have values
-        const optionalFields = ['university', 'campus', 'graduationYear', 'major', 'location', 'bio'];
-        optionalFields.forEach(field => {
-          const value = formData.get(field);
-          if (value && value.trim() !== '') {
-            profile[field] = value.trim();
-          }
-        });
-
-        // Remove empty values
+        // Remove empty values but keep user_id and email
         Object.keys(profile).forEach(key => {
-          if (profile[key] === '' || profile[key] === null) {
+          if (key !== 'user_id' && key !== 'email' && (profile[key] === '' || profile[key] === null)) {
             delete profile[key];
           }
         });
 
-        console.log('Profile data to save:', profile);
-
-        // Try to save to Supabase with error handling for missing columns
-        let data, error;
-        
-        try {
-          // First try with all fields
-          const result = await supabase
-            .from('student_profiles')
-            .upsert(profile)
-            .select();
-          
-          data = result.data;
-          error = result.error;
-          
-        } catch (saveError) {
-          // If that fails, try with just basic fields
-          console.log('Full save failed, trying with basic fields only:', saveError);
-          
-          const basicProfile = {
-            user_id: user.id,
-            email: user.email,
-            firstName: formData.get('firstName'),
-            lastName: formData.get('lastName'),
-            updated_at: new Date().toISOString()
-          };
-          
-          const basicResult = await supabase
-            .from('student_profiles')
-            .upsert(basicProfile)
-            .select();
-            
-          data = basicResult.data;
-          error = basicResult.error;
-        }
+        // Save to Supabase with proper upsert
+        const { data, error } = await supabase
+          .from('student_profiles')
+          .upsert(profile, { onConflict: 'user_id' })
+          .select();
 
         if (error) {
-          console.error('Supabase error:', error);
-          console.error('Error details:', error.message, error.code, error.details);
+          console.error('[student_profiles/upsert]', { error, profile });
           showToast(`Failed to save profile: ${error.message}`, 'error');
           return;
         }
 
-        console.log('Profile saved successfully:', data);
-        showToast('Profile saved successfully! 🎉', 'success');
+        // Re-fetch updated profile to update global state
+        await loadProfile(user.id);
         
-        // Optional: Update welcome section with new data
+        showToast('Profile completed successfully! 🎉', 'success');
+        
+        // Update welcome section
         if (profile.firstName) {
           welcomeTitle.textContent = `Welcome, ${profile.firstName}!`;
         }
 
+        // Redirect to dashboard after successful completion
+        setTimeout(() => {
+          window.location.href = '/dashboard.html';
+        }, 1500);
+
       } catch (error) {
-        console.error('Save profile error:', error);
+        console.error('[profile/save]', { error });
         showToast('Something went wrong. Please try again.', 'error');
       } finally {
-        // Reset loading state
-        saveBtn.classList.remove('loading');
-        saveBtn.disabled = false;
+        setLoading(saveBtn, false);
       }
-    }
-
-    // Toast notification system
-    function showToast(message, type = 'success') {
-      // Remove existing toast
-      const existingToast = document.querySelector('.toast');
-      if (existingToast) {
-        existingToast.remove();
-      }
-
-      // Create new toast
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      
-      const icon = type === 'success' ? '✓' : '✕';
-      toast.innerHTML = `
-        <div class="toast-content">
-          <span class="toast-icon">${icon}</span>
-          <span>${message}</span>
-        </div>
-      `;
-
-      document.body.appendChild(toast);
-
-      // Show toast
-      setTimeout(() => toast.classList.add('show'), 100);
-
-      // Auto remove after 4 seconds
-      setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-      }, 4000);
     }
 
     // Handle form validation
-    const requiredFields = ['firstName', 'lastName', 'email', 'university', 'graduationYear', 'major', 'location'];
+    const requiredFields = ['firstName', 'lastName', 'university', 'major'];
     
     requiredFields.forEach(fieldId => {
       const field = document.getElementById(fieldId);
@@ -900,39 +977,8 @@
       }
     });
 
-    // Handle sign out
-    async function handleSignOut() {
-      try {
-        // Disable button and show loading state
-        signOutBtn.disabled = true;
-        signOutBtn.textContent = 'Signing out...';
-
-        // Sign out from Supabase
-        const { error } = await supabase.auth.signOut();
-
-        if (error) {
-          console.error('Sign out error:', error);
-          showToast('Failed to sign out. Please try again.', 'error');
-          return;
-        }
-
-        // Show success message
-        showToast('Successfully signed out!', 'success');
-
-        // Redirect to home page after a brief delay
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 1000);
-
-      } catch (error) {
-        console.error('Sign out error:', error);
-        showToast('Failed to sign out. Please try again.', 'error');
-      } finally {
-        // Reset button state
-        signOutBtn.disabled = false;
-        signOutBtn.textContent = 'Sign Out';
-      }
-    }
+    // Sign out handler
+    signOutBtn.addEventListener('click', handleSignOut);
   </script>
 </body>
 </html>

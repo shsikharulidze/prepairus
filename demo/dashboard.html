@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard — PrePair</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      --surface: rgba(255, 255, 255, 0.05);
+      --surface-hover: rgba(255, 255, 255, 0.1);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.7);
+      --accent: #00d4aa;
+      --accent-hover: #00b894;
+      --warning: #fdcb6e;
+      --error: #e17055;
+      --success: #00b894;
+      --radius: 16px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --blur: blur(20px);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Navigation */
+    .global-nav {
+      backdrop-filter: var(--blur);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo svg {
+      stroke: var(--accent);
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .wordmark {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: var(--surface-hover);
+    }
+
+    .nav-link-cta {
+      background: var(--accent);
+      color: var(--text);
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .nav-link-cta:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Main Content */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 80px);
+    }
+
+    .welcome-section {
+      margin-bottom: 3rem;
+    }
+
+    .welcome-card {
+      background: var(--surface);
+      backdrop-filter: var(--blur);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .user-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .welcome-content h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-content p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* Profile Completeness Banner */
+    .profile-banner {
+      background: linear-gradient(135deg, var(--warning), #e17055);
+      border-radius: var(--radius);
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      display: none;
+    }
+
+    .profile-banner.show {
+      display: flex;
+    }
+
+    .profile-banner .icon {
+      font-size: 1.25rem;
+    }
+
+    .profile-banner .content {
+      flex: 1;
+    }
+
+    .profile-banner .title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .profile-banner .subtitle {
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+
+    .profile-banner .btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .profile-banner .btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Opportunities Section */
+    .opportunities-section h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .opportunity-card {
+      background: var(--surface);
+      backdrop-filter: var(--blur);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .opportunity-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+      border-color: var(--accent);
+    }
+
+    .opportunity-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .opportunity-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .opportunity-company {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .opportunity-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      background: rgba(0, 212, 170, 0.2);
+      color: var(--accent);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .opportunity-description {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .opportunity-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.875rem 2rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      background: var(--surface-hover);
+    }
+
+    /* Loading State */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem;
+      color: var(--text-muted);
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid transparent;
+      border-top: 2px solid var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Toast Notifications */
+    .toast {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      background: var(--surface);
+      backdrop-filter: var(--blur);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.5rem;
+      box-shadow: var(--shadow);
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+      z-index: 200;
+      max-width: 350px;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.success {
+      border-color: var(--success);
+    }
+
+    .toast.error {
+      border-color: var(--error);
+    }
+
+    .toast-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .toast-icon {
+      font-size: 1.25rem;
+    }
+
+    .toast.success .toast-icon {
+      color: var(--success);
+    }
+
+    .toast.error .toast-icon {
+      color: var(--error);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-content {
+        padding: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .nav-link {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .main-container {
+        padding: 1rem;
+      }
+
+      .welcome-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+      }
+
+      .profile-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+
+      .opportunity-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .opportunity-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .toast {
+        left: 1rem;
+        right: 1rem;
+        top: 1rem;
+        max-width: none;
+        transform: translateY(-100px);
+      }
+
+      .toast.show {
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="nav-container"></div>
+
+  <main class="main-container">
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+      <div class="welcome-card">
+        <div class="user-avatar" id="userAvatar">
+          U
+        </div>
+        <div class="welcome-content">
+          <h1 id="welcomeTitle">Welcome back!</h1>
+          <p id="welcomeSubtitle">Ready to explore new opportunities?</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile Completeness Banner -->
+    <div class="profile-banner" id="profileBanner">
+      <div class="icon">⚠️</div>
+      <div class="content">
+        <div class="title">Complete your profile</div>
+        <div class="subtitle">Add more details to get better matched with opportunities</div>
+      </div>
+      <a href="/profile.html" class="btn">Complete Profile</a>
+    </div>
+
+    <!-- Featured Opportunity -->
+    <section class="opportunities-section">
+      <h2>Featured Opportunity</h2>
+      <div id="opportunityContainer" class="loading">
+        <div class="spinner"></div>
+        Loading opportunities...
+      </div>
+    </section>
+  </main>
+
+  <script src="shared.js"></script>
+  <script>
+    let userProfile = null;
+
+    // Initialize dashboard
+    async function initDashboard() {
+      try {
+        // OAuth hash cleanup
+        if (location.hash.includes('access_token')) {
+          history.replaceState(null, '', location.pathname);
+        }
+
+        const user = await requireAuth();
+        if (!user) return;
+
+        // Load user profile
+        await loadUserProfile(user);
+        
+        // Load featured opportunity
+        await loadFeaturedOpportunity();
+
+      } catch (error) {
+        console.error('[dashboard/init]', { error });
+        showToast('Failed to load dashboard. Please refresh the page.', 'error');
+      }
+    }
+
+    // Load user profile and setup welcome section
+    async function loadUserProfile(user) {
+      try {
+        const profile = await loadProfile(user.id);
+        
+        if (!profile) {
+          // Create minimal profile if none exists
+          await createMinimalProfile(user);
+          userProfile = {
+            firstName: user.user_metadata?.name || user.email?.split('@')[0] || 'Student',
+            avatar_url: user.user_metadata?.avatar_url
+          };
+        } else {
+          userProfile = profile;
+        }
+
+        // Setup welcome section
+        const firstName = userProfile.firstName || user.email?.split('@')[0] || 'Student';
+        const welcomeTitle = document.getElementById('welcomeTitle');
+        const welcomeSubtitle = document.getElementById('welcomeSubtitle');
+        const userAvatar = document.getElementById('userAvatar');
+
+        welcomeTitle.textContent = `Welcome back, ${firstName}!`;
+        
+        // Setup avatar
+        if (userProfile.avatar_url) {
+          userAvatar.innerHTML = `<img src="${userProfile.avatar_url}" alt="${firstName}" onerror="this.style.display='none'; this.parentNode.textContent='${firstName.charAt(0).toUpperCase()}'">`;
+        } else {
+          userAvatar.textContent = firstName.charAt(0).toUpperCase();
+        }
+
+        // Check profile completeness
+        checkProfileCompletenessDisplay();
+
+      } catch (error) {
+        console.error('[dashboard/loadProfile]', { error, userId: user.id });
+        // Continue with basic setup
+        const firstName = user.email?.split('@')[0] || 'Student';
+        document.getElementById('welcomeTitle').textContent = `Welcome back, ${firstName}!`;
+        document.getElementById('userAvatar').textContent = firstName.charAt(0).toUpperCase();
+      }
+    }
+
+    // Check if profile needs completion
+    function checkProfileCompletenessDisplay() {
+      if (!userProfile) return;
+      
+      const completenessData = checkProfileCompleteness(userProfile);
+      
+      if (!completenessData.isComplete || !userProfile.onboarding_complete) {
+        const banner = document.getElementById('profileBanner');
+        const content = banner.querySelector('.content');
+        if (content) {
+          content.innerHTML = `
+            <div class="title">Complete your profile (${completenessData.completeness}% complete)</div>
+            <div class="subtitle">Missing: ${completenessData.missingFields.join(', ')}</div>
+          `;
+        }
+        banner.classList.add('show');
+      }
+    }
+
+    // Load featured opportunity
+    async function loadFeaturedOpportunity() {
+      try {
+        const { data, error } = await supabase
+          .from('opportunities')
+          .select('*')
+          .eq('is_active', true)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (error) {
+          console.error('[opportunities/select]', { error });
+          throw error;
+        }
+
+        const container = document.getElementById('opportunityContainer');
+        
+        if (data && data.length > 0) {
+          const opportunity = data[0];
+          container.innerHTML = renderOpportunityCard(opportunity);
+        } else {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+              <p>No opportunities available at the moment.</p>
+              <p>Check back soon for new opportunities!</p>
+            </div>
+          `;
+        }
+
+      } catch (error) {
+        console.error('[dashboard/loadOpportunity]', { error });
+        document.getElementById('opportunityContainer').innerHTML = `
+          <div style="text-align: center; padding: 2rem; color: var(--error);">
+            Failed to load opportunities. Please try again later.
+          </div>
+        `;
+      }
+    }
+
+    // Render opportunity card
+    function renderOpportunityCard(opportunity) {
+      return `
+        <div class="opportunity-card">
+          <div class="opportunity-header">
+            <div>
+              <h3 class="opportunity-title">${opportunity.title}</h3>
+              <div class="opportunity-company">${opportunity.company}</div>
+            </div>
+          </div>
+          
+          <div class="opportunity-tags">
+            <span class="tag">${opportunity.location}</span>
+            <span class="tag">${opportunity.work_type}</span>
+          </div>
+          
+          <p class="opportunity-description">
+            ${opportunity.description.length > 200 
+              ? opportunity.description.substring(0, 200) + '...' 
+              : opportunity.description}
+          </p>
+          
+          <div class="opportunity-actions">
+            <a href="/opportunity.html?id=${opportunity.id}" class="btn">
+              View Details
+            </a>
+            <a href="/apply-opportunity.html?id=${opportunity.id}" class="btn btn-secondary">
+              Apply Now
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initDashboard);
+  </script>
+</body>
+</html>
