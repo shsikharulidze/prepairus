@@ -742,19 +742,24 @@
 
         // Collect form data
         const formData = new FormData(profileForm);
+        
+        // Create profile with only basic fields that exist in your table
         const profile = {
           user_id: user.id,
           email: formData.get('email'),
           firstName: formData.get('firstName'),
           lastName: formData.get('lastName'),
-          university: formData.get('university'),
-          campus: formData.get('campus'),
-          graduationYear: formData.get('graduationYear'),
-          major: formData.get('major'),
-          location: formData.get('location'),
-          bio: formData.get('bio'),
           updated_at: new Date().toISOString()
         };
+
+        // Add optional fields if they have values
+        const optionalFields = ['university', 'campus', 'graduationYear', 'major', 'location', 'bio'];
+        optionalFields.forEach(field => {
+          const value = formData.get(field);
+          if (value && value.trim() !== '') {
+            profile[field] = value.trim();
+          }
+        });
 
         // Remove empty values
         Object.keys(profile).forEach(key => {
@@ -765,14 +770,45 @@
 
         console.log('Profile data to save:', profile);
 
-        // Save to Supabase
-        const { data, error } = await supabase
-          .from('student_profiles')
-          .upsert(profile, { 
-            onConflict: 'user_id',
-            ignoreDuplicates: false 
-          })
-          .select();
+        // Try to save to Supabase with error handling for missing columns
+        let data, error;
+        
+        try {
+          // First try with all fields
+          const result = await supabase
+            .from('student_profiles')
+            .upsert(profile, { 
+              onConflict: 'user_id',
+              ignoreDuplicates: false 
+            })
+            .select();
+          
+          data = result.data;
+          error = result.error;
+          
+        } catch (saveError) {
+          // If that fails, try with just basic fields
+          console.log('Full save failed, trying with basic fields only:', saveError);
+          
+          const basicProfile = {
+            user_id: user.id,
+            email: formData.get('email'),
+            firstName: formData.get('firstName'),
+            lastName: formData.get('lastName'),
+            updated_at: new Date().toISOString()
+          };
+          
+          const basicResult = await supabase
+            .from('student_profiles')
+            .upsert(basicProfile, { 
+              onConflict: 'user_id',
+              ignoreDuplicates: false 
+            })
+            .select();
+            
+          data = basicResult.data;
+          error = basicResult.error;
+        }
 
         if (error) {
           console.error('Supabase error:', error);
