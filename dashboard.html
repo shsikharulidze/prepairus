@@ -490,7 +490,7 @@
         <div class="title">Complete your profile</div>
         <div class="subtitle">Add more details to get better matched with opportunities</div>
       </div>
-      <a href="profile.html" class="btn">Complete Profile</a>
+      <a href="/profile.html" class="btn">Complete Profile</a>
     </div>
 
     <!-- Featured Opportunity -->
@@ -510,11 +510,13 @@
     // Initialize dashboard
     async function initDashboard() {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-          window.location.href = 'signin.html';
-          return;
+        // OAuth hash cleanup
+        if (location.hash.includes('access_token')) {
+          history.replaceState(null, '', location.pathname);
         }
+
+        const user = await requireAuth();
+        if (!user) return;
 
         // Load user profile
         await loadUserProfile(user);
@@ -523,7 +525,7 @@
         await loadFeaturedOpportunity();
 
       } catch (error) {
-        console.error('Dashboard initialization failed:', error);
+        console.error('[dashboard/init]', { error });
         showToast('Failed to load dashboard. Please refresh the page.', 'error');
       }
     }
@@ -531,17 +533,18 @@
     // Load user profile and setup welcome section
     async function loadUserProfile(user) {
       try {
-        const { data, error } = await supabase
-          .from('student_profiles')
-          .select('*')
-          .eq('user_id', user.id)
-          .single();
-
-        if (error && error.code !== 'PGRST116') {
-          throw error;
+        const profile = await loadProfile(user.id);
+        
+        if (!profile) {
+          // Create minimal profile if none exists
+          await createMinimalProfile(user);
+          userProfile = {
+            firstName: user.user_metadata?.name || user.email?.split('@')[0] || 'Student',
+            avatar_url: user.user_metadata?.avatar_url
+          };
+        } else {
+          userProfile = profile;
         }
-
-        userProfile = data || {};
 
         // Setup welcome section
         const firstName = userProfile.firstName || user.email?.split('@')[0] || 'Student';
@@ -559,10 +562,10 @@
         }
 
         // Check profile completeness
-        checkProfileCompleteness();
+        checkProfileCompletenessDisplay();
 
       } catch (error) {
-        console.error('Failed to load user profile:', error);
+        console.error('[dashboard/loadProfile]', { error, userId: user.id });
         // Continue with basic setup
         const firstName = user.email?.split('@')[0] || 'Student';
         document.getElementById('welcomeTitle').textContent = `Welcome back, ${firstName}!`;
@@ -571,12 +574,21 @@
     }
 
     // Check if profile needs completion
-    function checkProfileCompleteness() {
-      const requiredFields = ['firstName', 'lastName', 'university', 'major'];
-      const missing = requiredFields.filter(field => !userProfile[field]);
+    function checkProfileCompletenessDisplay() {
+      if (!userProfile) return;
       
-      if (missing.length > 0) {
-        document.getElementById('profileBanner').classList.add('show');
+      const completenessData = checkProfileCompleteness(userProfile);
+      
+      if (!completenessData.isComplete || !userProfile.onboarding_complete) {
+        const banner = document.getElementById('profileBanner');
+        const content = banner.querySelector('.content');
+        if (content) {
+          content.innerHTML = `
+            <div class="title">Complete your profile (${completenessData.completeness}% complete)</div>
+            <div class="subtitle">Missing: ${completenessData.missingFields.join(', ')}</div>
+          `;
+        }
+        banner.classList.add('show');
       }
     }
 
@@ -590,7 +602,10 @@
           .order('created_at', { ascending: false })
           .limit(1);
 
-        if (error) throw error;
+        if (error) {
+          console.error('[opportunities/select]', { error });
+          throw error;
+        }
 
         const container = document.getElementById('opportunityContainer');
         
@@ -607,7 +622,7 @@
         }
 
       } catch (error) {
-        console.error('Failed to load opportunities:', error);
+        console.error('[dashboard/loadOpportunity]', { error });
         document.getElementById('opportunityContainer').innerHTML = `
           <div style="text-align: center; padding: 2rem; color: var(--error);">
             Failed to load opportunities. Please try again later.
@@ -639,11 +654,11 @@
           </p>
           
           <div class="opportunity-actions">
-            <a href="opportunity.html?id=${opportunity.id}" class="btn">
-              View Details & Apply
+            <a href="/opportunity.html?id=${opportunity.id}" class="btn">
+              View Details
             </a>
-            <a href="opportunity.html?id=${opportunity.id}" class="btn btn-secondary">
-              Learn More
+            <a href="/apply-opportunity.html?id=${opportunity.id}" class="btn btn-secondary">
+              Apply Now
             </a>
           </div>
         </div>

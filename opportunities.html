@@ -386,17 +386,19 @@
     // Initialize page
     async function initOpportunities() {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-          window.location.href = 'signin.html';
-          return;
+        // OAuth hash cleanup
+        if (location.hash.includes('access_token')) {
+          history.replaceState(null, '', location.pathname);
         }
+        
+        const user = await requireAuth();
+        if (!user) return;
 
         await loadOpportunities();
 
       } catch (error) {
-        console.error('Opportunities initialization failed:', error);
-        showError('Failed to load opportunities. Please refresh the page.');
+        console.error('[opportunities/init]', { error });
+        showToast('Failed to load opportunities. Please refresh the page.', 'error');
       }
     }
 
@@ -410,7 +412,7 @@
           .order('created_at', { ascending: false });
 
         if (error) {
-          console.error('Opportunities fetch error (opportunities):', error);
+          console.error('[opportunities/select]', { error });
           throw error;
         }
 
@@ -432,7 +434,7 @@
         }
 
       } catch (error) {
-        console.error('Load opportunities failed:', error);
+        console.error('[opportunities/load]', { error });
         document.getElementById('opportunitiesContainer').innerHTML = `
           <div class="empty-state">
             <h3 style="color: var(--error);">Failed to load opportunities</h3>
@@ -463,20 +465,18 @@
           </p>
           
           <div class="opportunity-actions">
-            <a href="opportunity.html?id=${opportunity.id}" class="btn">
+            <a href="/opportunity.html?id=${opportunity.id}" class="btn">
               View Details
             </a>
-            <a href="opportunity.html?id=${opportunity.id}" class="btn btn-secondary">
-              Learn More
+            <a href="/apply-opportunity.html?id=${opportunity.id}" class="btn btn-secondary">
+              Apply Now
             </a>
           </div>
         </div>
       `;
     }
 
-    function showError(message) {
-      showToast(message, 'error');
-    }
+    // showToast is now in shared.js
 
     // Initialize when DOM is loaded
     document.addEventListener('DOMContentLoaded', initOpportunities);

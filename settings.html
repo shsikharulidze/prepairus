@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Account Settings — PrePair</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      --surface: rgba(255, 255, 255, 0.05);
+      --surface-hover: rgba(255, 255, 255, 0.1);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.7);
+      --accent: #00d4aa;
+      --accent-hover: #00b894;
+      --warning: #fdcb6e;
+      --error: #e17055;
+      --success: #00b894;
+      --radius: 16px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --blur: blur(20px);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Navigation Styles */
+    .global-nav {
+      backdrop-filter: var(--blur);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo svg {
+      stroke: var(--accent);
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .wordmark {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: var(--surface-hover);
+    }
+
+    /* Main Content */
+    .main-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 80px);
+    }
+
+    .page-header {
+      margin-bottom: 3rem;
+    }
+
+    .page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* Settings Sections */
+    .settings-section {
+      background: var(--surface);
+      backdrop-filter: var(--blur);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .section-description {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .input {
+      width: 100%;
+      padding: 0.875rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+    }
+
+    .input:read-only {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.875rem 1.5rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn.loading {
+      position: relative;
+      color: transparent;
+    }
+
+    .btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .btn-danger {
+      background: var(--error);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: #d63031;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      background: var(--surface-hover);
+    }
+
+    /* Account Info Display */
+    .account-info {
+      background: rgba(0, 212, 170, 0.1);
+      border: 1px solid rgba(0, 212, 170, 0.2);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-label {
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .info-value {
+      color: var(--text);
+    }
+
+    .provider-badge {
+      background: rgba(0, 212, 170, 0.2);
+      color: var(--accent);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* Loading and Error States */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem;
+      color: var(--text-muted);
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid transparent;
+      border-top: 2px solid var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Toast Messages */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius);
+      color: white;
+      font-weight: 500;
+      box-shadow: var(--shadow);
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      max-width: 350px;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--error); }
+    .toast.info { background: var(--accent); }
+
+    .toast-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .toast-icon {
+      font-size: 1.125rem;
+    }
+
+    /* Warning Box */
+    .warning-box {
+      background: rgba(253, 203, 110, 0.1);
+      border: 1px solid rgba(253, 203, 110, 0.3);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .warning-box .warning-title {
+      color: var(--warning);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .warning-box p {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-content {
+        padding: 1rem;
+      }
+
+      .main-container {
+        padding: 1rem;
+      }
+
+      .settings-section {
+        padding: 1.5rem;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="nav-container"></div>
+
+  <main class="main-container">
+    <div class="page-header">
+      <h1 class="page-title">Account Settings</h1>
+      <p class="page-subtitle">Manage your account preferences and security</p>
+    </div>
+
+    <div id="settingsContainer" class="loading">
+      <div class="spinner"></div>
+      Loading account settings...
+    </div>
+  </main>
+
+  <script src="shared.js"></script>
+  <script>
+    let currentUser = null;
+
+    // Initialize page
+    async function initSettingsPage() {
+      try {
+        // OAuth hash cleanup
+        if (location.hash.includes('access_token')) {
+          history.replaceState(null, '', location.pathname);
+        }
+
+        const user = await requireAuth();
+        if (!user) return;
+
+        currentUser = user;
+        renderSettings(user);
+
+      } catch (error) {
+        console.error('[settings/init]', { error });
+        showError('Failed to load settings. Please try again.');
+      }
+    }
+
+    // Render settings sections
+    function renderSettings(user) {
+      const container = document.getElementById('settingsContainer');
+      const isGoogleUser = user.app_metadata?.provider === 'google';
+      
+      container.innerHTML = `
+        <!-- Account Information -->
+        <div class="settings-section">
+          <h2 class="section-title">Account Information</h2>
+          <p class="section-description">Your basic account details and authentication method</p>
+          
+          <div class="account-info">
+            <div class="info-row">
+              <span class="info-label">Email Address</span>
+              <span class="info-value">${user.email}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Sign-in Method</span>
+              <span class="provider-badge">${isGoogleUser ? 'Google' : 'Email'}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Account Created</span>
+              <span class="info-value">${formatDate(user.created_at)}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Last Sign In</span>
+              <span class="info-value">${formatDate(user.last_sign_in_at)}</span>
+            </div>
+          </div>
+          
+          <a href="/profile.html" class="btn">
+            Edit Profile Information
+          </a>
+        </div>
+
+        <!-- Password Management -->
+        ${isGoogleUser ? `
+          <div class="settings-section">
+            <h2 class="section-title">Password</h2>
+            <p class="section-description">Your account is secured through Google</p>
+            
+            <div class="account-info">
+              <div style="text-align: center; padding: 1rem;">
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                  🔒 Your account is protected by Google's security. 
+                  You can manage your password and security settings in your Google account.
+                </p>
+                <a href="https://myaccount.google.com/security" target="_blank" class="btn btn-secondary">
+                  Manage Google Account
+                </a>
+              </div>
+            </div>
+          </div>
+        ` : `
+          <div class="settings-section">
+            <h2 class="section-title">Password</h2>
+            <p class="section-description">Update your password for security</p>
+            
+            <div class="warning-box">
+              <div class="warning-title">Password Reset</div>
+              <p>We'll send a secure password reset link to your email address. Follow the instructions in the email to create a new password.</p>
+            </div>
+            
+            <button class="btn" onclick="handlePasswordReset()" id="resetPasswordBtn">
+              Send Password Reset Email
+            </button>
+          </div>
+        `}
+
+        <!-- Profile Management -->
+        <div class="settings-section">
+          <h2 class="section-title">Profile</h2>
+          <p class="section-description">Manage your student profile and preferences</p>
+          
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="/profile.html" class="btn">
+              Edit Profile
+            </a>
+            <a href="/applications.html" class="btn btn-secondary">
+              View Applications
+            </a>
+          </div>
+        </div>
+
+        <!-- Account Actions -->
+        <div class="settings-section">
+          <h2 class="section-title">Account Actions</h2>
+          <p class="section-description">Sign out or manage your account</p>
+          
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary" onclick="handleSignOut()" id="signOutBtn">
+              Sign Out
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Handle password reset
+    async function handlePasswordReset() {
+      try {
+        const resetBtn = document.getElementById('resetPasswordBtn');
+        setLoading(resetBtn, true);
+
+        const { error } = await supabase.auth.resetPasswordForEmail(currentUser.email, {
+          redirectTo: window.location.origin + '/signin.html'
+        });
+
+        if (error) {
+          console.error('[auth/resetPassword]', { error, email: currentUser.email });
+          showToast('Failed to send reset email. Please try again.', 'error');
+          return;
+        }
+
+        showToast('Password reset email sent! Check your inbox.', 'success');
+        
+      } catch (error) {
+        console.error('[settings/passwordReset]', { error });
+        showToast('Failed to send reset email. Please try again.', 'error');
+      } finally {
+        const resetBtn = document.getElementById('resetPasswordBtn');
+        setLoading(resetBtn, false);
+      }
+    }
+
+    // Show error
+    function showError(message) {
+      const container = document.getElementById('settingsContainer');
+      container.innerHTML = `
+        <div class="settings-section">
+          <h3 style="color: var(--error); text-align: center;">Error</h3>
+          <p style="text-align: center; color: var(--text-muted);">${message}</p>
+          <div style="text-align: center; margin-top: 1rem;">
+            <button class="btn" onclick="window.location.reload()">
+              Try Again
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initSettingsPage);
+  </script>
+</body>
+</html>
