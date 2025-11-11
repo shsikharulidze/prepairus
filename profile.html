@@ -746,7 +746,7 @@
         // Create profile with only basic fields that exist in your table
         const profile = {
           user_id: user.id,
-          email: formData.get('email'),
+          email: user.email,
           firstName: formData.get('firstName'),
           lastName: formData.get('lastName'),
           updated_at: new Date().toISOString()
@@ -792,7 +792,7 @@
           
           const basicProfile = {
             user_id: user.id,
-            email: formData.get('email'),
+            email: user.email,
             firstName: formData.get('firstName'),
             lastName: formData.get('lastName'),
             updated_at: new Date().toISOString()
