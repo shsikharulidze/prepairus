@@ -777,10 +777,7 @@
           // First try with all fields
           const result = await supabase
             .from('student_profiles')
-            .upsert(profile, { 
-              onConflict: 'user_id',
-              ignoreDuplicates: false 
-            })
+            .upsert(profile)
             .select();
           
           data = result.data;
@@ -800,10 +797,7 @@
           
           const basicResult = await supabase
             .from('student_profiles')
-            .upsert(basicProfile, { 
-              onConflict: 'user_id',
-              ignoreDuplicates: false 
-            })
+            .upsert(basicProfile)
             .select();
             
           data = basicResult.data;
