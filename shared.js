@@ -171,10 +171,19 @@ async function initAuth() {
     history.replaceState(null, '', location.pathname);
   }
 
-  // Skip redirects if just signed up
+  // Skip redirects if just signed up or if we're handling OAuth
   const justSignedUp = sessionStorage.getItem('just_signed_up');
+  const isOAuthFlow = location.hash.includes('access_token') || location.search.includes('code=');
+  
   if (justSignedUp) {
     console.log('Skipping auth redirects - user just signed up');
+    renderHeader();
+    renderFooter();
+    return;
+  }
+  
+  if (isOAuthFlow) {
+    console.log('OAuth flow detected - letting Supabase handle it');
     renderHeader();
     renderFooter();
     return;
@@ -519,8 +528,10 @@ if (typeof document !== 'undefined') {
 
 // Initialize page on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('PrePair v1.4 - Debug signup flow loaded');
+  console.log('PrePair v1.5 - Debug signup flow loaded');
   console.log('Current page:', window.location.pathname);
   console.log('Page title:', document.title);
+  console.log('URL hash:', window.location.hash);
+  console.log('URL search:', window.location.search);
   initAuth();
 });

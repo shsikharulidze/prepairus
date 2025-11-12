@@ -203,6 +203,7 @@
       setLoading(googleSignupBtn, true, 'Continue with Google');
       
       try {
+        console.log('PrePair v1.5 - Starting Google OAuth signup');
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
           options: {
