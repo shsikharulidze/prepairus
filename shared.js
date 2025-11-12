@@ -164,11 +164,11 @@ async function deleteAppFile(path) {
 
 // ============= AUTH & NAVIGATION =============
 
-// Auth guard and redirect logic - SIMPLIFIED
+// Auth guard and redirect logic - COMPLETELY DISABLED
 async function initAuth() {
-  console.log('PrePair v1.7 - Simplified auth init');
+  console.log('PrePair v1.8 - AUTH COMPLETELY DISABLED');
   
-  // Just render header/footer without aggressive redirects
+  // Do absolutely nothing except render UI
   renderHeader();
   renderFooter();
 }
@@ -456,7 +456,7 @@ if (typeof document !== 'undefined') {
 
 // Initialize page on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('PrePair v1.7 - SIMPLIFIED - Auth redirects disabled');
+  console.log('PrePair v1.8 - ALL AUTH LOGIC DISABLED');
   console.log('Current page:', window.location.pathname);
   console.log('Page title:', document.title);
   console.log('URL hash:', window.location.hash);
