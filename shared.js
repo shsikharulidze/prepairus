@@ -164,92 +164,11 @@ async function deleteAppFile(path) {
 
 // ============= AUTH & NAVIGATION =============
 
-// Auth guard and redirect logic
+// Auth guard and redirect logic - SIMPLIFIED
 async function initAuth() {
-  // Clean OAuth hash from URL
-  if (location.hash.includes('access_token')) {
-    history.replaceState(null, '', location.pathname);
-  }
-
-  // Skip redirects if just signed up or if we're handling OAuth
-  const justSignedUp = sessionStorage.getItem('just_signed_up');
-  const oauthComplete = sessionStorage.getItem('oauth_signup_complete');
-  const isOAuthFlow = location.hash.includes('access_token') || location.search.includes('code=');
+  console.log('PrePair v1.7 - Simplified auth init');
   
-  if (justSignedUp) {
-    console.log('PrePair v1.6 - Skipping auth redirects - user just signed up');
-    renderHeader();
-    renderFooter();
-    return;
-  }
-  
-  if (oauthComplete) {
-    console.log('PrePair v1.6 - OAuth signup complete, clearing flag');
-    sessionStorage.removeItem('oauth_signup_complete');
-    renderHeader();
-    renderFooter();
-    return;
-  }
-  
-  if (isOAuthFlow) {
-    console.log('PrePair v1.6 - OAuth flow detected - letting Supabase handle it');
-    renderHeader();
-    renderFooter();
-    return;
-  }
-
-  const user = await getSession();
-  const currentPath = location.pathname;
-
-  // Auth pages (should redirect if logged in and confirmed)
-  const authPages = ['/signin.html', '/apply.html', '/index.html'];
-  // Protected pages (require login)
-  const protectedPages = ['/dashboard.html', '/profile.html', '/applications.html', '/settings.html', '/opportunity.html', '/apply-opportunity.html', '/opportunities.html'];
-
-  // If no user and on protected page, redirect to signin
-  if (!user && protectedPages.some(page => currentPath.endsWith(page))) {
-    window.location.href = '/signin.html';
-    return;
-  }
-
-  // If user exists, is confirmed, and on auth page, redirect appropriately
-  if (user && user.email_confirmed_at && authPages.some(page => currentPath.endsWith(page))) {
-    const profile = await loadProfile(user.id);
-    
-    // If no profile, create minimal one
-    if (!profile) {
-      await createMinimalProfile(user);
-      window.location.href = '/profile.html';
-      return;
-    }
-
-    // Check onboarding
-    if (!profile.onboarding_complete) {
-      window.location.href = '/profile.html';
-      return;
-    }
-
-    window.location.href = '/dashboard.html';
-    return;
-  }
-
-  // If logged in, confirmed, but onboarding not complete, redirect to profile (except if already on profile)
-  if (user && user.email_confirmed_at && !currentPath.endsWith('/profile.html')) {
-    const profile = await loadProfile(user.id);
-    
-    if (!profile) {
-      await createMinimalProfile(user);
-      window.location.href = '/profile.html';
-      return;
-    }
-
-    if (!profile.onboarding_complete) {
-      window.location.href = '/profile.html';
-      return;
-    }
-  }
-
-  // Render header after auth checks
+  // Just render header/footer without aggressive redirects
   renderHeader();
   renderFooter();
 }
@@ -537,7 +456,7 @@ if (typeof document !== 'undefined') {
 
 // Initialize page on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('PrePair v1.6 - Debug signup flow loaded');
+  console.log('PrePair v1.7 - SIMPLIFIED - Auth redirects disabled');
   console.log('Current page:', window.location.pathname);
   console.log('Page title:', document.title);
   console.log('URL hash:', window.location.hash);
