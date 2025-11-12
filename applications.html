@@ -10,8 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root {
@@ -376,6 +374,21 @@
   </main>
 
   <script src="shared.js"></script>
+  <script>
+    // Session Guard - Protect applications route
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error || !session) {
+          console.log('[applications] No session, redirecting to signin');
+          window.location.href = '/signin.html';
+        }
+      } catch (err) {
+        console.error('[applications] Session guard failed:', err);
+        window.location.href = '/signin.html';
+      }
+    });
+  </script>
   <script>
     // Initialize page
     async function initApplicationsPage() {
