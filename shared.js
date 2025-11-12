@@ -519,6 +519,8 @@ if (typeof document !== 'undefined') {
 
 // Initialize page on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('PrePair v1.3 - Debug signup flow loaded');
+  console.log('PrePair v1.4 - Debug signup flow loaded');
+  console.log('Current page:', window.location.pathname);
+  console.log('Page title:', document.title);
   initAuth();
 });
