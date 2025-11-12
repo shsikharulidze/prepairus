@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Debug Auth Settings</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h1>Supabase Auth Debug</h1>
+  <div id="debug-info"></div>
+  
+  <script>
+    const supabase = window.supabase.createClient(
+      'https://aezybthbsmpihbyzfiqi.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go'
+    );
+    
+    async function debugAuth() {
+      console.log('=== SUPABASE AUTH DEBUG ===');
+      console.log('Current URL:', window.location.href);
+      console.log('Origin:', window.location.origin);
+      console.log('Hash:', window.location.hash);
+      console.log('Search:', window.location.search);
+      
+      // Check current session
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        console.log('Current user:', user ? user.email : 'None');
+        console.log('User error:', error);
+        
+        document.getElementById('debug-info').innerHTML = `
+          <h3>Debug Info:</h3>
+          <p><strong>URL:</strong> ${window.location.href}</p>
+          <p><strong>Origin:</strong> ${window.location.origin}</p>
+          <p><strong>Current User:</strong> ${user ? user.email : 'None'}</p>
+          <p><strong>User ID:</strong> ${user ? user.id : 'None'}</p>
+          <p><strong>Provider:</strong> ${user?.app_metadata?.provider || 'None'}</p>
+          <p><strong>Email Confirmed:</strong> ${user?.email_confirmed_at ? 'Yes' : 'No'}</p>
+          <p><strong>Error:</strong> ${error ? error.message : 'None'}</p>
+        `;
+      } catch (err) {
+        console.error('Debug error:', err);
+        document.getElementById('debug-info').innerHTML = `<p>Error: ${err.message}</p>`;
+      }
+    }
+    
+    debugAuth();
+  </script>
+</body>
+</html>
