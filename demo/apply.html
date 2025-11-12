@@ -257,14 +257,26 @@
 
     // Handle authentication state changes (for OAuth redirects)
     supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session && session.user.email_confirmed_at) {
-        // For new Google users, create profile and redirect to profile setup
+      console.log('PrePair v1.6 - Auth state change:', event, !!session);
+      
+      if (event === 'SIGNED_IN' && session) {
+        console.log('PrePair v1.6 - User signed in:', session.user.email);
+        console.log('PrePair v1.6 - Provider:', session.user.app_metadata?.provider);
+        console.log('PrePair v1.6 - Email confirmed:', !!session.user.email_confirmed_at);
+        
+        // For Google users, create profile and redirect
         if (session.user.app_metadata?.provider === 'google') {
+          console.log('PrePair v1.6 - Creating profile for Google user');
           await createStudentProfileForNewUser(session.user);
+          
+          console.log('PrePair v1.6 - Redirecting to profile.html');
+          // Set flag to prevent shared.js from interfering
+          sessionStorage.setItem('oauth_signup_complete', 'true');
+          
           showSuccess('Account created successfully! Redirecting to profile setup...');
           setTimeout(() => {
             window.location.href = 'profile.html';
-          }, 1000);
+          }, 500);
         }
       }
     });
