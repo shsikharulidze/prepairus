@@ -13,8 +13,6 @@
   <!-- Shared Styles -->
   <link rel="stylesheet" href="shared.css">
   
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <div class="container">
@@ -48,18 +46,6 @@
           </button>
         </form>
         
-        <div class="divider">or continue with</div>
-        
-        <button type="button" class="btn btn-google" id="google-signin-btn">
-          <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
-            <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-            <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-          </svg>
-          Continue with Google
-        </button>
-        
         <div class="footer-link text-center mt-3">
           Don't have an account? <a href="apply.html" style="color: var(--clay); font-weight: 500;">Sign up here</a>
         </div>
@@ -71,10 +57,30 @@
 
   <script src="shared.js"></script>
   <script>
+    // Check if user is already signed in, or show error from query params
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Check for error in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const error = urlParams.get('err');
+      if (error) {
+        alert('Auth Error: ' + error);
+      }
+      
+      // Check if already signed in
+      try {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        if (!sessionError && session) {
+          window.location.href = '/dashboard.html';
+          return;
+        }
+      } catch (err) {
+        console.error('Session check failed:', err);
+      }
+    });
+    
     // DOM elements
     const signinForm = document.getElementById('signin-form');
     const signinBtn = document.getElementById('signin-btn');
-    const googleSigninBtn = document.getElementById('google-signin-btn');
     const errorMessage = document.getElementById('error-message');
     const successMessage = document.getElementById('success-message');
 
@@ -150,91 +156,6 @@
       }
     });
 
-    // Google Sign In
-    googleSigninBtn.addEventListener('click', async () => {
-      hideMessages();
-      
-      setLoading(googleSigninBtn, true, 'Continue with Google');
-      
-      try {
-        const { data, error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
-          options: {
-            redirectTo: `${window.location.origin}/dashboard.html`
-          }
-        });
-
-        if (error) throw error;
-
-        // OAuth will redirect automatically, so we don't need to handle success here
-        
-      } catch (error) {
-        console.error('[auth/google]', { error });
-        showError('Failed to sign in with Google. Please try again.');
-        setLoading(googleSigninBtn, false, 'Continue with Google');
-      }
-    });
-
-    // Handle authentication state changes (for OAuth redirects)
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        // Check if this is a new Google user and create profile if needed
-        if (session.user.app_metadata?.provider === 'google') {
-          await createStudentProfileIfNeeded(session.user);
-        }
-        
-        // Redirect to dashboard
-        showSuccess('Signed in successfully! Redirecting...');
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1000);
-      }
-    });
-
-    // Create student profile for new Google users
-    async function createStudentProfileIfNeeded(user) {
-      try {
-        // Check if profile already exists
-        const { data: existingProfile, error: fetchError } = await supabase
-          .from('student_profiles')
-          .select('user_id')
-          .eq('user_id', user.id)
-          .single();
-
-        if (fetchError && fetchError.code !== 'PGRST116') {
-          // Error other than "not found"
-          console.error('[student_profiles/check]', { error: fetchError });
-          return;
-        }
-
-        if (!existingProfile) {
-          // Create new student profile with basic Google info
-          const fullName = user.user_metadata?.full_name || user.user_metadata?.name || '';
-          const nameParts = fullName.split(' ');
-          
-          const { error: insertError } = await supabase
-            .from('student_profiles')
-            .insert([
-              {
-                user_id: user.id,
-                email: user.email,
-                firstName: nameParts[0] || '',
-                lastName: nameParts.slice(1).join(' ') || '',
-                avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
-                updated_at: new Date().toISOString()
-              }
-            ]);
-
-          if (insertError) {
-            console.error('[student_profiles/insert]', { error: insertError });
-          } else {
-            console.log('Student profile created for new Google user');
-          }
-        }
-      } catch (error) {
-        console.error('[student_profiles/create]', { error });
-      }
-    }
   </script>
 
   <style>
@@ -293,21 +214,6 @@
       margin-left: 1rem;
     }
 
-    .btn-google {
-      background: white;
-      color: #374151;
-      width: 100%;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .btn-google:hover {
-      background: #f9fafb;
-      transform: translateY(-1px);
-    }
 
     .footer-link {
       color: var(--muted);
