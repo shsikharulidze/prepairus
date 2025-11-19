@@ -50,7 +50,7 @@
 </head>
 <body>
   <div class="loading-container">
-    <div class="loading-message">Signing you in...</div>
+    <div class="loading-message">Redirecting...</div>
     <div class="spinner"></div>
   </div>
 
@@ -68,67 +68,11 @@
       }
     );
 
-    async function handleOAuthReturn() {
-      try {
-        console.log('[welcome] Starting OAuth flow handling');
-        console.log('[welcome] Current URL:', window.location.href);
-        console.log('[welcome] Search params:', window.location.search);
-        
-        // Check if we have a code parameter (OAuth return)
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        
-        if (code) {
-          console.log('[welcome] Found OAuth code, exchanging for session');
-          
-          // Exchange code for session
-          const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.href);
-          
-          if (error) {
-            console.error('[welcome] Code exchange failed:', error);
-            throw error;
-          }
-          
-          console.log('[welcome] Code exchange successful:', !!data.session);
-        } else {
-          console.log('[welcome] No OAuth code found, checking existing session');
-        }
-        
-        // Get current session
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError) {
-          console.error('[welcome] Session check failed:', sessionError);
-          throw sessionError;
-        }
-        
-        if (session) {
-          console.log('[welcome] Session found, redirecting to dashboard');
-          console.log('[welcome] User:', session.user.email);
-          window.location.href = '/dashboard.html';
-        } else {
-          console.log('[welcome] No session found, redirecting to signin');
-          window.location.href = '/signin.html?err=nosession';
-        }
-        
-      } catch (error) {
-        console.error('[welcome] OAuth handling failed:', error);
-        console.error('[welcome] Error details:', {
-          message: error.message,
-          status: error.status,
-          statusCode: error.status_code
-        });
-        
-        // Redirect to signin with error
-        const errorMsg = encodeURIComponent(error.message || 'oauth_failed');
-        window.location.href = `/signin.html?err=${errorMsg}`;
-      }
-    }
-
-    // Start the OAuth handling process
+    // Since we removed Google OAuth, this page should just redirect to signin
+    // This page is no longer needed for OAuth flow
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('[welcome] Page loaded, starting OAuth handling');
-      handleOAuthReturn();
+      console.log('[welcome] OAuth removed, redirecting to signin');
+      window.location.href = '/signin.html';
     });
   </script>
 </body>
