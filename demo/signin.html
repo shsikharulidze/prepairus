@@ -13,6 +13,12 @@
   <!-- Shared Styles -->
   <link rel="stylesheet" href="shared.css">
   
+  <!-- Supabase Scripts - Load Order Critical -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/supabase-client.js"></script>
+  <script src="/js/shared.js" defer></script>
+  
 </head>
 <body>
   <div class="container">
@@ -90,8 +96,15 @@
     <footer></footer>
   </div>
 
-  <script src="shared.js"></script>
-  <script>
+  <script defer>
+    // Check if already signed in, redirect to dashboard
+    document.addEventListener('DOMContentLoaded', async function() {
+      const session = await getSession();
+      if (session) {
+        window.location.href = '/dashboard.html';
+        return;
+      }
+    });
     
     // DOM elements
     const signinForm = document.getElementById('signin-form');
@@ -133,7 +146,7 @@
       setLoading(signinBtn, true);
       
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await window.sb.auth.signInWithPassword({
           email: email,
           password: password
         });
@@ -146,9 +159,9 @@
           // Clear form
           signinForm.reset();
           
-          // Redirect to dashboard after delay
+          // Redirect to dashboard
           setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = '/dashboard.html';
           }, 1000);
         }
 

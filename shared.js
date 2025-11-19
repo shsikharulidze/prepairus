@@ -1,18 +1,25 @@
-// PrePair Shared Utilities - Production Ready
-const SUPABASE_URL = 'https://aezybthbsmpihbyzfiqi.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
-
-// Initialize Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// PrePair Shared Utilities - Uses global Supabase client
+// Supabase client is now available as window.sb from /js/supabase-client.js
 
 // Global state
 let currentUser = null;
 let currentProfile = null;
 
-// Get current session
+// Get current session - centralized helper
 async function getSession() {
   try {
-    const { data: { user }, error } = await supabase.auth.getUser();
+    const { data: { session } } = await window.sb.auth.getSession();
+    return session;
+  } catch (error) {
+    console.error('[auth/getSession]', error);
+    return null;
+  }
+}
+
+// Get current user 
+async function getCurrentUser() {
+  try {
+    const { data: { user }, error } = await window.sb.auth.getUser();
     if (error) {
       // Only log non-session errors (session missing is normal for logged out users)
       if (error.message !== 'Auth session missing!' && !error.message.includes('session missing')) {
@@ -30,7 +37,7 @@ async function getSession() {
 
 // Get current session user or redirect (for protected pages only)
 async function requireAuth() {
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const { data: { user }, error } = await window.sb.auth.getUser();
   if (error || !user || !user.email_confirmed_at) {
     window.location.href = '/signin.html';
     return null;
@@ -113,12 +120,12 @@ async function uploadAvatar(file) {
     console.error('[storage/avatars/upload]', upErr);
     throw upErr;
   }
-  const { data } = supabase.storage.from('avatars').getPublicUrl(path);
+  const { data } = window.sb.storage.from('avatars').getPublicUrl(path);
   return { path, publicUrl: data.publicUrl };
 }
 
 function getAvatarUrl(userId) {
-  const { data } = supabase.storage.from('avatars').getPublicUrl(`${userId}/profile.jpg`);
+  const { data } = window.sb.storage.from('avatars').getPublicUrl(`${userId}/profile.jpg`);
   return data.publicUrl;
 }
 
@@ -154,7 +161,7 @@ async function getSignedUrl(bucket, path, expiresSeconds = 600) {
 
 // Delete application file
 async function deleteAppFile(path) {
-  const { error } = await supabase.storage.from('application-files').remove([path]);
+  const { error } = await window.sb.storage.from('application-files').remove([path]);
   if (error) {
     console.error('[storage/application-files/delete]', { path, error });
     throw error;
@@ -263,7 +270,7 @@ function renderFooter() {
 // Sign out handler
 async function handleSignOut() {
   try {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await window.sb.auth.signOut();
     if (error) {
       console.error('[auth/signOut]', { error });
       showToast('Failed to sign out. Please try again.', 'error');

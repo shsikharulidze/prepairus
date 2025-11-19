@@ -13,6 +13,12 @@
   <!-- Shared Styles -->
   <link rel="stylesheet" href="shared.css">
   
+  <!-- Supabase Scripts - Load Order Critical -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/supabase-client.js"></script>
+  <script src="/js/shared.js" defer></script>
+  
 </head>
 <body>
   <div class="container">
@@ -95,8 +101,15 @@
     <footer></footer>
   </div>
 
-  <script src="shared.js"></script>
-  <script>
+  <script defer>
+    // Check if already signed in, redirect to dashboard
+    document.addEventListener('DOMContentLoaded', async function() {
+      const session = await getSession();
+      if (session) {
+        window.location.href = '/dashboard.html';
+        return;
+      }
+    });
     
     // DOM elements
     const signupForm = document.getElementById('signup-form');
@@ -150,7 +163,7 @@
       setLoading(signupBtn, true);
       
       try {
-        const { data, error } = await supabase.auth.signUp({
+        const { data, error } = await window.sb.auth.signUp({
           email: email,
           password: password
         });
@@ -168,10 +181,10 @@
           // Clear form
           signupForm.reset();
           
-          // Redirect to signin after delay
+          // Redirect to welcome page after delay
           setTimeout(() => {
-            window.location.href = 'signin.html';
-          }, 3000);
+            window.location.href = '/welcome.html';
+          }, 2000);
         }
 
       } catch (error) {
@@ -201,7 +214,7 @@
     // Create student profile for new user
     async function createStudentProfileForNewUser(user) {
       try {
-        const { error } = await supabase
+        const { error } = await window.sb
           .from('student_profiles')
           .insert([
             {
