@@ -197,9 +197,41 @@
     /* Auth-specific styles using design tokens */
     .auth-card {
       width: 100%;
-      max-width: 420px;
-      padding: 3rem 2rem;
+      max-width: 520px;
+      padding: 3rem 2.5rem;
       margin: 0 auto;
+    }
+
+    .auth-card input[type="email"],
+    .auth-card input[type="password"],
+    .auth-card input[type="text"] {
+      width: 100%;
+      padding: 16px 20px;
+      font-size: 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      color: var(--text);
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .auth-card input:focus {
+      outline: none;
+      border-color: var(--clay);
+      box-shadow: 0 0 0 4px rgba(230, 118, 77, 0.1);
+    }
+
+    .auth-card .form-group {
+      margin-bottom: 24px;
+    }
+
+    .auth-card label {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: block;
+      font-size: 15px;
     }
 
     /* Back link styles removed - now using full navigation */
