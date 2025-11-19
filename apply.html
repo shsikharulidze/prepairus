@@ -62,26 +62,6 @@
 
   <script src="shared.js"></script>
   <script>
-    // Check if user is already signed in, or show error from query params
-    document.addEventListener('DOMContentLoaded', async () => {
-      // Check for error in URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const error = urlParams.get('err');
-      if (error) {
-        alert('Auth Error: ' + error);
-      }
-      
-      // Check if already signed in
-      try {
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        if (!sessionError && session) {
-          window.location.href = '/dashboard.html';
-          return;
-        }
-      } catch (err) {
-        console.error('Session check failed:', err);
-      }
-    });
     
     // DOM elements
     const signupForm = document.getElementById('signup-form');
