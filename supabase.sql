@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS public.student_profiles (
     email text NOT NULL,
     firstName text,
     lastName text,
+    phone text,
+    nationality text,
     university text,
     campus text,
     graduationYear text,
@@ -18,6 +20,7 @@ CREATE TABLE IF NOT EXISTS public.student_profiles (
     location text,
     bio text,
     avatar_url text,
+    onboarding_complete boolean DEFAULT false,
     created_at timestamptz DEFAULT now(),
     updated_at timestamptz DEFAULT now()
 );
@@ -45,6 +48,15 @@ BEGIN
     END IF;
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'location') THEN
         ALTER TABLE public.student_profiles ADD COLUMN location text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'onboarding_complete') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN onboarding_complete boolean DEFAULT false;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'phone') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN phone text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'nationality') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN nationality text;
     END IF;
 END $$;
 

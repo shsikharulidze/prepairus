@@ -3,77 +3,420 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Signing In — PrePair</title>
+  <title>Check Your Email — PrePair</title>
   
-  <!-- Supabase -->
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="shared.css">
+  
+  <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      background: #FAF7F2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #0F0F0F;
-    }
-    
-    .loading-container {
-      text-align: center;
-      padding: 2rem;
-    }
-    
-    .loading-message {
-      font-size: 1.25rem;
-      font-weight: 500;
-      margin-bottom: 1rem;
-    }
-    
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid #E5E7EB;
-      border-top: 3px solid #E6764D;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="shared.js"></script>
 </head>
-<body>
-  <div class="loading-container">
-    <div class="loading-message">Redirecting...</div>
-    <div class="spinner"></div>
+
+<body class="welcome-page">
+  <div class="container">
+    <div id="header-shell"></div>
+
+    <main class="welcome-main">
+      <div class="welcome-container">
+        <div class="welcome-content">
+          <!-- Success Icon -->
+          <div class="success-icon">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="40" fill="#e6764d" opacity="0.1"/>
+              <circle cx="40" cy="40" r="30" fill="#e6764d" opacity="0.2"/>
+              <path d="M25 40l10 10 20-20" stroke="#e6764d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- Welcome Message -->
+          <div class="welcome-text">
+            <h1>Welcome to PrePair!</h1>
+            <p class="subtitle">Your account has been created successfully</p>
+            
+            <div class="email-check-card">
+              <div class="email-icon">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                  <path d="M26 6H6C4.9 6 4 6.9 4 8v16c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" stroke="#6c6360" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M28 8L16 17 4 8" stroke="#6c6360" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              
+              <div class="email-content">
+                <h3>Check your email</h3>
+                <p>We've sent you a confirmation link at <span id="user-email" class="email-highlight">your@email.com</span></p>
+                <p class="email-note">Click the link in the email to verify your account and continue to your dashboard.</p>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="welcome-actions">
+              <button type="button" class="btn btn-primary" id="resend-btn">
+                <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 3a5 5 0 0 1 5 5h1a6 6 0 1 0-6-6z"/>
+                  <path d="M14 7h-3l1.5-1.5L14 7z"/>
+                </svg>
+                Resend Email
+              </button>
+              
+              <a href="/signin.html" class="btn btn-secondary">
+                <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1z"/>
+                  <path d="M10.5 6L8 8.5 5.5 6"/>
+                </svg>
+                Sign In Later
+              </a>
+            </div>
+
+            <!-- Help Section -->
+            <div class="help-section">
+              <h4>Didn't receive the email?</h4>
+              <ul class="help-list">
+                <li>Check your spam/junk folder</li>
+                <li>Make sure the email address is correct</li>
+                <li>Try clicking "Resend Email" above</li>
+                <li>Contact support if you continue having issues</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer></footer>
   </div>
 
   <script>
-    // Initialize Supabase with proper v2 configuration
-    const supabase = window.supabase.createClient(
-      'https://aezybthbsmpihbyzfiqi.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go',
-      {
-        auth: {
-          autoRefreshToken: true,
-          persistSession: true,
-          detectSessionInUrl: true
+    console.log('🎯 WELCOME PAGE LOADED');
+    
+    // Load user email if available
+    window.addEventListener('load', async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user?.email) {
+          document.getElementById('user-email').textContent = user.email;
         }
+      } catch (error) {
+        console.error('Failed to load user info:', error);
       }
-    );
+    });
 
-    // Since we removed Google OAuth, this page should just redirect to signin
-    // This page is no longer needed for OAuth flow
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('[welcome] OAuth removed, redirecting to signin');
-      window.location.href = '/signin.html';
+    // Resend email functionality
+    document.getElementById('resend-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('resend-btn');
+      setLoading(btn, true);
+
+      try {
+        const user = await getCurrentUser();
+        if (!user?.email) {
+          showToast('Unable to resend email. Please try signing up again.', 'error');
+          return;
+        }
+
+        // Use Supabase to resend confirmation email
+        const { error } = await window.sb.auth.resend({
+          type: 'signup',
+          email: user.email
+        });
+
+        if (error) {
+          console.error('Resend error:', error);
+          showToast('Failed to resend email. Please try again later.', 'error');
+        } else {
+          showToast('Confirmation email sent successfully!', 'success');
+        }
+      } catch (error) {
+        console.error('Resend unexpected error:', error);
+        showToast('Failed to resend email. Please try again later.', 'error');
+      } finally {
+        setLoading(btn, false);
+      }
+    });
+
+    // Auto-check for confirmed user periodically
+    let checkInterval = setInterval(async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user?.email_confirmed_at) {
+          clearInterval(checkInterval);
+          showToast('Email confirmed! Redirecting...', 'success');
+          setTimeout(() => {
+            window.location.href = '/onboarding.html';
+          }, 1000);
+        }
+      } catch (error) {
+        // Ignore errors during periodic check
+      }
+    }, 3000); // Check every 3 seconds
+
+    // Clean up interval when page is unloaded
+    window.addEventListener('beforeunload', () => {
+      if (checkInterval) clearInterval(checkInterval);
     });
   </script>
+
+  <style>
+    .welcome-page {
+      background: linear-gradient(135deg, #faf9f7 0%, #f3f1ed 100%);
+      min-height: 100vh;
+    }
+
+    .welcome-main {
+      padding: 4rem 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .welcome-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .welcome-content {
+      background: white;
+      border-radius: 24px;
+      padding: 4rem 3rem;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(108, 99, 96, 0.1);
+      border: 1px solid rgba(108, 99, 96, 0.05);
+    }
+
+    .success-icon {
+      margin-bottom: 2rem;
+    }
+
+    .welcome-content h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #3c2e26;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #6c6360;
+      font-weight: 400;
+      margin-bottom: 2.5rem;
+    }
+
+    .email-check-card {
+      background: linear-gradient(135deg, #faf9f7, #f8f6f2);
+      border: 2px solid rgba(230, 118, 77, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      text-align: left;
+    }
+
+    .email-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: rgba(230, 118, 77, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .email-content h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #3c2e26;
+      margin-bottom: 0.5rem;
+    }
+
+    .email-content p {
+      color: #6c6360;
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .email-highlight {
+      color: #e6764d;
+      font-weight: 600;
+    }
+
+    .email-note {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .welcome-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #e6764d, #d4675a);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(230, 118, 77, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(108, 99, 96, 0.1);
+      color: #6c6360;
+      border: 2px solid rgba(108, 99, 96, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(108, 99, 96, 0.15);
+    }
+
+    .btn-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn.loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .help-section {
+      text-align: left;
+      background: rgba(108, 99, 96, 0.05);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .help-section h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #3c2e26;
+      margin-bottom: 1rem;
+    }
+
+    .help-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .help-list li {
+      color: #6c6360;
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .help-list li:before {
+      content: "•";
+      color: #e6764d;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 640px) {
+      .welcome-content {
+        padding: 2.5rem 1.5rem;
+        margin: 1rem;
+        border-radius: 16px;
+      }
+
+      .welcome-content h1 {
+        font-size: 2rem;
+      }
+
+      .email-check-card {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .welcome-actions {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Toast Styles */
+    .toast {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      border-left: 4px solid #e6764d;
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      max-width: 300px;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.error {
+      border-left-color: #dc3545;
+    }
+
+    .toast.success {
+      border-left-color: #28a745;
+    }
+
+    .toast-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .toast-icon {
+      font-size: 1.25rem;
+    }
+
+    .toast-message {
+      font-weight: 500;
+      color: #3c2e26;
+    }
+  </style>
 </body>
 </html>

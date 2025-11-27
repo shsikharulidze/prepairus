@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Complete Your Profile — PrePair</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="shared.css">
+  
+  <!-- Supabase Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="shared.js"></script>
+  
+</head>
+<body class="onboarding-page">
+  <div class="container">
+    <div id="header-shell"></div>
+
+    <main class="onboarding-main">
+      <div class="onboarding-container">
+        <!-- Progress Indicator -->
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="progress-steps">
+            <div class="step active" id="step-1-indicator">
+              <div class="step-number">1</div>
+              <div class="step-label">Personal Info</div>
+            </div>
+            <div class="step" id="step-2-indicator">
+              <div class="step-number">2</div>
+              <div class="step-label">Education</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Onboarding Form -->
+        <div class="form-container">
+          <div class="form-header">
+            <h1>Complete Your Profile</h1>
+            <p class="subtitle">Help us personalize your PrePair experience</p>
+          </div>
+
+          <form id="onboarding-form">
+            <!-- Step 1: Personal Information -->
+            <div class="form-step active" id="step-1">
+              <div class="step-content">
+                <h2>Let's start with the basics</h2>
+                <p class="step-description">Tell us a bit about yourself</p>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="firstName">First Name *</label>
+                    <input type="text" id="firstName" name="firstName" required placeholder="Enter your first name">
+                  </div>
+                  <div class="form-group">
+                    <label for="lastName">Last Name *</label>
+                    <input type="text" id="lastName" name="lastName" required placeholder="Enter your last name">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                </div>
+
+                <div class="form-group">
+                  <label for="nationality">Nationality</label>
+                  <select id="nationality" name="nationality">
+                    <option value="">Select your nationality</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="IN">India</option>
+                    <option value="CN">China</option>
+                    <option value="JP">Japan</option>
+                    <option value="BR">Brazil</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-primary" id="next-btn">
+                  Continue
+                  <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M6 12l4-4-4-4v8z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2: Education Information -->
+            <div class="form-step" id="step-2">
+              <div class="step-content">
+                <h2>Your academic journey</h2>
+                <p class="step-description">Share your educational background</p>
+                
+                <div class="form-group">
+                  <label for="university">University/College *</label>
+                  <input type="text" id="university" name="university" required placeholder="e.g., Harvard University">
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="major">Major *</label>
+                    <input type="text" id="major" name="major" required placeholder="e.g., Computer Science">
+                  </div>
+                  <div class="form-group">
+                    <label for="graduationYear">Graduation Year</label>
+                    <select id="graduationYear" name="graduationYear">
+                      <option value="">Select year</option>
+                      <option value="2024">2024</option>
+                      <option value="2025">2025</option>
+                      <option value="2026">2026</option>
+                      <option value="2027">2027</option>
+                      <option value="2028">2028</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="campus">Campus/Location</label>
+                  <input type="text" id="campus" name="campus" placeholder="e.g., Cambridge, MA">
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="back-btn">
+                  <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M10 12L6 8l4-4v8z"/>
+                  </svg>
+                  Back
+                </button>
+                <button type="submit" class="btn btn-primary" id="complete-btn">
+                  Complete Profile
+                  <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M13.5 3l-8 8-3-3 1.5-1.5L6 8.5l6.5-6.5L13.5 3z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    console.log('🎯 ONBOARDING PAGE LOADED');
+    
+    let currentStep = 1;
+    const totalSteps = 2;
+
+    // DOM Elements
+    const form = document.getElementById('onboarding-form');
+    const step1 = document.getElementById('step-1');
+    const step2 = document.getElementById('step-2');
+    const step1Indicator = document.getElementById('step-1-indicator');
+    const step2Indicator = document.getElementById('step-2-indicator');
+    const progressFill = document.getElementById('progress-fill');
+    const nextBtn = document.getElementById('next-btn');
+    const backBtn = document.getElementById('back-btn');
+    const completeBtn = document.getElementById('complete-btn');
+
+    // Navigation Functions
+    function updateProgress() {
+      const progress = (currentStep / totalSteps) * 100;
+      progressFill.style.width = progress + '%';
+      
+      // Update step indicators
+      if (currentStep >= 1) {
+        step1Indicator.classList.add('active');
+      }
+      if (currentStep >= 2) {
+        step2Indicator.classList.add('active');
+      } else {
+        step2Indicator.classList.remove('active');
+      }
+    }
+
+    function showStep(stepNumber) {
+      // Hide all steps
+      step1.classList.remove('active');
+      step2.classList.remove('active');
+      
+      // Show current step with animation
+      if (stepNumber === 1) {
+        step1.classList.add('active');
+      } else if (stepNumber === 2) {
+        step2.classList.add('active');
+      }
+      
+      updateProgress();
+    }
+
+    function validateStep1() {
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      
+      if (!firstName || !lastName) {
+        showToast('Please fill in your first and last name', 'error');
+        return false;
+      }
+      
+      return true;
+    }
+
+    function validateStep2() {
+      const university = document.getElementById('university').value.trim();
+      const major = document.getElementById('major').value.trim();
+      
+      if (!university || !major) {
+        showToast('Please fill in your university and major', 'error');
+        return false;
+      }
+      
+      return true;
+    }
+
+    // Event Listeners
+    nextBtn.addEventListener('click', () => {
+      if (validateStep1()) {
+        currentStep = 2;
+        showStep(currentStep);
+      }
+    });
+
+    backBtn.addEventListener('click', () => {
+      currentStep = 1;
+      showStep(currentStep);
+    });
+
+    // Form Submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (!validateStep2()) {
+        return;
+      }
+
+      setLoading(completeBtn, true);
+
+      try {
+        // Get current user
+        const user = await getCurrentUser();
+        if (!user) {
+          showToast('Please sign in to continue', 'error');
+          window.location.href = '/signin.html';
+          return;
+        }
+
+        // Collect form data
+        const formData = {
+          user_id: user.id,
+          firstName: document.getElementById('firstName').value.trim(),
+          lastName: document.getElementById('lastName').value.trim(),
+          phone: document.getElementById('phone').value.trim() || null,
+          nationality: document.getElementById('nationality').value || null,
+          university: document.getElementById('university').value.trim(),
+          major: document.getElementById('major').value.trim(),
+          graduationYear: document.getElementById('graduationYear').value || null,
+          campus: document.getElementById('campus').value.trim() || null,
+          onboarding_complete: true,
+          updated_at: new Date().toISOString()
+        };
+
+        console.log('Updating profile with:', formData);
+
+        // Update profile
+        const { error } = await window.sb
+          .from('student_profiles')
+          .upsert(formData, { onConflict: 'user_id' });
+
+        if (error) {
+          console.error('[onboarding] Profile update error:', error);
+          showToast('Failed to save profile. Please try again.', 'error');
+          return;
+        }
+
+        console.log('✅ Profile updated successfully');
+        showToast('Profile completed successfully!', 'success');
+
+        // Redirect to dashboard after a short delay
+        setTimeout(() => {
+          window.location.href = '/dashboard.html';
+        }, 1500);
+
+      } catch (error) {
+        console.error('[onboarding] Unexpected error:', error);
+        showToast('An unexpected error occurred. Please try again.', 'error');
+      } finally {
+        setLoading(completeBtn, false);
+      }
+    });
+
+    // Initialize page
+    window.addEventListener('load', async () => {
+      // Check if user is authenticated
+      const user = await getCurrentUser();
+      if (!user) {
+        window.location.href = '/signin.html';
+        return;
+      }
+
+      // Check if user already completed onboarding
+      try {
+        const { data: profile } = await window.sb
+          .from('student_profiles')
+          .select('onboarding_complete')
+          .eq('user_id', user.id)
+          .single();
+
+        if (profile?.onboarding_complete) {
+          window.location.href = '/dashboard.html';
+          return;
+        }
+      } catch (error) {
+        console.error('[onboarding] Profile check error:', error);
+      }
+
+      // Initialize form
+      showStep(currentStep);
+      console.log('✅ Onboarding page initialized');
+    });
+  </script>
+
+  <style>
+    .onboarding-page {
+      background: linear-gradient(135deg, #faf9f7 0%, #f3f1ed 100%);
+      min-height: 100vh;
+    }
+
+    .onboarding-main {
+      padding: 2rem 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .onboarding-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Progress Indicator */
+    .progress-container {
+      margin-bottom: 3rem;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: rgba(108, 99, 96, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #e6764d, #d4675a);
+      border-radius: 2px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 50%;
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+
+    .step.active {
+      opacity: 1;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(108, 99, 96, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      color: #6c6360;
+      margin-bottom: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .step.active .step-number {
+      background: linear-gradient(135deg, #e6764d, #d4675a);
+      color: white;
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #6c6360;
+      text-align: center;
+    }
+
+    /* Form Container */
+    .form-container {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      box-shadow: 0 20px 40px rgba(108, 99, 96, 0.1);
+      border: 1px solid rgba(108, 99, 96, 0.05);
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .form-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #3c2e26;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #6c6360;
+      font-weight: 400;
+    }
+
+    /* Form Steps */
+    .form-step {
+      display: none;
+      animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .step-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      color: #3c2e26;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .step-description {
+      color: #6c6360;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    /* Form Elements */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #3c2e26;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      border: 2px solid rgba(108, 99, 96, 0.2);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      background: white;
+      color: #3c2e26;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #e6764d;
+      box-shadow: 0 0 0 4px rgba(230, 118, 77, 0.1);
+    }
+
+    .form-group input::placeholder {
+      color: #a89b97;
+    }
+
+    /* Form Actions */
+    .form-actions {
+      margin-top: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #e6764d, #d4675a);
+      color: white;
+      margin-left: auto;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(230, 118, 77, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(108, 99, 96, 0.1);
+      color: #6c6360;
+      border: 2px solid rgba(108, 99, 96, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(108, 99, 96, 0.15);
+    }
+
+    .btn-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn.loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 640px) {
+      .form-container {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+        border-radius: 16px;
+      }
+
+      .form-header h1 {
+        font-size: 2rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .form-actions {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .step-label {
+        display: none;
+      }
+    }
+
+    /* Toast Styles */
+    .toast {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      border-left: 4px solid #e6764d;
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      max-width: 300px;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.error {
+      border-left-color: #dc3545;
+    }
+
+    .toast.success {
+      border-left-color: #28a745;
+    }
+
+    .toast-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .toast-icon {
+      font-size: 1.25rem;
+    }
+
+    .toast-message {
+      font-weight: 500;
+      color: #3c2e26;
+    }
+  </style>
+</body>
+</html>

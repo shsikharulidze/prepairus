@@ -55,7 +55,7 @@ async function loadProfile(userId) {
   if (!userId) return null;
 
   try {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('student_profiles')
       .select('*')
       .eq('user_id', userId)
@@ -87,7 +87,7 @@ async function createMinimalProfile(user) {
   };
 
   try {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('student_profiles')
       .upsert(profile, { onConflict: 'user_id' })
       .select();
@@ -105,6 +105,57 @@ async function createMinimalProfile(user) {
   }
 }
 
+// Check if user needs to complete onboarding
+async function checkOnboardingStatus(user) {
+  if (!user) return { needsOnboarding: true, profile: null };
+
+  try {
+    const { data: profile, error } = await window.sb
+      .from('student_profiles')
+      .select('*')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error) {
+      console.error('[onboarding] Profile check error:', error);
+      // Create minimal profile if doesn't exist
+      const newProfile = await createMinimalProfile(user);
+      return { needsOnboarding: true, profile: newProfile };
+    }
+
+    const needsOnboarding = !profile?.onboarding_complete;
+    return { needsOnboarding, profile };
+    
+  } catch (error) {
+    console.error('[onboarding] Unexpected error:', error);
+    return { needsOnboarding: true, profile: null };
+  }
+}
+
+// Redirect user based on onboarding status
+async function handleOnboardingRedirect(user, currentPage = '') {
+  const { needsOnboarding, profile } = await checkOnboardingStatus(user);
+  
+  // Skip redirect if already on the correct page
+  const isOnOnboardingPage = currentPage.includes('onboarding') || location.pathname.includes('onboarding');
+  const isOnAuthPage = currentPage.includes('signin') || currentPage.includes('apply') || 
+                      location.pathname.includes('signin') || location.pathname.includes('apply');
+  
+  if (needsOnboarding && !isOnOnboardingPage && !isOnAuthPage) {
+    console.log('User needs onboarding, redirecting...');
+    window.location.href = '/onboarding.html';
+    return true; // Redirect happened
+  }
+  
+  if (!needsOnboarding && isOnOnboardingPage) {
+    console.log('User completed onboarding, redirecting to dashboard...');
+    window.location.href = '/dashboard.html';
+    return true; // Redirect happened
+  }
+  
+  return false; // No redirect needed
+}
+
 // ============= STORAGE HELPERS =============
 
 // AVATARS - Public read, owner only write
@@ -113,7 +164,7 @@ async function uploadAvatar(file) {
   if (!user) return null;
 
   const path = `${user.id}/profile.jpg`;
-  const { error: upErr } = await supabase
+  const { error: upErr } = await window.sb
     .storage.from('avatars')
     .upload(path, file, { upsert: true, cacheControl: '3600' });
   if (upErr) {
@@ -137,7 +188,7 @@ async function uploadAppFile(file, opportunityId) {
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
   const path = `${user.id}/${opportunityId}/${Date.now()}_${safeName}`;
 
-  const { error: upErr } = await supabase
+  const { error: upErr } = await window.sb
     .storage.from('application-files')
     .upload(path, file, { upsert: false, cacheControl: '3600' });
   if (upErr) {
@@ -149,7 +200,7 @@ async function uploadAppFile(file, opportunityId) {
 
 // Get signed URL for private files
 async function getSignedUrl(bucket, path, expiresSeconds = 600) {
-  const { data, error } = await supabase
+  const { data, error } = await window.sb
     .storage.from(bucket)
     .createSignedUrl(path, expiresSeconds);
   if (error) {
