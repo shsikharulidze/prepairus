@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS public.student_profiles (
     nationality text,
     university text,
     campus text,
-    graduationYear text,
+    graduation_year text,
     major text,
     location text,
     bio text,
@@ -40,8 +40,8 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'campus') THEN
         ALTER TABLE public.student_profiles ADD COLUMN campus text;
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'graduationYear') THEN
-        ALTER TABLE public.student_profiles ADD COLUMN graduationYear text;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'graduation_year') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN graduation_year text;
     END IF;
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'major') THEN
         ALTER TABLE public.student_profiles ADD COLUMN major text;

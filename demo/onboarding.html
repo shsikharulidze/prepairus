@@ -262,35 +262,49 @@
           return;
         }
 
-        // Collect form data
+        // Debug: Log current user and auth state
+        console.log('🔍 [Debug] Current user:', user);
+        console.log('🔍 [Debug] User ID:', user.id);
+        console.log('🔍 [Debug] User email:', user.email);
+
+        // Collect form data with correct field names for database
         const formData = {
+          id: user.id,  // Critical: Must set id = auth.uid() for RLS
           user_id: user.id,
+          email: user.email,  // Include email for completeness
           firstName: document.getElementById('firstName').value.trim(),
           lastName: document.getElementById('lastName').value.trim(),
           phone: document.getElementById('phone').value.trim() || null,
           nationality: document.getElementById('nationality').value || null,
           university: document.getElementById('university').value.trim(),
           major: document.getElementById('major').value.trim(),
-          graduationYear: document.getElementById('graduationYear').value || null,
+          graduation_year: document.getElementById('graduationYear').value || null, // Fixed: snake_case
           campus: document.getElementById('campus').value.trim() || null,
           onboarding_complete: true,
           updated_at: new Date().toISOString()
         };
 
-        console.log('Updating profile with:', formData);
+        console.log('📝 [Debug] Payload being sent to Supabase:', formData);
+        console.log('🔍 [Debug] Form data keys:', Object.keys(formData));
 
-        // Update profile
-        const { error } = await window.sb
+        // Update profile using upsert (handles both insert and update)
+        const { data, error } = await window.sb
           .from('student_profiles')
-          .upsert(formData, { onConflict: 'user_id' });
+          .upsert(formData, { onConflict: 'user_id' })
+          .select(); // Get the updated record back
 
         if (error) {
-          console.error('[onboarding] Profile update error:', error);
+          console.error('❌ [Debug] Profile update error:', error);
+          console.error('❌ [Debug] Error code:', error.code);
+          console.error('❌ [Debug] Error message:', error.message);
+          console.error('❌ [Debug] Error details:', error.details);
+          console.error('❌ [Debug] Error hint:', error.hint);
           showToast('Failed to save profile. Please try again.', 'error');
           return;
         }
 
-        console.log('✅ Profile updated successfully');
+        console.log('✅ [Debug] Profile updated successfully!');
+        console.log('✅ [Debug] Updated record:', data);
         showToast('Profile completed successfully!', 'success');
 
         // Redirect to dashboard after a short delay

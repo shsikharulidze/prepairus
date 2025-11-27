@@ -229,26 +229,32 @@
       // Create student profile for new user
       async function createStudentProfileForNewUser(user) {
         try {
-          const { error } = await window.sb
+          console.log('🔍 [Debug] Creating profile for new user:', user.id);
+          
+          const profileData = {
+            id: user.id,  // Critical: Must set id = auth.uid() for RLS
+            user_id: user.id,
+            email: user.email,
+            firstName: '',
+            lastName: '',
+            onboarding_complete: false,
+            updated_at: new Date().toISOString()
+          };
+          
+          console.log('📝 [Debug] Profile data:', profileData);
+          
+          const { data, error } = await window.sb
             .from('student_profiles')
-            .insert([
-              {
-                user_id: user.id,
-                email: user.email,
-                firstName: '',
-                lastName: '',
-                onboarding_complete: false,
-                updated_at: new Date().toISOString()
-              }
-            ]);
+            .upsert(profileData, { onConflict: 'user_id' })  // Use upsert instead of insert
+            .select();
 
           if (error) {
-            // Don't error on duplicate - user may have signed up before
-            if (!error.message.includes('duplicate key')) {
-              console.error('[student_profiles/create]', { error });
-            }
+            console.error('❌ [Debug] Profile creation error:', error);
+            console.error('❌ [Debug] Error details:', error.details);
+            console.error('❌ [Debug] Error code:', error.code);
           } else {
-            console.log('Student profile created for new user');
+            console.log('✅ [Debug] Student profile created/updated successfully');
+            console.log('✅ [Debug] Profile data:', data);
           }
         } catch (error) {
           console.error('[student_profiles/create]', { error });

@@ -78,6 +78,7 @@ async function loadProfile(userId) {
 // Create minimal profile if none exists
 async function createMinimalProfile(user) {
   const profile = {
+    id: user.id,  // Critical: Must set id = auth.uid() for RLS
     user_id: user.id,
     email: user.email,
     firstName: '',
@@ -85,6 +86,9 @@ async function createMinimalProfile(user) {
     onboarding_complete: false,
     updated_at: new Date().toISOString()
   };
+
+  console.log('🔍 [Debug] Creating minimal profile for user:', user.id);
+  console.log('📝 [Debug] Minimal profile payload:', profile);
 
   try {
     const { data, error } = await window.sb
