@@ -13,6 +13,8 @@
   <!-- Shared Styles -->
   <link rel="stylesheet" href="shared.css">
   
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <div class="container">
@@ -60,21 +62,6 @@
   </div>
 
   <script src="shared.js"></script>
-  <script>
-    // Session Guard - Protect dashboard route
-    document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        const { data: { session }, error } = await window.sb.auth.getSession();
-        if (error || !session) {
-          console.log('[dashboard] No session, redirecting to signin');
-          window.location.href = '/signin.html';
-        }
-      } catch (err) {
-        console.error('[dashboard] Session guard failed:', err);
-        window.location.href = '/signin.html';
-      }
-    });
-  </script>
   <script>
     let userProfile = null;
 
@@ -166,7 +153,7 @@
     // Load featured opportunity
     async function loadFeaturedOpportunity() {
       try {
-        const { data, error } = await window.sb
+        const { data, error } = await supabase
           .from('opportunities')
           .select('*')
           .eq('is_active', true)

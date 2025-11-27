@@ -2,44 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Auth Debug — PrePair</title>
+  <title>Debug Auth Settings</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      margin: 2rem;
-      background: #f5f5f5;
-      color: #333;
-    }
-    h1 { color: #2563eb; margin-bottom: 2rem; }
-    h2 { color: #1e40af; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; }
-    pre {
-      background: #1f2937;
-      color: #f3f4f6;
-      padding: 1rem;
-      border-radius: 8px;
-      overflow-x: auto;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .error { color: #dc2626; font-weight: 500; }
-  </style>
 </head>
 <body>
   <h1>Supabase Auth Debug</h1>
+  <div id="debug-info"></div>
   
-  <h2>Session Data</h2>
-  <pre id="session-data">Loading...</pre>
-  
-  <h2>User Data</h2>
-  <pre id="user-data">Loading...</pre>
-  
-  <h2>Raw Session Object</h2>
-  <pre id="raw-session">Loading...</pre>
-
   <script>
-    // Initialize Supabase with proper v2 configuration
     const supabase = window.supabase.createClient(
       'https://aezybthbsmpihbyzfiqi.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go',
@@ -51,54 +21,37 @@
         }
       }
     );
-
+    
     async function debugAuth() {
       console.log('=== SUPABASE AUTH DEBUG ===');
+      console.log('Current URL:', window.location.href);
+      console.log('Origin:', window.location.origin);
+      console.log('Hash:', window.location.hash);
+      console.log('Search:', window.location.search);
       
+      // Check current session
       try {
-        // Get session data
-        const sessionResult = await supabase.auth.getSession();
-        const { data: sessionData, error: sessionError } = sessionResult;
+        const { data: { user }, error } = await supabase.auth.getUser();
+        console.log('Current user:', user ? user.email : 'None');
+        console.log('User error:', error);
         
-        console.log('Session result:', sessionResult);
-        
-        document.getElementById('session-data').textContent = JSON.stringify(sessionData, null, 2);
-        
-        if (sessionError) {
-          document.getElementById('session-data').innerHTML = 
-            `<span class="error">Session Error: ${sessionError.message}</span>`;
-        }
-        
-        // Get user data
-        const userResult = await supabase.auth.getUser();
-        const { data: userData, error: userError } = userResult;
-        
-        console.log('User result:', userResult);
-        
-        document.getElementById('user-data').textContent = JSON.stringify(userData, null, 2);
-        
-        if (userError) {
-          document.getElementById('user-data').innerHTML = 
-            `<span class="error">User Error: ${userError.message}</span>`;
-        }
-        
-        // Raw session object
-        document.getElementById('raw-session').textContent = JSON.stringify(sessionResult, null, 2);
-        
+        document.getElementById('debug-info').innerHTML = `
+          <h3>Debug Info:</h3>
+          <p><strong>URL:</strong> ${window.location.href}</p>
+          <p><strong>Origin:</strong> ${window.location.origin}</p>
+          <p><strong>Current User:</strong> ${user ? user.email : 'None'}</p>
+          <p><strong>User ID:</strong> ${user ? user.id : 'None'}</p>
+          <p><strong>Provider:</strong> ${user?.app_metadata?.provider || 'None'}</p>
+          <p><strong>Email Confirmed:</strong> ${user?.email_confirmed_at ? 'Yes' : 'No'}</p>
+          <p><strong>Error:</strong> ${error ? error.message : 'None'}</p>
+        `;
       } catch (err) {
         console.error('Debug error:', err);
-        
-        document.getElementById('session-data').innerHTML = 
-          `<span class="error">Catch Error: ${err.message}</span>`;
-        document.getElementById('user-data').innerHTML = 
-          `<span class="error">Catch Error: ${err.message}</span>`;
-        document.getElementById('raw-session').innerHTML = 
-          `<span class="error">Catch Error: ${err.message}</span>`;
+        document.getElementById('debug-info').innerHTML = `<p>Error: ${err.message}</p>`;
       }
     }
-
-    // Run debug on page load
-    document.addEventListener('DOMContentLoaded', debugAuth);
+    
+    debugAuth();
   </script>
 </body>
 </html>

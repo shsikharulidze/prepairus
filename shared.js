@@ -55,7 +55,7 @@ async function loadProfile(userId) {
   if (!userId) return null;
 
   try {
-    const { data, error } = await window.sb
+    const { data, error } = await supabase
       .from('student_profiles')
       .select('*')
       .eq('user_id', userId)
@@ -87,7 +87,7 @@ async function createMinimalProfile(user) {
   };
 
   try {
-    const { data, error } = await window.sb
+    const { data, error } = await supabase
       .from('student_profiles')
       .upsert(profile, { onConflict: 'user_id' })
       .select();
@@ -113,7 +113,7 @@ async function uploadAvatar(file) {
   if (!user) return null;
 
   const path = `${user.id}/profile.jpg`;
-  const { error: upErr } = await window.sb
+  const { error: upErr } = await supabase
     .storage.from('avatars')
     .upload(path, file, { upsert: true, cacheControl: '3600' });
   if (upErr) {
@@ -137,7 +137,7 @@ async function uploadAppFile(file, opportunityId) {
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
   const path = `${user.id}/${opportunityId}/${Date.now()}_${safeName}`;
 
-  const { error: upErr } = await window.sb
+  const { error: upErr } = await supabase
     .storage.from('application-files')
     .upload(path, file, { upsert: false, cacheControl: '3600' });
   if (upErr) {
@@ -149,7 +149,7 @@ async function uploadAppFile(file, opportunityId) {
 
 // Get signed URL for private files
 async function getSignedUrl(bucket, path, expiresSeconds = 600) {
-  const { data, error } = await window.sb
+  const { data, error } = await supabase
     .storage.from(bucket)
     .createSignedUrl(path, expiresSeconds);
   if (error) {
