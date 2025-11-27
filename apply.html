@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Apply — PrePair</title>
+  <title>Apply — PrePair v1.1 (Updated Auth)</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,6 +17,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/supabase-client.js"></script>
+  <script src="supabase-auth-module.js"></script>
   <script src="shared.js"></script>
   
 </head>
@@ -62,6 +63,11 @@
 
     <main class="flex justify-center items-center" style="min-height: 60vh; padding-top: 2rem;">
       <div class="card auth-card">
+        
+        <!-- Version Update Banner -->
+        <div style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 8px 12px; border-radius: 6px; text-align: center; margin-bottom: 20px; font-size: 12px; font-weight: 600;">
+          ✨ Updated v1.1 - Enhanced Supabase Authentication Module
+        </div>
         
         <div class="auth-header text-center mb-3">
           <h1>Join PrePair</h1>
@@ -171,49 +177,41 @@
         setLoading(signupBtn, true);
         
         try {
-          const { data, error } = await window.sb.auth.signUp({
-            email: email,
-            password: password
+          console.log('🚀 [Apply v1.1] Using enhanced Supabase auth module');
+          
+          // Use the new SupabaseAuth module
+          const result = await window.SupabaseAuth.signUpUser(email, password, {
+            fullName: '', // Could add a name field later
+            metadata: { signupSource: 'apply_page_v1.1' }
           });
 
-          if (error) throw error;
-
-          if (data.user) {
-            console.log('Signup successful for user:', data.user.email);
+          if (result.success) {
+            console.log('✅ [Apply v1.1] Signup successful!', result);
             
             // Create student profile
-            await createStudentProfileForNewUser(data.user);
+            await createStudentProfileForNewUser(result.user);
             
-            showSuccess('Account created successfully! Please check your email to confirm your account, then sign in.');
+            showSuccess(result.message || 'Account created successfully!');
             
             // Clear form
             signupForm.reset();
             
-            // Redirect to welcome page after delay
+            // Redirect based on email confirmation status
             setTimeout(() => {
-              window.location.href = '/welcome.html';
+              if (result.needsEmailConfirmation) {
+                window.location.href = '/welcome.html';
+              } else {
+                window.location.href = '/dashboard.html';
+              }
             }, 2000);
+          } else {
+            console.error('❌ [Apply v1.1] Signup failed:', result);
+            showError(result.error || 'Failed to create account. Please try again.');
           }
 
         } catch (error) {
-          console.error('[auth/signUp]', { error });
-          
-          // Provide user-friendly error messages
-          let errorMsg = 'Failed to create account. Please try again.';
-          if (error.message.includes('already registered') || error.message.includes('already been registered')) {
-            errorMsg = 'An account with this email already exists. Please sign in instead.';
-          } else if (error.message.includes('Password should be at least')) {
-            errorMsg = 'Password must be at least 6 characters long.';
-          } else if (error.message.includes('Invalid email')) {
-            errorMsg = 'Please enter a valid email address.';
-          } else if (error.message.includes('signup is disabled')) {
-            errorMsg = 'Account creation is currently disabled. Please contact support.';
-          } else {
-            // Show actual error for debugging
-            errorMsg = `Signup failed: ${error.message}`;
-          }
-          
-          showError(errorMsg);
+          console.error('❌ [Apply v1.1] Unexpected error:', error);
+          showError('An unexpected error occurred. Please try again.');
         } finally {
           setLoading(signupBtn, false);
         }
@@ -251,12 +249,21 @@
     
     // Initialize everything when page loads
     window.addEventListener('load', function() {
+      console.log('🎯 [Apply v1.1] Page loaded with enhanced Supabase auth');
+      
       // Ensure functions are available
       if (typeof setLoading === 'undefined') {
         console.error('setLoading not available, shared.js may not have loaded');
         return;
       }
       
+      // Ensure new auth module is available
+      if (typeof window.SupabaseAuth === 'undefined') {
+        console.error('SupabaseAuth module not available');
+        return;
+      }
+      
+      console.log('✅ [Apply v1.1] All modules loaded successfully');
       initializeSignupForm();
     });
 
