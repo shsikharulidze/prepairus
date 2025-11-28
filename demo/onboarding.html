@@ -26,19 +26,12 @@
 
     <main class="onboarding-main">
       <div class="onboarding-container">
-        <!-- Progress Indicator -->
+        <!-- Simple Header -->
         <div class="progress-container">
-          <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-          </div>
-          <div class="progress-steps">
-            <div class="step active" id="step-1-indicator">
+          <div class="simple-header">
+            <div class="step-indicator">
               <div class="step-number">1</div>
-              <div class="step-label">Personal Info</div>
-            </div>
-            <div class="step" id="step-2-indicator">
-              <div class="step-number">2</div>
-              <div class="step-label">Education</div>
+              <div class="step-label">Student Profile</div>
             </div>
           </div>
         </div>
@@ -51,62 +44,11 @@
           </div>
 
           <form id="onboarding-form">
-            <!-- Step 1: Personal Information -->
+            <!-- Single Step: Student Profile Information -->
             <div class="form-step active" id="step-1">
               <div class="step-content">
-                <h2>Let's start with the basics</h2>
-                <p class="step-description">Tell us a bit about yourself</p>
-                
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="firstName">First Name *</label>
-                    <input type="text" id="firstName" name="firstName" required placeholder="Enter your first name">
-                  </div>
-                  <div class="form-group">
-                    <label for="lastName">Last Name *</label>
-                    <input type="text" id="lastName" name="lastName" required placeholder="Enter your last name">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="phone">Phone Number</label>
-                  <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
-                </div>
-
-                <div class="form-group">
-                  <label for="nationality">Nationality</label>
-                  <select id="nationality" name="nationality">
-                    <option value="">Select your nationality</option>
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                    <option value="GB">United Kingdom</option>
-                    <option value="AU">Australia</option>
-                    <option value="DE">Germany</option>
-                    <option value="FR">France</option>
-                    <option value="IN">India</option>
-                    <option value="CN">China</option>
-                    <option value="JP">Japan</option>
-                    <option value="BR">Brazil</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-actions">
-                <button type="button" class="btn btn-primary" id="next-btn">
-                  Continue
-                  <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M6 12l4-4-4-4v8z"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Step 2: Education Information -->
-            <div class="form-step" id="step-2">
-              <div class="step-content">
-                <h2>Your academic journey</h2>
-                <p class="step-description">Share your educational background</p>
+                <h2>Student Profile</h2>
+                <p class="step-description">Please provide your academic information</p>
                 
                 <div class="form-group">
                   <label for="university">University/College *</label>
@@ -119,31 +61,46 @@
                     <input type="text" id="major" name="major" required placeholder="e.g., Computer Science">
                   </div>
                   <div class="form-group">
-                    <label for="graduationYear">Graduation Year</label>
-                    <select id="graduationYear" name="graduationYear">
+                    <label for="graduation_year">Graduation Year *</label>
+                    <select id="graduation_year" name="graduation_year" required>
                       <option value="">Select year</option>
                       <option value="2024">2024</option>
                       <option value="2025">2025</option>
                       <option value="2026">2026</option>
                       <option value="2027">2027</option>
                       <option value="2028">2028</option>
+                      <option value="2029">2029</option>
+                      <option value="2030">2030</option>
                     </select>
                   </div>
                 </div>
 
-                <div class="form-group">
-                  <label for="campus">Campus/Location</label>
-                  <input type="text" id="campus" name="campus" placeholder="e.g., Cambridge, MA">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="campus">Campus/Location</label>
+                    <input type="text" id="campus" name="campus" placeholder="e.g., Cambridge, MA">
+                  </div>
+                  <div class="form-group">
+                    <label for="nationality">Nationality</label>
+                    <select id="nationality" name="nationality">
+                      <option value="">Select your nationality</option>
+                      <option value="US">United States</option>
+                      <option value="CA">Canada</option>
+                      <option value="GB">United Kingdom</option>
+                      <option value="AU">Australia</option>
+                      <option value="DE">Germany</option>
+                      <option value="FR">France</option>
+                      <option value="IN">India</option>
+                      <option value="CN">China</option>
+                      <option value="JP">Japan</option>
+                      <option value="BR">Brazil</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
               <div class="form-actions">
-                <button type="button" class="btn btn-secondary" id="back-btn">
-                  <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M10 12L6 8l4-4v8z"/>
-                  </svg>
-                  Back
-                </button>
                 <button type="submit" class="btn btn-primary" id="complete-btn">
                   Complete Profile
                   <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
@@ -159,95 +116,45 @@
   </div>
 
   <script>
-    console.log('🎯 ONBOARDING PAGE LOADED');
+    console.log('🎯 ONBOARDING PAGE LOADED - Single Step Form');
     
-    let currentStep = 1;
-    const totalSteps = 2;
-
     // DOM Elements
     const form = document.getElementById('onboarding-form');
-    const step1 = document.getElementById('step-1');
-    const step2 = document.getElementById('step-2');
-    const step1Indicator = document.getElementById('step-1-indicator');
-    const step2Indicator = document.getElementById('step-2-indicator');
-    const progressFill = document.getElementById('progress-fill');
-    const nextBtn = document.getElementById('next-btn');
-    const backBtn = document.getElementById('back-btn');
     const completeBtn = document.getElementById('complete-btn');
 
-    // Navigation Functions
-    function updateProgress() {
-      const progress = (currentStep / totalSteps) * 100;
-      progressFill.style.width = progress + '%';
-      
-      // Update step indicators
-      if (currentStep >= 1) {
-        step1Indicator.classList.add('active');
-      }
-      if (currentStep >= 2) {
-        step2Indicator.classList.add('active');
-      } else {
-        step2Indicator.classList.remove('active');
-      }
-    }
-
-    function showStep(stepNumber) {
-      // Hide all steps
-      step1.classList.remove('active');
-      step2.classList.remove('active');
-      
-      // Show current step with animation
-      if (stepNumber === 1) {
-        step1.classList.add('active');
-      } else if (stepNumber === 2) {
-        step2.classList.add('active');
-      }
-      
-      updateProgress();
-    }
-
-    function validateStep1() {
-      const firstName = document.getElementById('firstName').value.trim();
-      const lastName = document.getElementById('lastName').value.trim();
-      
-      if (!firstName || !lastName) {
-        showToast('Please fill in your first and last name', 'error');
-        return false;
-      }
-      
-      return true;
-    }
-
-    function validateStep2() {
+    // Form Validation
+    function validateForm() {
       const university = document.getElementById('university').value.trim();
       const major = document.getElementById('major').value.trim();
+      const graduationYear = document.getElementById('graduation_year').value;
       
-      if (!university || !major) {
-        showToast('Please fill in your university and major', 'error');
+      if (!university) {
+        showToast('Please enter your university', 'error');
+        document.getElementById('university').focus();
+        return false;
+      }
+      
+      if (!major) {
+        showToast('Please enter your major', 'error');
+        document.getElementById('major').focus();
+        return false;
+      }
+      
+      if (!graduationYear) {
+        showToast('Please select your graduation year', 'error');
+        document.getElementById('graduation_year').focus();
         return false;
       }
       
       return true;
     }
-
-    // Event Listeners
-    nextBtn.addEventListener('click', () => {
-      if (validateStep1()) {
-        currentStep = 2;
-        showStep(currentStep);
-      }
-    });
-
-    backBtn.addEventListener('click', () => {
-      currentStep = 1;
-      showStep(currentStep);
-    });
 
     // Form Submission
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      if (!validateStep2()) {
+      // Validate all required fields are filled and visible
+      if (!validateForm()) {
         return;
       }
 
@@ -262,49 +169,57 @@
           return;
         }
 
-        // Debug: Log current user and auth state
-        console.log('🔍 [Debug] Current user:', user);
-        console.log('🔍 [Debug] User ID:', user.id);
-        console.log('🔍 [Debug] User email:', user.email);
+        // Debug: Log current user
+        console.log('🔍 [Debug] Current user:', user.id);
 
-        // Collect form data with correct field names for database
+        // Collect form data - ONLY fields that exist in database schema
         const formData = {
-          id: user.id,  // Critical: Must set id = auth.uid() for RLS
-          user_id: user.id,
-          email: user.email,  // Include email for completeness
-          firstName: document.getElementById('firstName').value.trim(),
-          lastName: document.getElementById('lastName').value.trim(),
-          phone: document.getElementById('phone').value.trim() || null,
-          nationality: document.getElementById('nationality').value || null,
+          id: user.id,  // Primary key for RLS
           university: document.getElementById('university').value.trim(),
           major: document.getElementById('major').value.trim(),
-          graduation_year: document.getElementById('graduationYear').value || null, // Fixed: snake_case
+          graduation_year: parseInt(document.getElementById('graduation_year').value), // Convert to integer
           campus: document.getElementById('campus').value.trim() || null,
-          onboarding_complete: true,
-          updated_at: new Date().toISOString()
+          nationality: document.getElementById('nationality').value || null
         };
 
-        console.log('📝 [Debug] Payload being sent to Supabase:', formData);
-        console.log('🔍 [Debug] Form data keys:', Object.keys(formData));
+        console.log('📝 [Debug] Payload (exact schema match):', formData);
+        console.log('🔍 [Debug] Field types:', {
+          id: typeof formData.id,
+          university: typeof formData.university,
+          major: typeof formData.major,
+          graduation_year: typeof formData.graduation_year,
+          campus: typeof formData.campus,
+          nationality: typeof formData.nationality
+        });
 
-        // Update profile using upsert (handles both insert and update)
+        // Insert/Update profile using exact endpoint format
         const { data, error } = await window.sb
           .from('student_profiles')
-          .upsert(formData, { onConflict: 'user_id' })
-          .select(); // Get the updated record back
+          .upsert(formData, { 
+            onConflict: 'id',
+            ignoreDuplicates: false 
+          })
+          .select();
 
         if (error) {
-          console.error('❌ [Debug] Profile update error:', error);
+          console.error('❌ [Debug] Profile creation error:', error);
           console.error('❌ [Debug] Error code:', error.code);
           console.error('❌ [Debug] Error message:', error.message);
           console.error('❌ [Debug] Error details:', error.details);
           console.error('❌ [Debug] Error hint:', error.hint);
-          showToast('Failed to save profile. Please try again.', 'error');
+          
+          if (error.code === 'PGRST116') {
+            showToast('Schema mismatch error. Please contact support.', 'error');
+          } else if (error.code === '23505') {
+            showToast('Profile already exists. Updating...', 'info');
+          } else {
+            showToast('Failed to save profile. Please try again.', 'error');
+          }
           return;
         }
 
-        console.log('✅ [Debug] Profile updated successfully!');
-        console.log('✅ [Debug] Updated record:', data);
+        console.log('✅ [Debug] Profile saved successfully!');
+        console.log('✅ [Debug] Saved record:', data);
         showToast('Profile completed successfully!', 'success');
 
         // Redirect to dashboard after a short delay
@@ -329,25 +244,25 @@
         return;
       }
 
-      // Check if user already completed onboarding
+      // Check if user already has a profile (skip onboarding check since we removed that field)
       try {
         const { data: profile } = await window.sb
           .from('student_profiles')
-          .select('onboarding_complete')
-          .eq('user_id', user.id)
+          .select('*')
+          .eq('id', user.id)
           .single();
 
-        if (profile?.onboarding_complete) {
+        if (profile) {
+          console.log('User already has profile, redirecting to dashboard');
           window.location.href = '/dashboard.html';
           return;
         }
       } catch (error) {
-        console.error('[onboarding] Profile check error:', error);
+        // Profile doesn't exist, continue with onboarding
+        console.log('[onboarding] No existing profile found, proceeding with form');
       }
 
-      // Initialize form
-      showStep(currentStep);
-      console.log('✅ Onboarding page initialized');
+      console.log('✅ Onboarding page initialized - ready for profile creation');
     });
   </script>
 

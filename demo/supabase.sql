@@ -1,59 +1,31 @@
 -- PrePair Database Schema and Setup
 -- Run this in Supabase SQL Editor
 
--- Enable RLS
-ALTER TABLE IF EXISTS auth.users ENABLE ROW LEVEL SECURITY;
-
 -- Create or update student_profiles table
 CREATE TABLE IF NOT EXISTS public.student_profiles (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id uuid UNIQUE NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    email text NOT NULL,
-    firstName text,
-    lastName text,
-    phone text,
-    nationality text,
     university text,
-    campus text,
-    graduation_year text,
     major text,
-    location text,
-    bio text,
-    avatar_url text,
-    onboarding_complete boolean DEFAULT false,
-    created_at timestamptz DEFAULT now(),
-    updated_at timestamptz DEFAULT now()
+    graduation_year integer,
+    campus text,
+    nationality text,
+    created_at timestamptz DEFAULT now()
 );
 
 -- Add missing columns to existing student_profiles if they don't exist
 DO $$ 
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'bio') THEN
-        ALTER TABLE public.student_profiles ADD COLUMN bio text;
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'avatar_url') THEN
-        ALTER TABLE public.student_profiles ADD COLUMN avatar_url text;
-    END IF;
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'university') THEN
         ALTER TABLE public.student_profiles ADD COLUMN university text;
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'campus') THEN
-        ALTER TABLE public.student_profiles ADD COLUMN campus text;
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'graduation_year') THEN
-        ALTER TABLE public.student_profiles ADD COLUMN graduation_year text;
     END IF;
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'major') THEN
         ALTER TABLE public.student_profiles ADD COLUMN major text;
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'location') THEN
-        ALTER TABLE public.student_profiles ADD COLUMN location text;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'graduation_year') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN graduation_year integer;
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'onboarding_complete') THEN
-        ALTER TABLE public.student_profiles ADD COLUMN onboarding_complete boolean DEFAULT false;
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'phone') THEN
-        ALTER TABLE public.student_profiles ADD COLUMN phone text;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'campus') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN campus text;
     END IF;
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'nationality') THEN
         ALTER TABLE public.student_profiles ADD COLUMN nationality text;
