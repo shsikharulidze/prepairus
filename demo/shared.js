@@ -226,13 +226,82 @@ async function deleteAppFile(path) {
 
 // ============= AUTH & NAVIGATION =============
 
-// Auth guard and redirect logic - COMPLETELY DISABLED
+// Auth guard and redirect logic - FULLY RESTORED
 async function initAuth() {
-  console.log('PrePair v1.8 - AUTH COMPLETELY DISABLED');
+  console.log('PrePair v2.1 - AUTH FULLY ENABLED');
   
-  // Do absolutely nothing except render UI
-  renderHeader();
-  renderFooter();
+  try {
+    // Get current user
+    const user = await getCurrentUser();
+    const currentPage = window.location.pathname;
+    
+    console.log('🔍 [Auth] Current page:', currentPage);
+    console.log('🔍 [Auth] User status:', user ? 'authenticated' : 'guest');
+    
+    // Public pages that don't require auth
+    const publicPages = ['/', '/index.html', '/how-it-works.html', '/students.html', 
+                        '/business.html', '/about.html', '/signin.html', '/apply.html', '/welcome.html'];
+    
+    const isPublicPage = publicPages.some(page => 
+      currentPage === page || currentPage.endsWith(page)
+    );
+    
+    if (!user) {
+      // User not authenticated
+      if (!isPublicPage) {
+        console.log('🚫 [Auth] Redirecting unauthenticated user to signin');
+        window.location.href = '/signin.html';
+        return;
+      }
+    } else {
+      // User is authenticated - check email confirmation
+      if (!user.email_confirmed_at) {
+        console.log('📧 [Auth] User email not confirmed, redirecting to welcome');
+        if (currentPage !== '/welcome.html') {
+          window.location.href = '/welcome.html';
+          return;
+        }
+      } else {
+        // Email confirmed - check if they have completed profile
+        try {
+          const { data: profile } = await window.sb
+            .from('student_profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+          
+          if (!profile && currentPage !== '/onboarding.html') {
+            console.log('📝 [Auth] User needs to complete onboarding');
+            window.location.href = '/onboarding.html';
+            return;
+          }
+          
+          if (profile && (currentPage === '/onboarding.html' || currentPage === '/welcome.html' || 
+                         currentPage === '/signin.html' || currentPage === '/apply.html')) {
+            console.log('✅ [Auth] User has profile, redirecting to dashboard');
+            window.location.href = '/dashboard.html';
+            return;
+          }
+        } catch (error) {
+          // Profile doesn't exist, need onboarding
+          if (currentPage !== '/onboarding.html') {
+            console.log('📝 [Auth] No profile found, redirecting to onboarding');
+            window.location.href = '/onboarding.html';
+            return;
+          }
+        }
+      }
+    }
+    
+    // Render UI components
+    renderHeader();
+    renderFooter();
+    
+  } catch (error) {
+    console.error('❌ [Auth] Error in initAuth:', error);
+    renderHeader();
+    renderFooter();
+  }
 }
 
 // Render header matching homepage design
@@ -518,7 +587,7 @@ if (typeof document !== 'undefined') {
 
 // Initialize page on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('PrePair v1.8 - ALL AUTH LOGIC DISABLED');
+  console.log('PrePair v2.1 - AUTH FULLY ENABLED');
   console.log('Current page:', window.location.pathname);
   console.log('Page title:', document.title);
   console.log('URL hash:', window.location.hash);

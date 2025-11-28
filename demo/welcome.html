@@ -147,8 +147,24 @@
         if (user?.email_confirmed_at) {
           clearInterval(checkInterval);
           showToast('Email confirmed! Redirecting...', 'success');
-          setTimeout(() => {
-            window.location.href = '/onboarding.html';
+          setTimeout(async () => {
+            // Check if user already has a profile
+            try {
+              const { data: profile } = await window.sb
+                .from('student_profiles')
+                .select('*')
+                .eq('id', user.id)
+                .single();
+              
+              if (profile) {
+                window.location.href = '/dashboard.html';
+              } else {
+                window.location.href = '/onboarding.html';
+              }
+            } catch (error) {
+              // No profile found, go to onboarding
+              window.location.href = '/onboarding.html';
+            }
           }, 1000);
         }
       } catch (error) {

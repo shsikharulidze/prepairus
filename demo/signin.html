@@ -15,9 +15,9 @@
   
   <!-- Supabase Scripts - Load Order Critical -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/js/config.js"></script>
-  <script src="/js/supabase-client.js"></script>
-  <script src="/js/shared.js" defer></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="shared.js"></script>
   
 </head>
 <body>
@@ -159,9 +159,30 @@
           // Clear form
           signinForm.reset();
           
-          // Redirect to dashboard
-          setTimeout(() => {
-            window.location.href = '/dashboard.html';
+          // Let auth system handle proper redirect
+          setTimeout(async () => {
+            // Check user auth state and redirect appropriately
+            const user = await getCurrentUser();
+            if (user && !user.email_confirmed_at) {
+              window.location.href = '/welcome.html';
+            } else {
+              // Check if user has completed profile
+              try {
+                const { data: profile } = await window.sb
+                  .from('student_profiles')
+                  .select('*')
+                  .eq('id', user.id)
+                  .single();
+                
+                if (profile) {
+                  window.location.href = '/dashboard.html';
+                } else {
+                  window.location.href = '/onboarding.html';
+                }
+              } catch (error) {
+                window.location.href = '/onboarding.html';
+              }
+            }
           }, 1000);
         }
 
