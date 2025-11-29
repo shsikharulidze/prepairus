@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Help & Support — PrePair</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="site.css">
+  
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="app-layout">
+  
+  <!-- App Shell -->
+  <div class="app-container">
+    
+    <!-- Left Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-brand">
+        <span class="wordmark">PrePair</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">
+          <span>Dashboard</span>
+        </a>
+        <a href="opportunities.html" class="nav-item">
+          <span>Opportunities</span>
+        </a>
+        <a href="applications.html" class="nav-item">
+          <span>Applications</span>
+        </a>
+        <a href="edit-profile.html" class="nav-item">
+          <span>Edit Profile</span>
+        </a>
+        <a href="help.html" class="nav-item active">
+          <span>Help</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <span>Settings</span>
+        </a>
+        <button type="button" class="nav-item nav-signout" id="signout-btn">
+          <span>Sign Out</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <div class="container">
+        
+        <!-- Page Header -->
+        <section class="page-header">
+          <div class="header-content">
+            <h1>Help & Support</h1>
+            <p class="muted">Need help with PrePair? Start here.</p>
+          </div>
+        </section>
+
+        <!-- Help Sections -->
+        <div class="help-grid">
+          
+          <!-- Quick Links -->
+          <section class="help-section">
+            <div class="card">
+              <div class="section-header">
+                <h3>Quick Actions</h3>
+                <p class="muted">Common tasks and shortcuts</p>
+              </div>
+              
+              <div class="quick-links">
+                <a href="edit-profile.html" class="quick-link-item">
+                  <div class="link-icon">📝</div>
+                  <div class="link-content">
+                    <h4>Edit Profile</h4>
+                    <p>Update your personal and academic information</p>
+                  </div>
+                </a>
+                
+                <a href="applications.html" class="quick-link-item">
+                  <div class="link-icon">📋</div>
+                  <div class="link-content">
+                    <h4>View Applications</h4>
+                    <p>Track your internship application status</p>
+                  </div>
+                </a>
+                
+                <a href="dashboard.html" class="quick-link-item">
+                  <div class="link-icon">🎯</div>
+                  <div class="link-content">
+                    <h4>Browse Opportunities</h4>
+                    <p>Find new internships to apply for</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <!-- FAQ Section -->
+          <section class="help-section">
+            <div class="card">
+              <div class="section-header">
+                <h3>Frequently Asked Questions</h3>
+                <p class="muted">Answers to common questions about PrePair</p>
+              </div>
+              
+              <div class="faq-list">
+                <div class="faq-item">
+                  <button type="button" class="faq-question" onclick="toggleFaq(this)">
+                    <span>How do I apply to an internship?</span>
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>To apply for an internship:</p>
+                    <ol>
+                      <li>Browse opportunities on your dashboard</li>
+                      <li>Click "View details" to learn more about the position</li>
+                      <li>Click "Apply" to submit your application</li>
+                      <li>Track your application status in the Applications section</li>
+                    </ol>
+                    <p>Make sure your profile is complete before applying to increase your chances of success.</p>
+                  </div>
+                </div>
+                
+                <div class="faq-item">
+                  <button type="button" class="faq-question" onclick="toggleFaq(this)">
+                    <span>How do matches work?</span>
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>PrePair uses your profile information to recommend relevant internships:</p>
+                    <ul>
+                      <li><strong>Academic background</strong> - Your major and university</li>
+                      <li><strong>Location preferences</strong> - Based on your campus</li>
+                      <li><strong>Graduation timeline</strong> - Matching internship durations</li>
+                      <li><strong>Previous applications</strong> - Similar roles and companies</li>
+                    </ul>
+                    <p>Keep your profile updated to receive the best recommendations.</p>
+                  </div>
+                </div>
+                
+                <div class="faq-item">
+                  <button type="button" class="faq-question" onclick="toggleFaq(this)">
+                    <span>What happens after I submit an application?</span>
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>After submitting an application:</p>
+                    <ol>
+                      <li>Your application is forwarded to the employer</li>
+                      <li>You can track its status in your Applications page</li>
+                      <li>Employers may contact you directly via email</li>
+                      <li>Status updates will be reflected in your dashboard</li>
+                    </ol>
+                    <p>Response times vary by employer, but most respond within 1-2 weeks.</p>
+                  </div>
+                </div>
+                
+                <div class="faq-item">
+                  <button type="button" class="faq-question" onclick="toggleFaq(this)">
+                    <span>Can I edit or withdraw my application?</span>
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>Application management options:</p>
+                    <ul>
+                      <li><strong>Editing</strong> - Applications cannot be edited once submitted</li>
+                      <li><strong>Withdrawing</strong> - You can withdraw applications from your Applications page</li>
+                      <li><strong>Reapplying</strong> - Contact support if you need to resubmit an application</li>
+                    </ul>
+                    <p>Review your application carefully before submitting to avoid issues.</p>
+                  </div>
+                </div>
+                
+                <div class="faq-item">
+                  <button type="button" class="faq-question" onclick="toggleFaq(this)">
+                    <span>How do I update my profile information?</span>
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>To update your profile:</p>
+                    <ol>
+                      <li>Go to the "Edit Profile" page from the navigation menu</li>
+                      <li>Update any fields you want to change</li>
+                      <li>Click "Save Profile" to save your changes</li>
+                    </ol>
+                    <p>Your profile completion percentage will update automatically as you add more information.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Contact Support -->
+          <section class="help-section">
+            <div class="card">
+              <div class="section-header">
+                <h3>Contact Support</h3>
+                <p class="muted">Still need help? We're here for you</p>
+              </div>
+              
+              <div class="contact-options">
+                <div class="contact-item">
+                  <div class="contact-icon">📧</div>
+                  <div class="contact-content">
+                    <h4>Email Support</h4>
+                    <p class="muted">Get help via email (we typically respond within 24 hours)</p>
+                    <a href="mailto:support@prepair.co" class="btn ghost">
+                      Email support@prepair.co
+                    </a>
+                  </div>
+                </div>
+                
+                <div class="contact-item">
+                  <div class="contact-icon">🏫</div>
+                  <div class="contact-content">
+                    <h4>Campus Coordinator</h4>
+                    <p class="muted">Speak with your campus representative for personalized assistance</p>
+                    <button type="button" class="btn ghost" onclick="showCampusInfo()">
+                      Find Your Campus Coordinator
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="support-info">
+                <div class="info-box">
+                  <div class="info-icon">💡</div>
+                  <div class="info-content">
+                    <p>When contacting support, please include your account email and a description of the issue you're experiencing.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Resources -->
+          <section class="help-section">
+            <div class="card">
+              <div class="section-header">
+                <h3>Resources</h3>
+                <p class="muted">Additional resources to help you succeed</p>
+              </div>
+              
+              <div class="resource-list">
+                <div class="resource-item">
+                  <div class="resource-icon">📖</div>
+                  <div class="resource-content">
+                    <h4>Student Resume Guide</h4>
+                    <p class="muted">Tips for creating an effective student resume</p>
+                  </div>
+                  <span class="resource-badge">Coming Soon</span>
+                </div>
+                
+                <div class="resource-item">
+                  <div class="resource-icon">💼</div>
+                  <div class="resource-content">
+                    <h4>Interview Preparation</h4>
+                    <p class="muted">How to prepare for internship interviews</p>
+                  </div>
+                  <span class="resource-badge">Coming Soon</span>
+                </div>
+                
+                <div class="resource-item">
+                  <div class="resource-icon">🌟</div>
+                  <div class="resource-content">
+                    <h4>Success Stories</h4>
+                    <p class="muted">Read about other students' internship experiences</p>
+                  </div>
+                  <span class="resource-badge">Coming Soon</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Campus Info Modal -->
+  <div class="modal-overlay" id="campusModal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Campus Coordinators</h3>
+        <button type="button" class="modal-close" id="campusCloseBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="campus-list">
+          <div class="campus-item">
+            <h4>Rose Hill Campus (Bronx)</h4>
+            <p>Contact: <a href="mailto:rosehill@prepair.co">rosehill@prepair.co</a></p>
+            <p class="muted">Career Services, Lowenstein Center</p>
+          </div>
+          
+          <div class="campus-item">
+            <h4>Lincoln Center Campus (Manhattan)</h4>
+            <p>Contact: <a href="mailto:lincolncenter@prepair.co">lincolncenter@prepair.co</a></p>
+            <p class="muted">Student Services, Lowenstein Building</p>
+          </div>
+          
+          <div class="campus-item">
+            <h4>Westchester Campus</h4>
+            <p>Contact: <a href="mailto:westchester@prepair.co">westchester@prepair.co</a></p>
+            <p class="muted">Academic Services Office</p>
+          </div>
+          
+          <div class="campus-item">
+            <h4>London Campus</h4>
+            <p>Contact: <a href="mailto:london@prepair.co">london@prepair.co</a></p>
+            <p class="muted">Student Affairs Office</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn ghost" id="campusCloseFooter">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Supabase Configuration
+    const SUPABASE_URL = 'https://aezybthbsmpihbyzfiqi.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
+    
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Global state
+    let currentUser = null;
+
+    // Authentication check
+    async function requireAuth() {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error || !user) {
+          window.location.href = '/signin.html';
+          return false;
+        }
+        
+        currentUser = user;
+        return true;
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        window.location.href = '/signin.html';
+        return false;
+      }
+    }
+
+    // Toggle FAQ item
+    function toggleFaq(button) {
+      const faqItem = button.closest('.faq-item');
+      const answer = faqItem.querySelector('.faq-answer');
+      const icon = button.querySelector('.faq-icon');
+      const isOpen = faqItem.classList.contains('open');
+
+      // Close all other FAQ items
+      document.querySelectorAll('.faq-item').forEach(item => {
+        if (item !== faqItem) {
+          item.classList.remove('open');
+          item.querySelector('.faq-answer').style.display = 'none';
+          item.querySelector('.faq-icon').textContent = '+';
+        }
+      });
+
+      // Toggle current FAQ item
+      if (isOpen) {
+        faqItem.classList.remove('open');
+        answer.style.display = 'none';
+        icon.textContent = '+';
+      } else {
+        faqItem.classList.add('open');
+        answer.style.display = 'block';
+        icon.textContent = '−';
+      }
+    }
+
+    // Show campus info modal
+    function showCampusInfo() {
+      document.getElementById('campusModal').style.display = 'flex';
+    }
+
+    // Hide campus info modal
+    function hideCampusInfo() {
+      document.getElementById('campusModal').style.display = 'none';
+    }
+
+    // Sign out
+    async function handleSignOut() {
+      try {
+        await supabase.auth.signOut();
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Sign out error:', error);
+      }
+    }
+
+    // Initialize help page
+    async function initializeHelpPage() {
+      // Check authentication
+      const isAuthenticated = await requireAuth();
+      if (!isAuthenticated) return;
+
+      // No additional initialization needed for help page
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeHelpPage();
+
+      // Campus modal
+      document.getElementById('campusCloseBtn').addEventListener('click', hideCampusInfo);
+      document.getElementById('campusCloseFooter').addEventListener('click', hideCampusInfo);
+
+      // Sign out
+      document.getElementById('signout-btn').addEventListener('click', handleSignOut);
+
+      // Close modal when clicking overlay
+      document.getElementById('campusModal').addEventListener('click', (e) => {
+        if (e.target.id === 'campusModal') {
+          hideCampusInfo();
+        }
+      });
+    });
+  </script>
+
+  <style>
+    /* Help Page Layout */
+    .app-layout {
+      background-color: var(--bg, #fefefe);
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+
+    .app-sidebar {
+      background: var(--card, white);
+      border-right: 1px solid var(--border, #e5e5e5);
+      padding: 32px 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-brand {
+      padding: 0 32px 32px;
+      border-bottom: 1px solid var(--border, #e5e5e5);
+    }
+
+    .sidebar-brand .wordmark {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text, #1a1a1a);
+    }
+
+    .sidebar-nav {
+      padding-top: 32px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 12px 32px;
+      color: var(--text, #1a1a1a);
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin: 2px 0;
+    }
+
+    .nav-item:hover {
+      background-color: var(--sage, #f0f4f0);
+      transform: translateY(-1px);
+    }
+
+    .nav-item.active {
+      background-color: var(--sage, #f0f4f0);
+      font-weight: 600;
+    }
+
+    .nav-signout {
+      margin-top: auto;
+      color: var(--muted, #666);
+    }
+
+    .app-main {
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Page Header */
+    .page-header {
+      margin-bottom: 40px;
+    }
+
+    .header-content h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .header-content p {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    /* Help Grid */
+    .help-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .help-section {
+      width: 100%;
+    }
+
+    /* Section Headers */
+    .section-header {
+      margin-bottom: 24px;
+    }
+
+    .section-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .section-header p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    /* Quick Links */
+    .quick-links {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .quick-link-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      border: 1px solid var(--border, #e5e5e5);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text, #1a1a1a);
+      transition: all 0.15s ease;
+    }
+
+    .quick-link-item:hover {
+      border-color: var(--sage, #90c695);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .link-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .link-content h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .link-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted, #666);
+    }
+
+    /* FAQ Section */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border, #e5e5e5);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text, #1a1a1a);
+      transition: background-color 0.15s ease;
+    }
+
+    .faq-question:hover {
+      background-color: var(--bg, #fefefe);
+    }
+
+    .faq-icon {
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--muted, #666);
+      transition: transform 0.15s ease;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 20px 20px;
+      border-top: 1px solid var(--border, #e5e5e5);
+    }
+
+    .faq-answer p {
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .faq-answer ol,
+    .faq-answer ul {
+      margin: 12px 0;
+      padding-left: 20px;
+    }
+
+    .faq-answer li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    /* Contact Options */
+    .contact-options {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 24px;
+      border: 1px solid var(--border, #e5e5e5);
+      border-radius: 8px;
+    }
+
+    .contact-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .contact-content h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .contact-content p {
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    /* Resources */
+    .resource-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .resource-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      border: 1px solid var(--border, #e5e5e5);
+      border-radius: 8px;
+    }
+
+    .resource-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .resource-content {
+      flex: 1;
+    }
+
+    .resource-content h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .resource-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted, #666);
+    }
+
+    .resource-badge {
+      padding: 4px 12px;
+      background: var(--sand, #f8f7f4);
+      color: var(--muted, #666);
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    /* Info Box */
+    .support-info {
+      margin-top: 24px;
+    }
+
+    .info-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 8px;
+      background-color: var(--sand, #f8f7f4);
+      border: 1px solid var(--border, #e5e5e5);
+    }
+
+    .info-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .info-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: var(--text, #1a1a1a);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 24px 0;
+    }
+
+    .modal-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--muted, #666);
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      padding: 0 24px 24px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    /* Campus List */
+    .campus-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .campus-item {
+      padding: 20px;
+      border: 1px solid var(--border, #e5e5e5);
+      border-radius: 8px;
+    }
+
+    .campus-item h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .campus-item p {
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+
+    .campus-item a {
+      color: var(--text, #1a1a1a);
+      text-decoration: none;
+    }
+
+    .campus-item a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+
+      .app-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border, #e5e5e5);
+        padding: 16px 0;
+      }
+
+      .sidebar-brand {
+        padding: 0 16px 16px;
+      }
+
+      .sidebar-nav {
+        padding-top: 16px;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 0;
+      }
+
+      .nav-item {
+        padding: 12px 16px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .app-main {
+        padding: 20px;
+      }
+
+      .contact-options {
+        gap: 16px;
+      }
+
+      .contact-item {
+        padding: 20px 16px;
+      }
+
+      .modal-content {
+        margin: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-main {
+        padding: 16px;
+      }
+
+      .page-header {
+        margin-bottom: 24px;
+      }
+
+      .help-grid {
+        gap: 24px;
+      }
+
+      .quick-link-item {
+        padding: 16px;
+      }
+
+      .contact-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+      }
+    }
+  </style>
+
+</body>
+</html>

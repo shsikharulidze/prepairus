@@ -3,192 +3,506 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PrePair Profile</title>
+  <title>Edit Profile — PrePair</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- Shared Styles -->
-  <link rel="stylesheet" href="shared.css">
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="site.css">
   
-  <!-- Supabase Scripts -->
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/supabase-client.js"></script>
-  <script src="shared.js"></script>
-  <script src="prepair.js"></script>
 </head>
-<body id="edit-profile-page">
+<body class="app-layout">
+  
+  <!-- App Shell -->
   <div class="app-container">
     
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar" aria-label="Main Navigation">
+    <!-- Left Sidebar -->
+    <aside class="app-sidebar">
       <div class="sidebar-brand">
         <span class="wordmark">PrePair</span>
       </div>
       
       <nav class="sidebar-nav">
-        <ul>
-          <li><a href="dashboard.html">Dashboard</a></li>
-          <li class="active"><a href="edit-profile.html">Edit Profile</a></li>
-          <li><a href="applications.html">Applications</a></li>
-          <li><a href="help.html">Help</a></li>
-          <li><a href="settings.html">Settings</a></li>
-          <li><button type="button" id="signout-btn" role="button">Sign Out</button></li>
-        </ul>
+        <a href="dashboard.html" class="nav-item">
+          <span>Dashboard</span>
+        </a>
+        <a href="opportunities.html" class="nav-item">
+          <span>Opportunities</span>
+        </a>
+        <a href="applications.html" class="nav-item">
+          <span>Applications</span>
+        </a>
+        <a href="edit-profile.html" class="nav-item active">
+          <span>Edit Profile</span>
+        </a>
+        <a href="help.html" class="nav-item">
+          <span>Help</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <span>Settings</span>
+        </a>
+        <button type="button" class="nav-item nav-signout" id="signout-btn">
+          <span>Sign Out</span>
+        </button>
       </nav>
     </aside>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-      
-      <!-- Profile Form -->
-      <section class="profile-form-section">
-        <div class="container">
-          <div class="card profile-form-card">
-            <h3>Edit Profile</h3>
-            <p class="muted">Update your personal information and preferences.</p>
-
-            <!-- Form Messages -->
-            <div id="form-messages" class="form-messages">
-              <div id="success-message" class="message success" style="display: none;" role="alert" aria-live="polite"></div>
-              <div id="error-message" class="message error" style="display: none;" role="alert" aria-live="assertive"></div>
-            </div>
-
-            <form id="profile-form">
+    <!-- Main Content -->
+    <main class="app-main">
+      <div class="container">
+        
+        <!-- Profile Form -->
+        <section class="profile-section">
+          <div class="profile-container">
+            <div class="card profile-card">
               
-              <!-- Personal Information -->
-              <div class="form-section">
-                <h4>Personal Information</h4>
-                
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="first-name">First Name *</label>
-                    <input type="text" id="first-name" name="name" required>
-                  </div>
-                  
-                  <div class="form-group">
-                    <label for="last-name">Last Name *</label>
-                    <input type="text" id="last-name" name="surname" required>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="birthday">Birthday <span class="optional">(optional)</span></label>
-                  <input type="date" id="birthday" name="birthday">
-                </div>
-
-                <div class="form-group">
-                  <label for="nationality">Nationality <span class="optional">(optional)</span></label>
-                  <input type="text" id="nationality" name="nationality" placeholder="e.g., American, Canadian, etc.">
-                </div>
+              <!-- Form Header -->
+              <div class="form-header">
+                <h1>Edit Profile</h1>
+                <p class="muted">Update your personal information and preferences.</p>
               </div>
 
-              <!-- Academic Information -->
-              <div class="form-section">
-                <h4>Academic Information</h4>
+              <!-- Form Messages -->
+              <div class="form-messages" id="formMessages" style="display: none;">
+                <div class="message" id="messageContent" role="alert" aria-live="polite"></div>
+              </div>
+
+              <!-- Profile Form -->
+              <form id="profileForm">
                 
-                <div class="form-group">
-                  <label for="university">University</label>
-                  <input type="text" id="university" name="university" value="Fordham University" placeholder="Fordham University">
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                  <h3 class="section-title">Personal Information</h3>
+                  
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="firstName">First Name *</label>
+                      <input type="text" id="firstName" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="lastName">Last Name *</label>
+                      <input type="text" id="lastName" name="surname" required>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="birthday">Birthday</label>
+                      <input type="date" id="birthday" name="birthday">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="nationality">Nationality</label>
+                      <input type="text" id="nationality" name="nationality" placeholder="e.g., American, Canadian, etc.">
+                    </div>
+                  </div>
                 </div>
 
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="major">Major</label>
-                    <input type="text" id="major" name="major" placeholder="e.g., Computer Science, Business, etc.">
-                  </div>
+                <!-- Academic Information Section -->
+                <div class="form-section">
+                  <h3 class="section-title">Academic Information</h3>
                   
                   <div class="form-group">
-                    <label for="graduation-year">Graduation Year</label>
-                    <select id="graduation-year" name="graduation_year">
-                      <option value="">Select year</option>
-                      <option value="2024">2024</option>
-                      <option value="2025">2025</option>
-                      <option value="2026">2026</option>
-                      <option value="2027">2027</option>
-                      <option value="2028">2028</option>
-                      <option value="2029">2029</option>
+                    <label for="university">University</label>
+                    <input type="text" id="university" name="university" value="Fordham University">
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="major">Major</label>
+                      <input type="text" id="major" name="major" placeholder="e.g., Computer Science, Business, etc.">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="graduationYear">Graduation Year</label>
+                      <select id="graduationYear" name="graduation_year">
+                        <option value="">Select year</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="campus">Campus</label>
+                    <select id="campus" name="campus">
+                      <option value="">Select campus</option>
+                      <option value="Rose Hill">Rose Hill (Bronx)</option>
+                      <option value="Lincoln Center">Lincoln Center (Manhattan)</option>
+                      <option value="Westchester">Westchester</option>
+                      <option value="London">London</option>
                     </select>
                   </div>
                 </div>
 
-                <div class="form-group">
-                  <label for="campus">Campus <span class="optional">(optional)</span></label>
-                  <select id="campus" name="campus">
-                    <option value="">Select campus</option>
-                    <option value="Rose Hill">Rose Hill (Bronx)</option>
-                    <option value="Lincoln Center">Lincoln Center (Manhattan)</option>
-                    <option value="Westchester">Westchester</option>
-                    <option value="London">London</option>
-                  </select>
+                <!-- Form Actions -->
+                <div class="form-actions">
+                  <a href="dashboard.html" class="btn ghost">Cancel</a>
+                  <button type="submit" class="btn" id="saveBtn">
+                    <span id="saveBtnText">Save Profile</span>
+                  </button>
                 </div>
-              </div>
 
-              <!-- Form Actions -->
-              <div class="form-actions">
-                <button type="button" class="btn ghost" onclick="window.location.href='dashboard.html'">Cancel</button>
-                <button type="submit" class="btn" id="save-btn">Save Profile</button>
-              </div>
-
-            </form>
+              </form>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
+      </div>
     </main>
   </div>
 
-  <style>
-    /* Dashboard Layout */
-    .app-container {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      min-height: 100vh;
-      background-color: var(--bg);
+  <script>
+    // Supabase Configuration
+    const SUPABASE_URL = 'https://aezybthbsmpihbyzfiqi.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
+    
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Global state
+    let currentUser = null;
+    let originalProfile = null;
+
+    // Authentication check
+    async function requireAuth() {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error || !user) {
+          window.location.href = '/signin.html';
+          return false;
+        }
+        
+        currentUser = user;
+        return true;
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        window.location.href = '/signin.html';
+        return false;
+      }
     }
 
-    /* Sidebar Styles */
-    .sidebar {
-      background-color: var(--card);
-      border-right: 1px solid var(--border);
-      padding: 24px 0;
-      box-shadow: var(--shadow);
+    // Load user profile
+    async function loadUserProfile() {
+      try {
+        const { data: profile, error } = await supabase
+          .from('student_profiles')
+          .select('*')
+          .eq('id', currentUser.id)
+          .single();
+
+        if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+          throw error;
+        }
+
+        originalProfile = profile;
+        return profile;
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        showMessage('Failed to load profile data. Please refresh the page.', 'error');
+        return null;
+      }
+    }
+
+    // Populate form with profile data
+    function populateForm(profile) {
+      if (!profile) return;
+
+      // Personal information
+      if (profile.name) document.getElementById('firstName').value = profile.name;
+      if (profile.surname) document.getElementById('lastName').value = profile.surname;
+      if (profile.birthday) document.getElementById('birthday').value = profile.birthday;
+      if (profile.nationality) document.getElementById('nationality').value = profile.nationality;
+
+      // Academic information
+      if (profile.university) document.getElementById('university').value = profile.university;
+      if (profile.major) document.getElementById('major').value = profile.major;
+      if (profile.graduation_year) document.getElementById('graduationYear').value = profile.graduation_year.toString();
+      if (profile.campus) document.getElementById('campus').value = profile.campus;
+    }
+
+    // Check if form has changes
+    function hasFormChanges() {
+      const formData = new FormData(document.getElementById('profileForm'));
+      
+      if (!originalProfile) return true; // If no original profile, consider it changed
+
+      // Compare each field
+      const fields = ['name', 'surname', 'birthday', 'nationality', 'university', 'major', 'campus'];
+      
+      for (const field of fields) {
+        const formValue = formData.get(field) || '';
+        const originalValue = originalProfile[field] || '';
+        if (formValue !== originalValue) return true;
+      }
+
+      // Check graduation year separately (number comparison)
+      const formGradYear = formData.get('graduation_year');
+      const originalGradYear = originalProfile.graduation_year;
+      
+      if (formGradYear && originalGradYear) {
+        if (parseInt(formGradYear) !== originalGradYear) return true;
+      } else if (formGradYear || originalGradYear) {
+        return true; // One is empty, other is not
+      }
+
+      return false;
+    }
+
+    // Validate form
+    function validateForm() {
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      
+      // Clear previous errors
+      document.querySelectorAll('.form-group input.error, .form-group select.error').forEach(el => {
+        el.classList.remove('error');
+      });
+
+      if (!firstName) {
+        document.getElementById('firstName').classList.add('error');
+        document.getElementById('firstName').focus();
+        showMessage('First name is required.', 'error');
+        return false;
+      }
+
+      if (!lastName) {
+        document.getElementById('lastName').classList.add('error');
+        document.getElementById('lastName').focus();
+        showMessage('Last name is required.', 'error');
+        return false;
+      }
+
+      return true;
+    }
+
+    // Save profile
+    async function saveProfile(formData) {
+      try {
+        // Prepare profile data
+        const profileData = {
+          id: currentUser.id,
+          name: formData.get('name')?.trim() || null,
+          surname: formData.get('surname')?.trim() || null,
+          birthday: formData.get('birthday') || null,
+          nationality: formData.get('nationality')?.trim() || null,
+          university: formData.get('university')?.trim() || null,
+          major: formData.get('major')?.trim() || null,
+          graduation_year: formData.get('graduation_year') ? parseInt(formData.get('graduation_year')) : null,
+          campus: formData.get('campus')?.trim() || null
+        };
+
+        // Remove null values for cleaner data
+        Object.keys(profileData).forEach(key => {
+          if (profileData[key] === null || profileData[key] === '') {
+            delete profileData[key];
+          }
+        });
+
+        // Always include the id for upsert
+        profileData.id = currentUser.id;
+
+        console.log('Saving profile data:', profileData);
+
+        const { data, error } = await supabase
+          .from('student_profiles')
+          .upsert(profileData)
+          .select()
+          .single();
+
+        if (error) {
+          throw error;
+        }
+
+        console.log('Profile saved successfully:', data);
+        
+        // Update original profile for change detection
+        originalProfile = data;
+        
+        return data;
+      } catch (error) {
+        console.error('Error saving profile:', error);
+        throw error;
+      }
+    }
+
+    // Handle form submission
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+
+      if (!validateForm()) {
+        return;
+      }
+
+      if (!hasFormChanges()) {
+        showMessage('No changes to save.', 'info');
+        return;
+      }
+
+      const saveBtn = document.getElementById('saveBtn');
+      const saveBtnText = document.getElementById('saveBtnText');
+      
+      try {
+        // Update button state
+        saveBtn.disabled = true;
+        saveBtnText.textContent = 'Saving...';
+
+        const formData = new FormData(e.target);
+        await saveProfile(formData);
+
+        // Show success message
+        showMessage('Profile updated successfully!', 'success');
+
+        // Optionally redirect to dashboard after a delay
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+
+      } catch (error) {
+        let errorMessage = 'Failed to save profile. ';
+        
+        if (error.message) {
+          errorMessage += error.message;
+        } else {
+          errorMessage += 'Please try again.';
+        }
+        
+        showMessage(errorMessage, 'error');
+      } finally {
+        // Reset button state
+        saveBtn.disabled = false;
+        saveBtnText.textContent = 'Save Profile';
+      }
+    }
+
+    // Show message
+    function showMessage(message, type = 'info') {
+      const messagesContainer = document.getElementById('formMessages');
+      const messageContent = document.getElementById('messageContent');
+      
+      messageContent.textContent = message;
+      messageContent.className = `message ${type}`;
+      messagesContainer.style.display = 'block';
+
+      // Scroll to message
+      messagesContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      // Auto-hide success/info messages after delay
+      if (type === 'success' || type === 'info') {
+        setTimeout(() => {
+          messagesContainer.style.display = 'none';
+        }, 5000);
+      }
+    }
+
+    // Hide message
+    function hideMessage() {
+      document.getElementById('formMessages').style.display = 'none';
+    }
+
+    // Sign out
+    async function handleSignOut() {
+      try {
+        await supabase.auth.signOut();
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Sign out error:', error);
+      }
+    }
+
+    // Initialize profile page
+    async function initializeProfilePage() {
+      // Check authentication
+      const isAuthenticated = await requireAuth();
+      if (!isAuthenticated) return;
+
+      // Load and populate profile
+      const profile = await loadUserProfile();
+      populateForm(profile);
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeProfilePage();
+
+      // Form submission
+      document.getElementById('profileForm').addEventListener('submit', handleFormSubmit);
+
+      // Sign out
+      document.getElementById('signout-btn').addEventListener('click', handleSignOut);
+
+      // Clear error styling when user starts typing
+      document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('input', function() {
+          this.classList.remove('error');
+          if (document.getElementById('formMessages').style.display !== 'none') {
+            hideMessage();
+          }
+        });
+      });
+
+      // Warn about unsaved changes before leaving
+      window.addEventListener('beforeunload', function(e) {
+        if (hasFormChanges()) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+      });
+    });
+  </script>
+
+  <style>
+    /* Profile Page Layout */
+    .app-layout {
+      background-color: var(--bg, #fefefe);
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+
+    .app-sidebar {
+      background: var(--card, white);
+      border-right: 1px solid var(--border, #e5e5e5);
+      padding: 32px 0;
+      overflow-y: auto;
     }
 
     .sidebar-brand {
-      padding: 0 24px 32px;
-      border-bottom: 1px solid var(--border);
+      padding: 0 32px 32px;
+      border-bottom: 1px solid var(--border, #e5e5e5);
     }
 
     .sidebar-brand .wordmark {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--text);
+      color: var(--text, #1a1a1a);
     }
 
     .sidebar-nav {
-      padding-top: 24px;
+      padding-top: 32px;
+      display: flex;
+      flex-direction: column;
     }
 
-    .sidebar-nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .sidebar-nav li {
-      margin: 0;
-    }
-
-    .sidebar-nav a,
-    .sidebar-nav button {
+    .nav-item {
       display: block;
-      padding: 12px 24px;
-      color: var(--text);
+      padding: 12px 32px;
+      color: var(--text, #1a1a1a);
       text-decoration: none;
       font-family: 'Inter', sans-serif;
       font-weight: 500;
@@ -197,23 +511,27 @@
       width: 100%;
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
+      margin: 2px 0;
     }
 
-    .sidebar-nav a:hover,
-    .sidebar-nav button:hover {
-      background-color: var(--sage);
+    .nav-item:hover {
+      background-color: var(--sage, #f0f4f0);
       transform: translateY(-1px);
     }
 
-    .sidebar-nav .active a {
-      background-color: var(--sage);
+    .nav-item.active {
+      background-color: var(--sage, #f0f4f0);
       font-weight: 600;
     }
 
-    /* Main Content */
-    .main-content {
-      padding: 32px;
+    .nav-signout {
+      margin-top: auto;
+      color: var(--muted, #666);
+    }
+
+    .app-main {
+      padding: 40px;
       overflow-y: auto;
     }
 
@@ -223,36 +541,83 @@
     }
 
     /* Profile Form */
-    .profile-form-card {
-      padding: 40px;
+    .profile-section {
+      margin-bottom: 40px;
     }
 
-    .profile-form-card h3 {
+    .profile-container {
+      width: 100%;
+    }
+
+    .profile-card {
+      padding: 48px;
+      border: 2px solid var(--border, #e5e5e5);
+    }
+
+    .form-header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .form-header h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 2rem;
       margin-bottom: 8px;
     }
 
-    .profile-form-card > p {
+    .form-header p {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    /* Form Messages */
+    .form-messages {
       margin-bottom: 32px;
     }
 
-    .form-section {
-      margin-bottom: 40px;
+    .message {
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      border: 1px solid;
     }
 
-    .form-section h4 {
+    .message.success {
+      background-color: #d4edda;
+      color: #155724;
+      border-color: #c3e6cb;
+    }
+
+    .message.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-color: #f5c6cb;
+    }
+
+    .message.info {
+      background-color: #e2e3e5;
+      color: #383d41;
+      border-color: #d6d8db;
+    }
+
+    /* Form Sections */
+    .form-section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.25rem;
-      margin-bottom: 20px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border, #e5e5e5);
     }
 
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 24px;
     }
 
     .form-group {
@@ -263,26 +628,20 @@
       display: block;
       margin-bottom: 8px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--text, #1a1a1a);
       font-family: 'Inter', sans-serif;
       font-size: 0.9rem;
-    }
-
-    .optional {
-      color: var(--muted);
-      font-weight: 400;
-      font-size: 0.85rem;
     }
 
     .form-group input,
     .form-group select {
       width: 100%;
-      padding: 12px 16px;
-      border: 2px solid var(--border);
+      padding: 14px 16px;
+      border: 2px solid var(--border, #e5e5e5);
       border-radius: 8px;
       font-family: 'Inter', sans-serif;
       font-size: 1rem;
-      transition: border-color 0.2s ease;
+      transition: all 0.15s ease;
       background-color: white;
       box-sizing: border-box;
     }
@@ -290,96 +649,76 @@
     .form-group input:focus,
     .form-group select:focus {
       outline: none;
-      border-color: var(--text);
+      border-color: var(--text, #1a1a1a);
+      box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
     }
 
-    .form-group input.error {
+    .form-group input.error,
+    .form-group select.error {
       border-color: #dc3545;
       background-color: #fff5f5;
     }
 
-    /* Form Messages */
-    .form-messages {
-      margin-bottom: 24px;
-    }
-
-    .message {
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      font-weight: 500;
-    }
-
-    .message.success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-
-    .message.error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+    .form-group input::placeholder {
+      color: var(--muted, #666);
     }
 
     /* Form Actions */
     .form-actions {
       display: flex;
-      gap: 16px;
       justify-content: flex-end;
-      margin-top: 40px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
+      gap: 16px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 2px solid var(--border, #e5e5e5);
     }
 
     .form-actions .btn {
-      min-width: 120px;
+      min-width: 140px;
+      padding: 12px 24px;
+      font-weight: 600;
     }
 
-    #save-btn.loading {
-      opacity: 0.7;
+    #saveBtn:disabled {
+      opacity: 0.6;
       cursor: not-allowed;
-    }
-
-    #save-btn.loading::after {
-      content: "...";
-      animation: loading 1s infinite;
-    }
-
-    @keyframes loading {
-      0%, 33% { content: "."; }
-      34%, 66% { content: ".."; }
-      67%, 100% { content: "..."; }
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
       .app-container {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
       }
 
-      .sidebar {
+      .app-sidebar {
         border-right: none;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--border, #e5e5e5);
+        padding: 16px 0;
       }
 
-      .sidebar-nav ul {
-        display: flex;
+      .sidebar-brand {
+        padding: 0 16px 16px;
+      }
+
+      .sidebar-nav {
+        padding-top: 16px;
+        flex-direction: row;
         overflow-x: auto;
-        padding: 0 16px;
+        gap: 0;
       }
 
-      .sidebar-nav li {
+      .nav-item {
+        padding: 12px 16px;
+        white-space: nowrap;
         flex-shrink: 0;
       }
 
-      .main-content {
-        padding: 16px;
+      .app-main {
+        padding: 20px;
       }
 
-      .profile-form-card {
-        padding: 24px;
+      .profile-card {
+        padding: 32px 24px;
       }
 
       .form-row {
@@ -395,6 +734,22 @@
         width: 100%;
       }
     }
+
+    @media (max-width: 480px) {
+      .profile-card {
+        padding: 24px 16px;
+      }
+
+      .form-header h1 {
+        font-size: 1.75rem;
+      }
+
+      .form-group input,
+      .form-group select {
+        padding: 12px 14px;
+      }
+    }
   </style>
+
 </body>
 </html>

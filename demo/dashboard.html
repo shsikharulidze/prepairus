@@ -3,169 +3,821 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PrePair Dashboard</title>
+  <title>Dashboard — PrePair</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- Shared Styles -->
-  <link rel="stylesheet" href="shared.css">
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="site.css">
   
-  <!-- Supabase Scripts -->
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/supabase-client.js"></script>
-  <script src="shared.js"></script>
-  <script src="prepair.js"></script>
 </head>
-<body id="dashboard-page">
+<body class="app-layout">
+  
+  <!-- App Shell -->
   <div class="app-container">
     
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar" aria-label="Main Navigation">
+    <!-- Left Sidebar -->
+    <aside class="app-sidebar">
       <div class="sidebar-brand">
         <span class="wordmark">PrePair</span>
       </div>
       
       <nav class="sidebar-nav">
-        <ul>
-          <li class="active"><a href="dashboard.html">Dashboard</a></li>
-          <li><a href="edit-profile.html">Edit Profile</a></li>
-          <li><a href="applications.html">Applications</a></li>
-          <li><a href="help.html">Help</a></li>
-          <li><a href="settings.html">Settings</a></li>
-          <li><button type="button" id="signout-btn" role="button">Sign Out</button></li>
-        </ul>
+        <a href="dashboard.html" class="nav-item active">
+          <span>Dashboard</span>
+        </a>
+        <a href="opportunities.html" class="nav-item">
+          <span>Opportunities</span>
+        </a>
+        <a href="applications.html" class="nav-item">
+          <span>Applications</span>
+        </a>
+        <a href="edit-profile.html" class="nav-item">
+          <span>Edit Profile</span>
+        </a>
+        <a href="help.html" class="nav-item">
+          <span>Help</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <span>Settings</span>
+        </a>
+        <button type="button" class="nav-item nav-signout" id="signout-btn">
+          <span>Sign Out</span>
+        </button>
       </nav>
     </aside>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-      
-      <!-- Welcome Card -->
-      <section class="welcome-section">
-        <div class="card welcome-card">
-          <div class="user-avatar" id="userAvatar">
-            A
-          </div>
-          <div class="welcome-content">
-            <h2 id="welcomeTitle">Welcome back, Alex!</h2>
-            <p id="welcomeSubtitle" class="muted">Ready to explore new opportunities?</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Quick Actions -->
-      <section class="quick-actions-section">
-        <h3>Quick Actions</h3>
-        <div class="cta">
-          <a href="#" class="btn ghost">Browse Internships</a>
-          <a href="applications.html" class="btn ghost">Apply Now</a>
-          <a href="#" class="btn ghost">View Matches</a>
-        </div>
-      </section>
-
-      <!-- Recent Applications Panel -->
-      <section class="recent-applications-section">
-        <div class="card">
-          <h3>Recent Applications</h3>
-          <div id="recentApplicationsList">
-            <div class="application-item">
-              <h4 class="position-title">Software Engineering Intern</h4>
-              <p class="muted">TechStart NYC • <span class="status applied">Applied</span></p>
-              <p class="application-date">Nov 25, 2025</p>
+    <!-- Main Content -->
+    <main class="app-main">
+      <div class="container">
+        
+        <!-- Hero Header -->
+        <section class="hero-header">
+          <div class="card hero-card">
+            <div class="hero-left">
+              <div class="user-avatar" id="userAvatar">A</div>
+              <div class="hero-text">
+                <h1 id="welcomeTitle">Welcome back, Alex!</h1>
+                <p class="muted">Ready to explore new opportunities?</p>
+              </div>
             </div>
-            <div class="application-item">
-              <h4 class="position-title">Marketing Assistant</h4>
-              <p class="muted">Creative Agency • <span class="status interview">Interview</span></p>
-              <p class="application-date">Nov 22, 2025</p>
-            </div>
-            <div class="application-item">
-              <h4 class="position-title">Data Analyst Intern</h4>
-              <p class="muted">Analytics Corp • <span class="status applied">Applied</span></p>
-              <p class="application-date">Nov 20, 2025</p>
+            <div class="hero-right">
+              <div class="profile-completion">
+                <div class="completion-text">
+                  <span class="completion-label">Profile</span>
+                  <span class="completion-percent" id="completionPercent">80% complete</span>
+                </div>
+                <div class="completion-bar">
+                  <div class="completion-fill" id="completionFill" style="width: 80%"></div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Internship Suggestions -->
-      <section class="suggestions-section">
-        <div class="card sage">
-          <h3>Recommended for You</h3>
-          <div class="suggestion-item">
-            <h4>Marketing Intern</h4>
-            <p class="muted">Bronx Marketing Agency • Remote/On-site</p>
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+          <div class="action-buttons">
+            <button type="button" class="btn ghost" id="browseOpportunitiesBtn">
+              Browse opportunities
+            </button>
+            <button type="button" class="btn ghost" id="newApplicationBtn">
+              New application
+            </button>
+            <a href="edit-profile.html" class="btn ghost">
+              Edit profile
+            </a>
+            <button type="button" class="btn ghost" disabled>
+              View matches
+            </button>
           </div>
-          <div class="suggestion-item">
-            <h4>Software Development Intern</h4>
-            <p class="muted">Tech Startup NYC • Hybrid</p>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+          
+          <!-- Left Column: Main Feed -->
+          <div class="dashboard-left">
+            
+            <!-- For You Opportunities -->
+            <section class="opportunities-section" id="opportunities-section">
+              <div class="card">
+                <h3>Opportunities picked for you</h3>
+                <div class="opportunities-grid" id="opportunitiesGrid">
+                  <!-- Opportunities will be populated by JS -->
+                </div>
+              </div>
+            </section>
+
+            <!-- Recent Applications -->
+            <section class="recent-applications">
+              <div class="card">
+                <div class="section-header">
+                  <h3>Recent applications</h3>
+                  <a href="applications.html" class="view-all-link">View all</a>
+                </div>
+                <div class="applications-list" id="recentApplicationsList">
+                  <!-- Recent applications will be populated by JS -->
+                </div>
+              </div>
+            </section>
+
+            <!-- Announcements -->
+            <section class="announcements">
+              <div class="card">
+                <h3>Announcements</h3>
+                <div class="announcement-list">
+                  <div class="announcement-item">
+                    <div class="announcement-bullet"></div>
+                    <p>New internships in marketing and design this week</p>
+                  </div>
+                  <div class="announcement-item">
+                    <div class="announcement-bullet"></div>
+                    <p>Career fair happening at Rose Hill campus next month</p>
+                  </div>
+                  <div class="announcement-item">
+                    <div class="announcement-bullet"></div>
+                    <p>Updated application deadlines for spring programs</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
           </div>
-          <a href="#" class="btn ghost">View All Suggestions</a>
-        </div>
-      </section>
 
-      <!-- Notifications/Announcements -->
-      <section class="notifications-section">
-        <div class="card sand">
-          <h3>Announcements</h3>
-          <p>New internships added this week! Check out our latest opportunities in tech and marketing.</p>
-        </div>
-      </section>
+          <!-- Right Column: Quick Summary -->
+          <div class="dashboard-right">
+            
+            <!-- Next Steps -->
+            <section class="next-steps">
+              <div class="card">
+                <h3>Next steps for you</h3>
+                <div class="next-steps-content" id="nextStepsContent">
+                  <!-- Content populated by JS based on profile state -->
+                </div>
+              </div>
+            </section>
 
+          </div>
+        </div>
+
+      </div>
     </main>
   </div>
 
-  <style>
-    /* Dashboard Layout */
-    .app-container {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      min-height: 100vh;
-      background-color: var(--bg);
+  <!-- Opportunity Details Modal -->
+  <div class="modal-overlay" id="opportunityModal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Opportunity Details</h3>
+        <button type="button" class="modal-close" id="modalCloseBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Content populated by JS -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn ghost" id="modalCloseFooter">Close</button>
+        <button type="button" class="btn" id="modalApplyBtn">Apply now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Application Modal -->
+  <div class="modal-overlay" id="newApplicationModal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>New Application</h3>
+        <button type="button" class="modal-close" id="newAppCloseBtn">&times;</button>
+      </div>
+      <form id="newApplicationForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="newAppPosition">Position *</label>
+            <input type="text" id="newAppPosition" name="position" required>
+          </div>
+          <div class="form-group">
+            <label for="newAppCompany">Company *</label>
+            <input type="text" id="newAppCompany" name="company" required>
+          </div>
+          <div class="form-group">
+            <label for="newAppStatus">Status</label>
+            <select id="newAppStatus" name="status">
+              <option value="Applied">Applied</option>
+              <option value="Interview">Interview</option>
+              <option value="Offered">Offered</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn ghost" id="newAppCancelBtn">Cancel</button>
+          <button type="submit" class="btn" id="newAppSubmitBtn">Add Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Toast -->
+  <div class="toast" id="successToast" style="display: none;">
+    <div class="toast-content">
+      <span id="toastMessage">Success!</span>
+    </div>
+  </div>
+
+  <script>
+    // Supabase Configuration
+    const SUPABASE_URL = 'https://aezybthbsmpihbyzfiqi.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
+    
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Global state
+    let currentUser = null;
+    let userProfile = null;
+    let selectedOpportunity = null;
+
+    // Demo opportunities data
+    const recommendedOpportunities = [
+      {
+        id: 'marketing-1',
+        title: 'Marketing Internship',
+        company: 'Bronx Marketing Agency',
+        location: 'Hybrid • NYC',
+        track: 'Marketing',
+        summary: 'Plan and launch a mini campaign for a neighborhood brand.',
+        description: 'Join our creative team to develop marketing strategies for local businesses. You\'ll work on social media campaigns, content creation, and event planning while gaining real-world experience in the marketing industry.',
+        requirements: ['Marketing or Communications major preferred', 'Basic knowledge of social media platforms', 'Creative thinking and communication skills'],
+        duration: '10-12 weeks, part-time during semester'
+      },
+      {
+        id: 'tech-1',
+        title: 'Software Development Intern',
+        company: 'Tech Startup NYC',
+        location: 'Remote • NYC',
+        track: 'Technology',
+        summary: 'Build web applications using modern JavaScript frameworks.',
+        description: 'Work alongside our development team to build and maintain web applications. You\'ll gain experience with React, Node.js, and cloud technologies while contributing to real products used by thousands of users.',
+        requirements: ['Computer Science or related major', 'Experience with JavaScript and web development', 'Strong problem-solving skills'],
+        duration: '12 weeks, full-time summer or part-time during semester'
+      },
+      {
+        id: 'design-1',
+        title: 'UX Design Intern',
+        company: 'Design Studio Brooklyn',
+        location: 'On-site • Brooklyn',
+        track: 'Design',
+        summary: 'Create user experiences for digital products and services.',
+        description: 'Join our design team to research, prototype, and design user interfaces for web and mobile applications. You\'ll work on real client projects and learn the complete UX design process from research to final design.',
+        requirements: ['Design, Psychology, or HCI major preferred', 'Basic knowledge of design tools (Figma, Sketch)', 'Portfolio of design work'],
+        duration: '8-10 weeks, flexible schedule'
+      }
+    ];
+
+    // Authentication check
+    async function requireAuth() {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error || !user) {
+          window.location.href = '/signin.html';
+          return false;
+        }
+        
+        currentUser = user;
+        return true;
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        window.location.href = '/signin.html';
+        return false;
+      }
     }
 
-    /* Sidebar Styles */
-    .sidebar {
-      background-color: var(--card);
-      border-right: 1px solid var(--border);
-      padding: 24px 0;
-      box-shadow: var(--shadow);
+    // Load user profile
+    async function loadUserProfile() {
+      try {
+        const { data: profile, error } = await supabase
+          .from('student_profiles')
+          .select('*')
+          .eq('id', currentUser.id)
+          .single();
+
+        if (error) {
+          console.error('Error loading profile:', error);
+          return null;
+        }
+
+        userProfile = profile;
+        return profile;
+      } catch (error) {
+        console.error('Profile load failed:', error);
+        return null;
+      }
+    }
+
+    // Calculate profile completion
+    function calculateProfileCompletion(profile) {
+      if (!profile) return 0;
+      
+      const fields = ['name', 'surname', 'university', 'major', 'graduation_year', 'campus', 'nationality', 'birthday'];
+      const filledFields = fields.filter(field => profile[field] && profile[field] !== '');
+      
+      return Math.round((filledFields.length / fields.length) * 100);
+    }
+
+    // Update hero section
+    function updateHeroSection(profile) {
+      const avatarEl = document.getElementById('userAvatar');
+      const titleEl = document.getElementById('welcomeTitle');
+      const percentEl = document.getElementById('completionPercent');
+      const fillEl = document.getElementById('completionFill');
+
+      // Avatar initials
+      if (profile && profile.name) {
+        const initials = (profile.name.charAt(0) + (profile.surname ? profile.surname.charAt(0) : '')).toUpperCase();
+        avatarEl.textContent = initials;
+      }
+
+      // Welcome message
+      if (profile && profile.name) {
+        titleEl.textContent = `Welcome back, ${profile.name}!`;
+      }
+
+      // Profile completion
+      const completion = calculateProfileCompletion(profile);
+      percentEl.textContent = `${completion}% complete`;
+      fillEl.style.width = `${completion}%`;
+    }
+
+    // Load recent applications
+    async function loadRecentApplications() {
+      try {
+        const { data: applications, error } = await supabase
+          .from('applications')
+          .select('*')
+          .eq('user_id', currentUser.id)
+          .order('applied_at', { ascending: false })
+          .limit(5);
+
+        if (error) {
+          console.error('Error loading applications:', error);
+          return [];
+        }
+
+        return applications || [];
+      } catch (error) {
+        console.error('Applications load failed:', error);
+        return [];
+      }
+    }
+
+    // Render recent applications
+    function renderRecentApplications(applications) {
+      const container = document.getElementById('recentApplicationsList');
+      
+      if (!applications || applications.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <p class="muted">You haven't applied to any internships yet.</p>
+            <button type="button" class="btn ghost" onclick="scrollToOpportunities()">Browse opportunities</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = applications.map(app => {
+        const formattedDate = new Date(app.applied_at).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+
+        return `
+          <div class="application-item">
+            <div class="app-info">
+              <h4 class="app-position">${app.position}</h4>
+              <p class="app-company muted">${app.company}</p>
+            </div>
+            <div class="app-meta">
+              <span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
+              <span class="app-date muted">${formattedDate}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render opportunities
+    function renderOpportunities() {
+      const container = document.getElementById('opportunitiesGrid');
+      
+      container.innerHTML = recommendedOpportunities.map(opp => `
+        <div class="opportunity-card" data-opportunity-id="${opp.id}">
+          <div class="opp-header">
+            <div class="opp-track">${opp.track}</div>
+            <span class="opp-badge">For you</span>
+          </div>
+          <h4 class="opp-title">${opp.title}</h4>
+          <p class="opp-company muted">${opp.company} • ${opp.location}</p>
+          <p class="opp-summary">${opp.summary}</p>
+          <div class="opp-actions">
+            <button type="button" class="btn ghost small view-details-btn" data-opportunity-id="${opp.id}">
+              View details
+            </button>
+            <button type="button" class="btn small apply-btn" data-opportunity-id="${opp.id}">
+              Apply
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // Add event listeners
+      document.querySelectorAll('.view-details-btn').forEach(btn => {
+        btn.addEventListener('click', handleViewDetails);
+      });
+
+      document.querySelectorAll('.apply-btn').forEach(btn => {
+        btn.addEventListener('click', handleQuickApply);
+      });
+    }
+
+    // Update next steps
+    function updateNextSteps(profile, applications) {
+      const container = document.getElementById('nextStepsContent');
+      const completion = calculateProfileCompletion(profile);
+
+      let content = '';
+
+      if (completion < 100) {
+        content = `
+          <div class="next-step-item">
+            <div class="step-icon">📝</div>
+            <div class="step-content">
+              <h4>Complete your profile</h4>
+              <p class="muted">Add missing details to unlock better matches</p>
+              <a href="edit-profile.html" class="btn ghost small">Edit profile</a>
+            </div>
+          </div>
+        `;
+      } else if (!applications || applications.length === 0) {
+        content = `
+          <div class="next-step-item">
+            <div class="step-icon">🎯</div>
+            <div class="step-content">
+              <h4>Apply to your first internship</h4>
+              <p class="muted">Start with one of the recommended roles above</p>
+              <button type="button" class="btn ghost small" onclick="scrollToOpportunities()">Browse opportunities</button>
+            </div>
+          </div>
+        `;
+      } else {
+        const hasInterview = applications.some(app => app.status === 'Interview');
+        const hasOffer = applications.some(app => app.status === 'Offered');
+
+        if (hasOffer) {
+          content = `
+            <div class="next-step-item">
+              <div class="step-icon">🎉</div>
+              <div class="step-content">
+                <h4>You have offers!</h4>
+                <p class="muted">Review your offers and make decisions</p>
+                <a href="applications.html" class="btn ghost small">View applications</a>
+              </div>
+            </div>
+          `;
+        } else if (hasInterview) {
+          content = `
+            <div class="next-step-item">
+              <div class="step-icon">💼</div>
+              <div class="step-content">
+                <h4>Prepare for interviews</h4>
+                <p class="muted">You have upcoming interview opportunities</p>
+                <a href="applications.html" class="btn ghost small">View details</a>
+              </div>
+            </div>
+          `;
+        } else {
+          content = `
+            <div class="next-step-item">
+              <div class="step-icon">📈</div>
+              <div class="step-content">
+                <h4>Keep applying</h4>
+                <p class="muted">Great progress! Consider applying to more roles</p>
+                <button type="button" class="btn ghost small" onclick="scrollToOpportunities()">Browse opportunities</button>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      container.innerHTML = content;
+    }
+
+    // Scroll to opportunities
+    function scrollToOpportunities() {
+      document.getElementById('opportunities-section').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+
+    // Handle view details
+    function handleViewDetails(e) {
+      const oppId = e.target.getAttribute('data-opportunity-id');
+      selectedOpportunity = recommendedOpportunities.find(o => o.id === oppId);
+      
+      if (selectedOpportunity) {
+        showOpportunityModal(selectedOpportunity);
+      }
+    }
+
+    // Handle quick apply
+    async function handleQuickApply(e) {
+      const oppId = e.target.getAttribute('data-opportunity-id');
+      const opportunity = recommendedOpportunities.find(o => o.id === oppId);
+      
+      if (opportunity) {
+        await applyToOpportunity(opportunity);
+      }
+    }
+
+    // Show opportunity modal
+    function showOpportunityModal(opportunity) {
+      const modal = document.getElementById('opportunityModal');
+      const title = document.getElementById('modalTitle');
+      const body = document.getElementById('modalBody');
+
+      title.textContent = opportunity.title;
+      
+      body.innerHTML = `
+        <div class="opportunity-details">
+          <div class="detail-section">
+            <h4>Company</h4>
+            <p>${opportunity.company}</p>
+          </div>
+          <div class="detail-section">
+            <h4>Location</h4>
+            <p>${opportunity.location}</p>
+          </div>
+          <div class="detail-section">
+            <h4>Description</h4>
+            <p>${opportunity.description}</p>
+          </div>
+          <div class="detail-section">
+            <h4>Requirements</h4>
+            <ul>
+              ${opportunity.requirements.map(req => `<li>${req}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Duration</h4>
+            <p>${opportunity.duration}</p>
+          </div>
+        </div>
+      `;
+
+      modal.style.display = 'flex';
+    }
+
+    // Hide opportunity modal
+    function hideOpportunityModal() {
+      document.getElementById('opportunityModal').style.display = 'none';
+      selectedOpportunity = null;
+    }
+
+    // Apply to opportunity
+    async function applyToOpportunity(opportunity) {
+      try {
+        const { data, error } = await supabase
+          .from('applications')
+          .insert([
+            {
+              user_id: currentUser.id,
+              position: opportunity.title,
+              company: opportunity.company,
+              status: 'Applied'
+            }
+          ]);
+
+        if (error) {
+          throw error;
+        }
+
+        // Refresh recent applications
+        const applications = await loadRecentApplications();
+        renderRecentApplications(applications);
+        
+        // Update next steps
+        updateNextSteps(userProfile, applications);
+
+        // Show success toast
+        showToast(`Applied to ${opportunity.title} successfully!`);
+
+        // Hide modal if open
+        hideOpportunityModal();
+
+      } catch (error) {
+        console.error('Apply error:', error);
+        showToast('Failed to submit application. Please try again.', 'error');
+      }
+    }
+
+    // Show new application modal
+    function showNewApplicationModal() {
+      document.getElementById('newApplicationModal').style.display = 'flex';
+      document.getElementById('newApplicationForm').reset();
+    }
+
+    // Hide new application modal
+    function hideNewApplicationModal() {
+      document.getElementById('newApplicationModal').style.display = 'none';
+    }
+
+    // Handle new application form
+    async function handleNewApplicationSubmit(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const position = formData.get('position').trim();
+      const company = formData.get('company').trim();
+      const status = formData.get('status');
+
+      if (!position || !company) {
+        showToast('Please fill in all required fields.', 'error');
+        return;
+      }
+
+      try {
+        const submitBtn = document.getElementById('newAppSubmitBtn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Adding...';
+
+        const { data, error } = await supabase
+          .from('applications')
+          .insert([
+            {
+              user_id: currentUser.id,
+              position,
+              company,
+              status
+            }
+          ]);
+
+        if (error) {
+          throw error;
+        }
+
+        // Refresh recent applications
+        const applications = await loadRecentApplications();
+        renderRecentApplications(applications);
+        
+        // Update next steps
+        updateNextSteps(userProfile, applications);
+
+        // Show success and hide modal
+        showToast('Application added successfully!');
+        hideNewApplicationModal();
+
+      } catch (error) {
+        console.error('Add application error:', error);
+        showToast('Failed to add application. Please try again.', 'error');
+      } finally {
+        const submitBtn = document.getElementById('newAppSubmitBtn');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Add Application';
+      }
+    }
+
+    // Show toast
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('successToast');
+      const messageEl = document.getElementById('toastMessage');
+      
+      messageEl.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.style.display = 'block';
+
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 4000);
+    }
+
+    // Sign out
+    async function handleSignOut() {
+      try {
+        await supabase.auth.signOut();
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Sign out error:', error);
+      }
+    }
+
+    // Initialize dashboard
+    async function initializeDashboard() {
+      // Check authentication
+      const isAuthenticated = await requireAuth();
+      if (!isAuthenticated) return;
+
+      // Load user profile
+      const profile = await loadUserProfile();
+      updateHeroSection(profile);
+
+      // Load recent applications
+      const applications = await loadRecentApplications();
+      renderRecentApplications(applications);
+
+      // Render opportunities
+      renderOpportunities();
+
+      // Update next steps
+      updateNextSteps(profile, applications);
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeDashboard();
+
+      // Quick actions
+      document.getElementById('browseOpportunitiesBtn').addEventListener('click', scrollToOpportunities);
+      document.getElementById('newApplicationBtn').addEventListener('click', showNewApplicationModal);
+
+      // Opportunity modal
+      document.getElementById('modalCloseBtn').addEventListener('click', hideOpportunityModal);
+      document.getElementById('modalCloseFooter').addEventListener('click', hideOpportunityModal);
+      document.getElementById('modalApplyBtn').addEventListener('click', () => {
+        if (selectedOpportunity) {
+          applyToOpportunity(selectedOpportunity);
+        }
+      });
+
+      // New application modal
+      document.getElementById('newAppCloseBtn').addEventListener('click', hideNewApplicationModal);
+      document.getElementById('newAppCancelBtn').addEventListener('click', hideNewApplicationModal);
+      document.getElementById('newApplicationForm').addEventListener('submit', handleNewApplicationSubmit);
+
+      // Sign out
+      document.getElementById('signout-btn').addEventListener('click', handleSignOut);
+
+      // Close modals when clicking overlay
+      document.getElementById('opportunityModal').addEventListener('click', (e) => {
+        if (e.target.id === 'opportunityModal') {
+          hideOpportunityModal();
+        }
+      });
+
+      document.getElementById('newApplicationModal').addEventListener('click', (e) => {
+        if (e.target.id === 'newApplicationModal') {
+          hideNewApplicationModal();
+        }
+      });
+    });
+  </script>
+
+  <style>
+    /* Dashboard Layout Tweaks */
+    .app-layout {
+      background-color: var(--bg, #fefefe);
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+
+    .app-sidebar {
+      background: var(--card, white);
+      border-right: 1px solid var(--border, #e5e5e5);
+      padding: 32px 0;
+      overflow-y: auto;
     }
 
     .sidebar-brand {
-      padding: 0 24px 32px;
-      border-bottom: 1px solid var(--border);
+      padding: 0 32px 32px;
+      border-bottom: 1px solid var(--border, #e5e5e5);
     }
 
     .sidebar-brand .wordmark {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--text);
+      color: var(--text, #1a1a1a);
     }
 
     .sidebar-nav {
-      padding-top: 24px;
+      padding-top: 32px;
+      display: flex;
+      flex-direction: column;
     }
 
-    .sidebar-nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .sidebar-nav li {
-      margin: 0;
-    }
-
-    .sidebar-nav a,
-    .sidebar-nav button {
+    .nav-item {
       display: block;
-      padding: 12px 24px;
-      color: var(--text);
+      padding: 12px 32px;
+      color: var(--text, #1a1a1a);
       text-decoration: none;
       font-family: 'Inter', sans-serif;
       font-weight: 500;
@@ -174,173 +826,580 @@
       width: 100%;
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
+      margin: 2px 0;
     }
 
-    .sidebar-nav a:hover,
-    .sidebar-nav button:hover {
-      background-color: var(--sage);
+    .nav-item:hover {
+      background-color: var(--sage, #f0f4f0);
       transform: translateY(-1px);
     }
 
-    .sidebar-nav .active a {
-      background-color: var(--sage);
+    .nav-item.active {
+      background-color: var(--sage, #f0f4f0);
       font-weight: 600;
     }
 
-    /* Main Content */
-    .main-content {
-      padding: 32px;
+    .nav-signout {
+      margin-top: auto;
+      color: var(--muted, #666);
+    }
+
+    .app-main {
+      padding: 40px;
       overflow-y: auto;
     }
 
-    .main-content section {
+    /* Hero Header */
+    .hero-header {
       margin-bottom: 32px;
     }
 
-    .main-content h3 {
-      margin-bottom: 16px;
-      font-family: 'Space Grotesk', sans-serif;
+    .hero-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px;
+      border: 2px solid var(--border, #e5e5e5);
     }
 
-    /* Welcome Card */
-    .welcome-card {
+    .hero-left {
       display: flex;
       align-items: center;
       gap: 24px;
-      padding: 32px;
     }
 
     .user-avatar {
-      width: 80px;
-      height: 80px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--text), var(--muted));
+      background: linear-gradient(135deg, var(--text, #1a1a1a), var(--muted, #666));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
+      font-size: 1.5rem;
       font-weight: 700;
       color: white;
-      overflow: hidden;
       flex-shrink: 0;
     }
 
-    .user-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .hero-text h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.75rem;
+      margin-bottom: 4px;
     }
 
-    .welcome-content h2 {
-      font-size: 2rem;
+    .profile-completion {
+      text-align: right;
+    }
+
+    .completion-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .completion-label {
+      color: var(--muted, #666);
+    }
+
+    .completion-percent {
+      font-weight: 600;
+    }
+
+    .completion-bar {
+      width: 120px;
+      height: 6px;
+      background: var(--border, #e5e5e5);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .completion-fill {
+      height: 100%;
+      background: var(--sage, #90c695);
+      transition: width 0.3s ease;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      margin-bottom: 40px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .dashboard-left > section {
+      margin-bottom: 32px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .view-all-link {
+      color: var(--text, #1a1a1a);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: opacity 0.15s ease;
+    }
+
+    .view-all-link:hover {
+      opacity: 0.7;
+    }
+
+    /* Opportunities Grid */
+    .opportunities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .opportunity-card {
+      border: 1px solid var(--border, #e5e5e5);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.15s ease;
+      background: white;
+    }
+
+    .opportunity-card:hover {
+      border-color: var(--sage, #90c695);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .opp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .opp-track {
+      font-size: 0.8rem;
+      color: var(--muted, #666);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .opp-badge {
+      background: var(--sage, #90c695);
+      color: var(--text, #1a1a1a);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .opp-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
       margin-bottom: 8px;
     }
 
-    .welcome-content p {
-      font-size: 1.1rem;
-      margin: 0;
+    .opp-company {
+      margin-bottom: 12px;
+      font-size: 0.9rem;
     }
 
-    /* Application Items */
+    .opp-summary {
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .opp-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn.small {
+      padding: 8px 16px;
+      font-size: 0.85rem;
+    }
+
+    /* Applications List */
+    .applications-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
     .application-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       padding: 16px 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border, #e5e5e5);
     }
 
     .application-item:last-child {
       border-bottom: none;
     }
 
-    .application-item h4 {
+    .app-position {
+      font-weight: 600;
       margin-bottom: 4px;
       font-size: 1rem;
+    }
+
+    .app-company {
+      font-size: 0.9rem;
+    }
+
+    .app-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    .status-applied {
+      background: var(--sage, #90c695);
+      color: var(--text, #1a1a1a);
+    }
+
+    .status-interview {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .status-offered {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+
+    .status-rejected {
+      background: #ffebee;
+      color: #d32f2f;
+    }
+
+    .app-date {
+      font-size: 0.8rem;
+    }
+
+    /* Next Steps */
+    .next-steps-content {
+      padding: 8px 0;
+    }
+
+    .next-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .step-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .step-content h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .step-content p {
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    /* Announcements */
+    .announcement-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .announcement-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .announcement-bullet {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sage, #90c695);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    .announcement-item p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    /* Empty States */
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+    }
+
+    .empty-state p {
+      margin-bottom: 16px;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 24px 0;
+    }
+
+    .modal-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
       font-weight: 600;
     }
 
-    .application-item .status {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      background-color: var(--sage);
-      color: var(--text);
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--muted, #666);
+      padding: 4px;
+      line-height: 1;
     }
 
-    .application-item .status.applied {
-      background-color: var(--sage);
+    .modal-body {
+      padding: 24px;
     }
 
-    .application-item .status.interview {
-      background-color: var(--lilac);
+    .modal-footer {
+      padding: 0 24px 24px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
     }
 
-    /* Suggestion Items */
-    .suggestion-item {
-      margin-bottom: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
+    .detail-section {
+      margin-bottom: 24px;
     }
 
-    .suggestion-item:last-of-type {
-      border-bottom: none;
+    .detail-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-section h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .detail-section ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .detail-section li {
+      margin-bottom: 4px;
+    }
+
+    /* Form Groups */
+    .form-group {
       margin-bottom: 20px;
     }
 
-    .suggestion-item h4 {
-      margin-bottom: 4px;
-      font-size: 1rem;
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
       font-weight: 600;
+      font-size: 0.9rem;
     }
 
-    .loading-state {
-      text-align: center;
-      padding: 32px;
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border, #e5e5e5);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.15s ease;
+      box-sizing: border-box;
     }
 
-    .empty-state {
-      text-align: center;
-      padding: 32px;
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--text, #1a1a1a);
     }
 
-    /* Responsive Design */
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .toast.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .toast.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .opportunities-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 768px) {
       .app-container {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
       }
 
-      .sidebar {
+      .app-sidebar {
         border-right: none;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--border, #e5e5e5);
+        padding: 16px 0;
       }
 
-      .sidebar-nav ul {
-        display: flex;
+      .sidebar-brand {
+        padding: 0 16px 16px;
+      }
+
+      .sidebar-nav {
+        padding-top: 16px;
+        flex-direction: row;
         overflow-x: auto;
-        padding: 0 16px;
+        gap: 0;
       }
 
-      .sidebar-nav li {
+      .nav-item {
+        padding: 12px 16px;
+        white-space: nowrap;
         flex-shrink: 0;
       }
 
-      .welcome-card {
+      .app-main {
+        padding: 20px;
+      }
+
+      .hero-card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 24px;
+        text-align: center;
+      }
+
+      .hero-left {
         flex-direction: column;
         text-align: center;
-        padding: 24px;
       }
 
-      .main-content {
-        padding: 16px;
+      .profile-completion {
+        text-align: center;
       }
 
-      .cta {
+      .completion-bar {
+        margin: 0 auto;
+      }
+
+      .action-buttons {
         flex-direction: column;
+      }
+
+      .application-item {
+        flex-direction: column;
+        align-items: stretch;
         gap: 12px;
+      }
+
+      .app-meta {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .opp-actions {
+        flex-direction: column;
+      }
+
+      .modal-content {
+        margin: 20px;
       }
     }
   </style>
+
 </body>
 </html>

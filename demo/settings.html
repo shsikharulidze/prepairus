@@ -3,584 +3,803 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Account Settings — PrePair</title>
+  <title>Settings — PrePair</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="site.css">
+  
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/supabase-client.js"></script>
+</head>
+<body class="app-layout">
+  
+  <!-- App Shell -->
+  <div class="app-container">
+    
+    <!-- Left Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-brand">
+        <span class="wordmark">PrePair</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">
+          <span>Dashboard</span>
+        </a>
+        <a href="opportunities.html" class="nav-item">
+          <span>Opportunities</span>
+        </a>
+        <a href="applications.html" class="nav-item">
+          <span>Applications</span>
+        </a>
+        <a href="edit-profile.html" class="nav-item">
+          <span>Edit Profile</span>
+        </a>
+        <a href="help.html" class="nav-item">
+          <span>Help</span>
+        </a>
+        <a href="settings.html" class="nav-item active">
+          <span>Settings</span>
+        </a>
+        <button type="button" class="nav-item nav-signout" id="signout-btn">
+          <span>Sign Out</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <div class="container">
+        
+        <!-- Page Header -->
+        <section class="page-header">
+          <div class="header-content">
+            <h1>Account settings</h1>
+            <p class="muted">Manage your account preferences and security.</p>
+          </div>
+        </section>
+
+        <!-- Settings Sections -->
+        <div class="settings-grid">
+          
+          <!-- Account Information -->
+          <section class="settings-section">
+            <div class="card">
+              <div class="section-header">
+                <h3>Account Information</h3>
+                <p class="muted">Your basic account details</p>
+              </div>
+              
+              <div class="account-info">
+                <div class="info-row">
+                  <div class="info-label">Email Address</div>
+                  <div class="info-value" id="userEmail">Loading...</div>
+                </div>
+                
+                <div class="info-row">
+                  <div class="info-label">Account Created</div>
+                  <div class="info-value" id="accountCreated">Loading...</div>
+                </div>
+                
+                <div class="info-row">
+                  <div class="info-label">Email Verified</div>
+                  <div class="info-value">
+                    <span class="status-badge verified" id="emailVerified">Verified</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Security Settings -->
+          <section class="settings-section">
+            <div class="card">
+              <div class="section-header">
+                <h3>Security</h3>
+                <p class="muted">Manage your password and account security</p>
+              </div>
+              
+              <div class="security-settings">
+                <div class="setting-item">
+                  <div class="setting-content">
+                    <h4>Password Reset</h4>
+                    <p class="setting-description">Send a secure link to your email to reset your password</p>
+                  </div>
+                  <div class="setting-action">
+                    <button type="button" class="btn ghost" id="resetPasswordBtn">
+                      Send Reset Link
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="security-info">
+                <div class="info-box">
+                  <div class="info-icon">🔒</div>
+                  <div class="info-content">
+                    <p>We'll send a secure password reset link to your email address. Click the link to create a new password.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Preferences -->
+          <section class="settings-section">
+            <div class="card">
+              <div class="section-header">
+                <h3>Preferences</h3>
+                <p class="muted">Customize your PrePair experience</p>
+              </div>
+              
+              <div class="preferences-settings">
+                <div class="setting-item">
+                  <div class="setting-content">
+                    <h4>Email Notifications</h4>
+                    <p class="setting-description">Receive updates about new opportunities and application status</p>
+                  </div>
+                  <div class="setting-action">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="emailNotifications" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-content">
+                    <h4>Opportunity Recommendations</h4>
+                    <p class="setting-description">Show personalized internship recommendations on your dashboard</p>
+                  </div>
+                  <div class="setting-action">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="recommendations" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Danger Zone -->
+          <section class="settings-section">
+            <div class="card danger-zone">
+              <div class="section-header">
+                <h3>Danger Zone</h3>
+                <p class="muted">Actions that cannot be undone</p>
+              </div>
+              
+              <div class="danger-settings">
+                <div class="setting-item">
+                  <div class="setting-content">
+                    <h4>Delete Account</h4>
+                    <p class="setting-description">Permanently delete your PrePair account and all associated data</p>
+                  </div>
+                  <div class="setting-action">
+                    <button type="button" class="btn danger" disabled id="deleteAccountBtn">
+                      Delete Account
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="danger-info">
+                <div class="info-box warning">
+                  <div class="info-icon">⚠️</div>
+                  <div class="info-content">
+                    <p>This action cannot be reversed. All your data, including applications and profile information, will be permanently deleted.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Success Toast -->
+  <div class="toast" id="successToast" style="display: none;">
+    <div class="toast-content">
+      <span id="toastMessage">Success!</span>
+    </div>
+  </div>
+
+  <script>
+    // Supabase Configuration
+    const SUPABASE_URL = 'https://aezybthbsmpihbyzfiqi.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
+    
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Global state
+    let currentUser = null;
+
+    // Authentication check
+    async function requireAuth() {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error || !user) {
+          window.location.href = '/signin.html';
+          return false;
+        }
+        
+        currentUser = user;
+        return true;
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        window.location.href = '/signin.html';
+        return false;
+      }
+    }
+
+    // Load account information
+    function loadAccountInfo(user) {
+      // Update email
+      document.getElementById('userEmail').textContent = user.email;
+
+      // Update account created date
+      const createdDate = new Date(user.created_at).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      document.getElementById('accountCreated').textContent = createdDate;
+
+      // Update email verified status
+      const emailVerified = user.email_confirmed_at !== null;
+      const verifiedElement = document.getElementById('emailVerified');
+      
+      if (emailVerified) {
+        verifiedElement.textContent = 'Verified';
+        verifiedElement.className = 'status-badge verified';
+      } else {
+        verifiedElement.textContent = 'Not Verified';
+        verifiedElement.className = 'status-badge unverified';
+      }
+    }
+
+    // Handle password reset
+    async function handlePasswordReset() {
+      const resetBtn = document.getElementById('resetPasswordBtn');
+      
+      try {
+        resetBtn.disabled = true;
+        resetBtn.textContent = 'Sending...';
+
+        const { error } = await supabase.auth.resetPasswordForEmail(currentUser.email, {
+          redirectTo: `${window.location.origin}/update-password.html`
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        showToast(`Password reset link sent to ${currentUser.email}`, 'success');
+
+      } catch (error) {
+        console.error('Password reset error:', error);
+        showToast('Failed to send password reset link. Please try again.', 'error');
+      } finally {
+        resetBtn.disabled = false;
+        resetBtn.textContent = 'Send Reset Link';
+      }
+    }
+
+    // Load preferences from localStorage
+    function loadPreferences() {
+      const emailNotifications = localStorage.getItem('emailNotifications') !== 'false';
+      const recommendations = localStorage.getItem('recommendations') !== 'false';
+
+      document.getElementById('emailNotifications').checked = emailNotifications;
+      document.getElementById('recommendations').checked = recommendations;
+    }
+
+    // Save preferences to localStorage
+    function savePreference(key, value) {
+      localStorage.setItem(key, value.toString());
+      
+      // Show feedback based on the preference
+      let message = '';
+      if (key === 'emailNotifications') {
+        message = value ? 'Email notifications enabled' : 'Email notifications disabled';
+      } else if (key === 'recommendations') {
+        message = value ? 'Recommendations enabled' : 'Recommendations disabled';
+      }
+      
+      showToast(message, 'success');
+    }
+
+    // Show toast
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('successToast');
+      const messageEl = document.getElementById('toastMessage');
+      
+      messageEl.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.style.display = 'block';
+
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 4000);
+    }
+
+    // Sign out
+    async function handleSignOut() {
+      try {
+        await supabase.auth.signOut();
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Sign out error:', error);
+      }
+    }
+
+    // Initialize settings page
+    async function initializeSettingsPage() {
+      // Check authentication
+      const isAuthenticated = await requireAuth();
+      if (!isAuthenticated) return;
+
+      // Load account information
+      loadAccountInfo(currentUser);
+
+      // Load preferences
+      loadPreferences();
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeSettingsPage();
+
+      // Password reset
+      document.getElementById('resetPasswordBtn').addEventListener('click', handlePasswordReset);
+
+      // Preference toggles
+      document.getElementById('emailNotifications').addEventListener('change', function(e) {
+        savePreference('emailNotifications', e.target.checked);
+      });
+
+      document.getElementById('recommendations').addEventListener('change', function(e) {
+        savePreference('recommendations', e.target.checked);
+      });
+
+      // Sign out
+      document.getElementById('signout-btn').addEventListener('click', handleSignOut);
+
+      // Delete account button (placeholder)
+      document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+        showToast('Account deletion feature will be available in a future update.', 'info');
+      });
+    });
+  </script>
 
   <style>
-    :root {
-      --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      --surface: rgba(255, 255, 255, 0.05);
-      --surface-hover: rgba(255, 255, 255, 0.1);
-      --border: rgba(255, 255, 255, 0.1);
-      --text: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.7);
-      --accent: #00d4aa;
-      --accent-hover: #00b894;
-      --warning: #fdcb6e;
-      --error: #e17055;
-      --success: #00b894;
-      --radius: 16px;
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      --blur: blur(20px);
+    /* Settings Page Layout */
+    .app-layout {
+      background-color: var(--bg, #fefefe);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      line-height: 1.6;
+    .app-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
       min-height: 100vh;
     }
 
-    /* Navigation Styles */
-    .global-nav {
-      backdrop-filter: var(--blur);
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+    .app-sidebar {
+      background: var(--card, white);
+      border-right: 1px solid var(--border, #e5e5e5);
+      padding: 32px 0;
+      overflow-y: auto;
     }
 
-    .nav-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .sidebar-brand {
+      padding: 0 32px 32px;
+      border-bottom: 1px solid var(--border, #e5e5e5);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: var(--text);
-    }
-
-    .logo svg {
-      stroke: var(--accent);
-      stroke-width: 2.5;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .wordmark {
+    .sidebar-brand .wordmark {
       font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
       font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text, #1a1a1a);
     }
 
-    .nav-links {
+    .sidebar-nav {
+      padding-top: 32px;
       display: flex;
-      align-items: center;
-      gap: 1.5rem;
+      flex-direction: column;
     }
 
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .nav-link:hover {
-      color: var(--text);
-      background: var(--surface-hover);
-    }
-
-    /* Main Content */
-    .main-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-      min-height: calc(100vh - 80px);
-    }
-
-    .page-header {
-      margin-bottom: 3rem;
-    }
-
-    .page-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .page-subtitle {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-    }
-
-    /* Settings Sections */
-    .settings-section {
-      background: var(--surface);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--shadow);
-    }
-
-    .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .section-description {
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
+    .nav-item {
       display: block;
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-    }
-
-    .input {
-      width: 100%;
-      padding: 0.875rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
-      font-size: 1rem;
-      transition: all 0.2s ease;
-    }
-
-    .input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
-    }
-
-    .input:read-only {
-      background: rgba(255, 255, 255, 0.02);
-      color: var(--text-muted);
-      cursor: not-allowed;
-    }
-
-    .btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.875rem 1.5rem;
-      border-radius: var(--radius);
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+      padding: 12px 32px;
+      color: var(--text, #1a1a1a);
       text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin: 2px 0;
     }
 
-    .btn:hover:not(:disabled) {
-      background: var(--accent-hover);
+    .nav-item:hover {
+      background-color: var(--sage, #f0f4f0);
       transform: translateY(-1px);
     }
 
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
+    .nav-item.active {
+      background-color: var(--sage, #f0f4f0);
+      font-weight: 600;
     }
 
-    .btn.loading {
-      position: relative;
-      color: transparent;
+    .nav-signout {
+      margin-top: auto;
+      color: var(--muted, #666);
     }
 
-    .btn.loading::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border: 2px solid transparent;
-      border-top: 2px solid white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+    .app-main {
+      padding: 40px;
+      overflow-y: auto;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
     }
 
-    .btn-danger {
-      background: var(--error);
+    /* Page Header */
+    .page-header {
+      margin-bottom: 40px;
     }
 
-    .btn-danger:hover:not(:disabled) {
-      background: #d63031;
+    .header-content h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 8px;
     }
 
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
+    .header-content p {
+      font-size: 1.1rem;
+      margin: 0;
     }
 
-    .btn-secondary:hover {
-      border-color: var(--accent);
-      color: var(--text);
-      background: var(--surface-hover);
+    /* Settings Grid */
+    .settings-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
     }
 
-    /* Account Info Display */
+    .settings-section {
+      width: 100%;
+    }
+
+    /* Section Headers */
+    .section-header {
+      margin-bottom: 24px;
+    }
+
+    .section-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .section-header p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    /* Account Information */
     .account-info {
-      background: rgba(0, 212, 170, 0.1);
-      border: 1px solid rgba(0, 212, 170, 0.2);
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .info-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.5rem;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border, #e5e5e5);
     }
 
     .info-row:last-child {
-      margin-bottom: 0;
+      border-bottom: none;
     }
 
     .info-label {
-      font-weight: 500;
-      color: var(--text-muted);
+      font-weight: 600;
+      color: var(--text, #1a1a1a);
     }
 
     .info-value {
-      color: var(--text);
+      color: var(--muted, #666);
+      font-family: 'Inter', sans-serif;
     }
 
-    .provider-badge {
-      background: rgba(0, 212, 170, 0.2);
-      color: var(--accent);
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
       font-weight: 600;
       text-transform: uppercase;
+      letter-spacing: 0.025em;
     }
 
-    /* Loading and Error States */
-    .loading {
+    .status-badge.verified {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+
+    .status-badge.unverified {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    /* Settings Items */
+    .security-settings,
+    .preferences-settings,
+    .danger-settings {
       display: flex;
       flex-direction: column;
+      gap: 24px;
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border, #e5e5e5);
+    }
+
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+
+    .setting-content {
+      flex: 1;
+    }
+
+    .setting-content h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .setting-description {
+      color: var(--muted, #666);
+      font-size: 0.9rem;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .setting-action {
+      flex-shrink: 0;
+      display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 4rem;
-      color: var(--text-muted);
     }
 
-    .spinner {
-      width: 24px;
+    /* Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
       height: 24px;
-      border: 2px solid transparent;
-      border-top: 2px solid var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 0.5rem;
+      cursor: pointer;
     }
 
-    /* Toast Messages */
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border, #e5e5e5);
+      border-radius: 24px;
+      transition: 0.3s ease;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--sage, #90c695);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(24px);
+    }
+
+    /* Info Boxes */
+    .security-info,
+    .danger-info {
+      margin-top: 20px;
+    }
+
+    .info-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 8px;
+      background-color: var(--sand, #f8f7f4);
+      border: 1px solid var(--border, #e5e5e5);
+    }
+
+    .info-box.warning {
+      background-color: #fff3cd;
+      border-color: #ffeaa7;
+    }
+
+    .info-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .info-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: var(--text, #1a1a1a);
+    }
+
+    /* Danger Zone */
+    .danger-zone {
+      border: 1px solid #dc3545;
+      background-color: #fff5f5;
+    }
+
+    .danger-zone .section-header h3 {
+      color: #dc3545;
+    }
+
+    .btn.danger {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn.danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn.danger:disabled {
+      background-color: #6c757d;
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Toast */
     .toast {
       position: fixed;
       top: 20px;
       right: 20px;
-      padding: 1rem 1.5rem;
-      border-radius: var(--radius);
-      color: white;
-      font-weight: 500;
-      box-shadow: var(--shadow);
-      transform: translateX(400px);
-      transition: transform 0.3s ease;
-      z-index: 1000;
-      max-width: 350px;
-    }
-
-    .toast.show {
-      transform: translateX(0);
-    }
-
-    .toast.success { background: var(--success); }
-    .toast.error { background: var(--error); }
-    .toast.info { background: var(--accent); }
-
-    .toast-content {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .toast-icon {
-      font-size: 1.125rem;
-    }
-
-    /* Warning Box */
-    .warning-box {
-      background: rgba(253, 203, 110, 0.1);
-      border: 1px solid rgba(253, 203, 110, 0.3);
+      z-index: 2000;
+      padding: 16px 24px;
       border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    .warning-box .warning-title {
-      color: var(--warning);
-      font-weight: 600;
-      margin-bottom: 0.5rem;
+    .toast.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
     }
 
-    .warning-box p {
-      color: var(--text-muted);
-      font-size: 0.875rem;
+    .toast.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
     }
 
-    /* Responsive */
+    .toast.info {
+      background: #e2e3e5;
+      color: #383d41;
+      border: 1px solid #d6d8db;
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
-      .nav-content {
-        padding: 1rem;
+      .app-container {
+        grid-template-columns: 1fr;
       }
 
-      .main-container {
-        padding: 1rem;
+      .app-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border, #e5e5e5);
+        padding: 16px 0;
       }
 
-      .settings-section {
-        padding: 1.5rem;
+      .sidebar-brand {
+        padding: 0 16px 16px;
       }
 
-      .page-title {
-        font-size: 2rem;
+      .sidebar-nav {
+        padding-top: 16px;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 0;
+      }
+
+      .nav-item {
+        padding: 12px 16px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .app-main {
+        padding: 20px;
+      }
+
+      .setting-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+      }
+
+      .setting-action {
+        justify-content: flex-end;
       }
 
       .info-row {
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.25rem;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-main {
+        padding: 16px;
+      }
+
+      .page-header {
+        margin-bottom: 24px;
+      }
+
+      .settings-grid {
+        gap: 24px;
       }
     }
   </style>
-</head>
-<body>
-  <div id="nav-container"></div>
 
-  <main class="main-container">
-    <div class="page-header">
-      <h1 class="page-title">Account Settings</h1>
-      <p class="page-subtitle">Manage your account preferences and security</p>
-    </div>
-
-    <div id="settingsContainer" class="loading">
-      <div class="spinner"></div>
-      Loading account settings...
-    </div>
-  </main>
-
-  <script src="shared.js"></script>
-  <script>
-    const supabase = window.sb;
-    let currentUser = null;
-
-    // Initialize page
-    async function initSettingsPage() {
-      try {
-        // OAuth hash cleanup
-        if (location.hash.includes('access_token')) {
-          history.replaceState(null, '', location.pathname);
-        }
-
-        const user = await requireAuth();
-        if (!user) return;
-
-        currentUser = user;
-        renderSettings(user);
-
-      } catch (error) {
-        console.error('[settings/init]', { error });
-        showError('Failed to load settings. Please try again.');
-      }
-    }
-
-    // Render settings sections
-    function renderSettings(user) {
-      const container = document.getElementById('settingsContainer');
-      const isGoogleUser = user.app_metadata?.provider === 'google';
-      
-      container.innerHTML = `
-        <!-- Account Information -->
-        <div class="settings-section">
-          <h2 class="section-title">Account Information</h2>
-          <p class="section-description">Your basic account details and authentication method</p>
-          
-          <div class="account-info">
-            <div class="info-row">
-              <span class="info-label">Email Address</span>
-              <span class="info-value">${user.email}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Sign-in Method</span>
-              <span class="provider-badge">${isGoogleUser ? 'Google' : 'Email'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Account Created</span>
-              <span class="info-value">${formatDate(user.created_at)}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Last Sign In</span>
-              <span class="info-value">${formatDate(user.last_sign_in_at)}</span>
-            </div>
-          </div>
-          
-          <a href="/profile.html" class="btn">
-            Edit Profile Information
-          </a>
-        </div>
-
-        <!-- Password Management -->
-        ${isGoogleUser ? `
-          <div class="settings-section">
-            <h2 class="section-title">Password</h2>
-            <p class="section-description">Your account is secured through Google</p>
-            
-            <div class="account-info">
-              <div style="text-align: center; padding: 1rem;">
-                <p style="color: var(--text-muted); margin-bottom: 1rem;">
-                  🔒 Your account is protected by Google's security. 
-                  You can manage your password and security settings in your Google account.
-                </p>
-                <a href="https://myaccount.google.com/security" target="_blank" class="btn btn-secondary">
-                  Manage Google Account
-                </a>
-              </div>
-            </div>
-          </div>
-        ` : `
-          <div class="settings-section">
-            <h2 class="section-title">Password</h2>
-            <p class="section-description">Update your password for security</p>
-            
-            <div class="warning-box">
-              <div class="warning-title">Password Reset</div>
-              <p>We'll send a secure password reset link to your email address. Follow the instructions in the email to create a new password.</p>
-            </div>
-            
-            <button class="btn" onclick="handlePasswordReset()" id="resetPasswordBtn">
-              Send Password Reset Email
-            </button>
-          </div>
-        `}
-
-        <!-- Profile Management -->
-        <div class="settings-section">
-          <h2 class="section-title">Profile</h2>
-          <p class="section-description">Manage your student profile and preferences</p>
-          
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-            <a href="/profile.html" class="btn">
-              Edit Profile
-            </a>
-            <a href="/applications.html" class="btn btn-secondary">
-              View Applications
-            </a>
-          </div>
-        </div>
-
-        <!-- Account Actions -->
-        <div class="settings-section">
-          <h2 class="section-title">Account Actions</h2>
-          <p class="section-description">Sign out or manage your account</p>
-          
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-            <button class="btn btn-secondary" onclick="handleSignOut()" id="signOutBtn">
-              Sign Out
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    // Handle password reset
-    async function handlePasswordReset() {
-      try {
-        const resetBtn = document.getElementById('resetPasswordBtn');
-        setLoading(resetBtn, true);
-
-        const { error } = await supabase.auth.resetPasswordForEmail(currentUser.email, {
-          redirectTo: window.location.origin + '/signin.html'
-        });
-
-        if (error) {
-          console.error('[auth/resetPassword]', { error, email: currentUser.email });
-          showToast('Failed to send reset email. Please try again.', 'error');
-          return;
-        }
-
-        showToast('Password reset email sent! Check your inbox.', 'success');
-        
-      } catch (error) {
-        console.error('[settings/passwordReset]', { error });
-        showToast('Failed to send reset email. Please try again.', 'error');
-      } finally {
-        const resetBtn = document.getElementById('resetPasswordBtn');
-        setLoading(resetBtn, false);
-      }
-    }
-
-    // Show error
-    function showError(message) {
-      const container = document.getElementById('settingsContainer');
-      container.innerHTML = `
-        <div class="settings-section">
-          <h3 style="color: var(--error); text-align: center;">Error</h3>
-          <p style="text-align: center; color: var(--text-muted);">${message}</p>
-          <div style="text-align: center; margin-top: 1rem;">
-            <button class="btn" onclick="window.location.reload()">
-              Try Again
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', initSettingsPage);
-  </script>
 </body>
 </html>
