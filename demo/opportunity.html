@@ -12,6 +12,8 @@
   
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
 
   <style>
     :root {
@@ -400,6 +402,8 @@
 
   <script src="shared.js"></script>
   <script>
+    const supabase = window.sb;
+
     // Get opportunity ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const opportunityId = urlParams.get('id');
@@ -448,18 +452,22 @@
         }
 
         // Check if user has already applied
-        const user = await getSession();
-        const { data: existingApplication } = await supabase
-          .from('applications')
-          .select('id')
-          .eq('opportunity_id', opportunityId)
-          .eq('user_id', user.id)
-          .limit(1);
+        const session = await getSession();
+        const user = session?.user;
 
-        const hasApplied = existingApplication && existingApplication.length > 0;
+        if (user) {
+          const { data: existingApplication } = await supabase
+            .from('applications')
+            .select('id')
+            .eq('opportunity_id', opportunityId)
+            .eq('user_id', user.id)
+            .limit(1);
 
-        // Render opportunity
-        renderOpportunity(opportunity, hasApplied);
+          const hasApplied = existingApplication && existingApplication.length > 0;
+          renderOpportunity(opportunity, hasApplied);
+        } else {
+          renderOpportunity(opportunity, false);
+        }
 
       } catch (error) {
         console.error('[opportunity/load]', { error });

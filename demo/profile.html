@@ -15,6 +15,9 @@
   
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="shared.js"></script>
 </head>
 <body>
   <div class="container">
@@ -127,8 +130,8 @@
     <footer></footer>
   </div>
 
-  <script src="shared.js"></script>
   <script>
+    const supabase = window.sb;
     let currentUser = null;
     let existingProfile = null;
 

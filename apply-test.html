@@ -7,6 +7,8 @@
   
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
 </head>
 <body>
   <h1>PrePair Test Signup</h1>
@@ -20,22 +22,10 @@
   <script>
     console.log('PrePair v1.8 - STANDALONE SIGNUP TEST');
     
-    // Initialize Supabase with proper v2 configuration
-    const supabase = window.supabase.createClient(
-      'https://aezybthbsmpihbyzfiqi.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go',
-      {
-        auth: {
-          autoRefreshToken: true,
-          persistSession: true,
-          detectSessionInUrl: true
-        }
-      }
-    );
-    
+    // Initialize Supabase with shared config
+    const supabase = window.sb;
     // Simple Google signup
     document.getElementById('google-signup').addEventListener('click', async () => {
-      console.log('Google signup clicked');
       document.getElementById('status').innerHTML = 'Starting Google signup...';
       
       try {
@@ -44,33 +34,24 @@
           options: {
             redirectTo: `${window.location.origin}/dashboard.html`
           }
-        });
 
         if (error) {
-          console.error('OAuth error:', error);
           document.getElementById('status').innerHTML = 'Error: ' + error.message;
         } else {
-          console.log('OAuth initiated');
           document.getElementById('status').innerHTML = 'Redirecting to Google...';
         }
       } catch (err) {
-        console.error('Catch error:', err);
         document.getElementById('status').innerHTML = 'Catch Error: ' + err.message;
       }
-    });
     
     // Listen for auth changes
     supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state change:', event, session ? 'user logged in' : 'no user');
       
       if (event === 'SIGNED_IN' && session) {
-        console.log('User signed in:', session.user.email);
         document.getElementById('status').innerHTML = 'Signed in! Redirecting...';
         setTimeout(() => {
           window.location.href = 'dashboard.html';
-        }, 1000);
       }
-    });
   </script>
 </body>
 </html>

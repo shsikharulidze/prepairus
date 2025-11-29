@@ -3,588 +3,498 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Applications — PrePair</title>
+  <title>PrePair Applications</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- Supabase -->
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="shared.css">
+  
+  <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="shared.js"></script>
+  <script src="prepair.js"></script>
+</head>
+<body id="applications-page">
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" aria-label="Main Navigation">
+      <div class="sidebar-brand">
+        <span class="wordmark">PrePair</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="edit-profile.html">Edit Profile</a></li>
+          <li class="active"><a href="applications.html">Applications</a></li>
+          <li><a href="help.html">Help</a></li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><button type="button" id="signout-btn" role="button">Sign Out</button></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Applications Header -->
+      <section class="applications-header">
+        <div class="header-content">
+          <h2>My Applications</h2>
+          <p class="muted">Track and manage your internship applications.</p>
+        </div>
+        <div class="header-actions">
+          <a href="#" class="btn" id="new-application-btn">New Application</a>
+        </div>
+      </section>
+
+      <!-- Applications List -->
+      <section class="applications-list-section">
+        <div class="card">
+          <div id="applications-container">
+            
+            <!-- Applications List with Sample Data -->
+            <div id="applications-list">
+              <div class="applications-table">
+                <div class="table-header">
+                  <div class="header-cell position">Position</div>
+                  <div class="header-cell company">Company</div>
+                  <div class="header-cell status">Status</div>
+                  <div class="header-cell date">Applied</div>
+                  <div class="header-cell actions">Actions</div>
+                </div>
+                <div id="applications-rows">
+                  <!-- Sample Application 1 -->
+                  <div class="application-row">
+                    <div class="row-cell position" data-label="Position">
+                      <div class="position-title">Software Engineering Intern</div>
+                    </div>
+                    <div class="row-cell company" data-label="Company">
+                      <div class="company-name">TechStart NYC</div>
+                    </div>
+                    <div class="row-cell status" data-label="Status">
+                      <span class="status-badge status-applied">Applied</span>
+                    </div>
+                    <div class="row-cell date" data-label="Applied">
+                      <div class="application-date">Nov 25, 2025</div>
+                    </div>
+                    <div class="row-cell actions" data-label="Actions">
+                      <div class="application-actions">
+                        <button class="action-btn" onclick="viewApplication('1')">View</button>
+                        <button class="action-btn withdraw" onclick="handleWithdrawApplication('1')">Withdraw</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sample Application 2 -->
+                  <div class="application-row">
+                    <div class="row-cell position" data-label="Position">
+                      <div class="position-title">Marketing Assistant</div>
+                    </div>
+                    <div class="row-cell company" data-label="Company">
+                      <div class="company-name">Creative Agency</div>
+                    </div>
+                    <div class="row-cell status" data-label="Status">
+                      <span class="status-badge status-interview">Interview</span>
+                    </div>
+                    <div class="row-cell date" data-label="Applied">
+                      <div class="application-date">Nov 22, 2025</div>
+                    </div>
+                    <div class="row-cell actions" data-label="Actions">
+                      <div class="application-actions">
+                        <button class="action-btn" onclick="viewApplication('2')">View</button>
+                        <button class="action-btn withdraw" onclick="handleWithdrawApplication('2')">Withdraw</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sample Application 3 -->
+                  <div class="application-row">
+                    <div class="row-cell position" data-label="Position">
+                      <div class="position-title">Data Analyst Intern</div>
+                    </div>
+                    <div class="row-cell company" data-label="Company">
+                      <div class="company-name">Analytics Corp</div>
+                    </div>
+                    <div class="row-cell status" data-label="Status">
+                      <span class="status-badge status-offered">Offered</span>
+                    </div>
+                    <div class="row-cell date" data-label="Applied">
+                      <div class="application-date">Nov 20, 2025</div>
+                    </div>
+                    <div class="row-cell actions" data-label="Actions">
+                      <div class="application-actions">
+                        <button class="action-btn" onclick="viewApplication('3')">View</button>
+                        <button class="action-btn withdraw" onclick="handleWithdrawApplication('3')">Withdraw</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sample Application 4 -->
+                  <div class="application-row">
+                    <div class="row-cell position" data-label="Position">
+                      <div class="position-title">UX Design Intern</div>
+                    </div>
+                    <div class="row-cell company" data-label="Company">
+                      <div class="company-name">Design Studio</div>
+                    </div>
+                    <div class="row-cell status" data-label="Status">
+                      <span class="status-badge status-rejected">Rejected</span>
+                    </div>
+                    <div class="row-cell date" data-label="Applied">
+                      <div class="application-date">Nov 18, 2025</div>
+                    </div>
+                    <div class="row-cell actions" data-label="Actions">
+                      <div class="application-actions">
+                        <button class="action-btn" onclick="viewApplication('4')">View</button>
+                        <button class="action-btn withdraw" onclick="handleWithdrawApplication('4')">Withdraw</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
 
   <style>
-    :root {
-      --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      --surface: rgba(255, 255, 255, 0.05);
-      --surface-hover: rgba(255, 255, 255, 0.1);
-      --border: rgba(255, 255, 255, 0.1);
-      --text: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.7);
-      --accent: #00d4aa;
-      --accent-hover: #00b894;
-      --warning: #fdcb6e;
-      --error: #e17055;
-      --success: #00b894;
-      --radius: 16px;
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      --blur: blur(20px);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* Navigation Styles */
-    .global-nav {
-      backdrop-filter: var(--blur);
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .nav-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: var(--text);
-    }
-
-    .logo svg {
-      stroke: var(--accent);
-      stroke-width: 2.5;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .wordmark {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1.5rem;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .nav-link:hover {
-      color: var(--text);
-      background: var(--surface-hover);
-    }
-
-    /* Main Content */
-    .main-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-      min-height: calc(100vh - 80px);
-    }
-
-    .page-header {
-      margin-bottom: 3rem;
-    }
-
-    .page-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .page-subtitle {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-    }
-
-    /* Applications Grid */
-    .applications-grid {
+    /* Dashboard Layout */
+    .app-container {
       display: grid;
-      gap: 1.5rem;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+      background-color: var(--bg);
     }
 
-    .application-card {
-      background: var(--surface);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
+    /* Sidebar Styles */
+    .sidebar {
+      background-color: var(--card);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
       box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-      position: relative;
     }
 
-    .application-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
-      border-color: var(--accent);
+    .sidebar-brand {
+      padding: 0 24px 32px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .application-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1rem;
-    }
-
-    .application-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-
-    .application-company {
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .status-badge {
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .status-submitted {
-      background: rgba(0, 212, 170, 0.2);
-      color: var(--success);
-    }
-
-    .status-reviewed {
-      background: rgba(253, 203, 110, 0.2);
-      color: var(--warning);
-    }
-
-    .status-accepted {
-      background: rgba(0, 184, 148, 0.2);
-      color: var(--success);
-    }
-
-    .status-rejected {
-      background: rgba(225, 112, 85, 0.2);
-      color: var(--error);
-    }
-
-    .application-meta {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1rem;
-      color: var(--text-muted);
-      font-size: 0.875rem;
-    }
-
-    .application-answers {
-      margin-bottom: 1rem;
-    }
-
-    .answers-toggle {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 0.875rem;
-    }
-
-    .answers-toggle:hover {
-      border-color: var(--accent);
-      color: var(--text);
-    }
-
-    .answers-content {
-      display: none;
-      margin-top: 1rem;
-      padding: 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-    }
-
-    .answers-content.show {
-      display: block;
-    }
-
-    .answer-item {
-      margin-bottom: 1rem;
-    }
-
-    .answer-question {
-      font-weight: 500;
-      margin-bottom: 0.25rem;
-    }
-
-    .answer-text {
-      color: var(--text-muted);
-      white-space: pre-wrap;
-    }
-
-    .file-link {
-      color: var(--accent);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .file-link:hover {
-      text-decoration: underline;
-    }
-
-    /* Loading State */
-    .loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 4rem;
-      color: var(--text-muted);
-    }
-
-    .spinner {
-      width: 24px;
-      height: 24px;
-      border: 2px solid transparent;
-      border-top: 2px solid var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 0.5rem;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 4rem;
-      color: var(--text-muted);
-    }
-
-    .empty-state h3 {
+    .sidebar-brand .wordmark {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.5rem;
-      margin-bottom: 1rem;
+      font-weight: 700;
       color: var(--text);
     }
 
-    .btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.875rem 1.5rem;
-      border-radius: var(--radius);
-      font-weight: 600;
-      font-size: 0.875rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s ease;
-      cursor: pointer;
+    .sidebar-nav {
+      padding-top: 24px;
     }
 
-    .btn:hover {
-      background: var(--accent-hover);
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-nav li {
+      margin: 0;
+    }
+
+    .sidebar-nav a,
+    .sidebar-nav button {
+      display: block;
+      padding: 12px 24px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-nav a:hover,
+    .sidebar-nav button:hover {
+      background-color: var(--sage);
       transform: translateY(-1px);
     }
 
-    /* Responsive */
+    .sidebar-nav .active a {
+      background-color: var(--sage);
+      font-weight: 600;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    /* Applications Header */
+    .applications-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 32px;
+      gap: 20px;
+    }
+
+    .header-content h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .header-content p {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    /* Applications Table */
+    .applications-table {
+      width: 100%;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr 1.2fr 1fr;
+      gap: 16px;
+      padding: 16px 20px;
+      background-color: var(--sand);
+      border-radius: 8px 8px 0 0;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-cell {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .application-row {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr 1.2fr 1fr;
+      gap: 16px;
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      transition: background-color 0.2s ease;
+    }
+
+    .application-row:hover {
+      background-color: var(--bg);
+    }
+
+    .application-row:last-child {
+      border-bottom: none;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .row-cell {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .position-title {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .company-name {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-applied {
+      background-color: var(--sage);
+      color: var(--text);
+    }
+
+    .status-interview {
+      background-color: var(--lilac);
+      color: var(--text);
+    }
+
+    .status-offered {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .status-rejected {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .application-date {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .application-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      padding: 4px 8px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: underline;
+      font-family: 'Inter', sans-serif;
+      transition: color 0.2s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--text);
+    }
+
+    .action-btn.withdraw {
+      color: #dc3545;
+    }
+
+    .action-btn.withdraw:hover {
+      color: #c82333;
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
-      .nav-content {
-        padding: 1rem;
+      .app-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
       }
 
-      .main-container {
-        padding: 1rem;
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
       }
 
-      .application-card {
-        padding: 1rem;
+      .sidebar-nav ul {
+        display: flex;
+        overflow-x: auto;
+        padding: 0 16px;
       }
 
-      .page-title {
-        font-size: 2rem;
+      .sidebar-nav li {
+        flex-shrink: 0;
       }
 
-      .application-header {
+      .main-content {
+        padding: 16px;
+      }
+
+      .applications-header {
         flex-direction: column;
-        gap: 0.5rem;
+        align-items: stretch;
+        gap: 16px;
       }
 
-      .application-meta {
-        flex-direction: column;
-        gap: 0.5rem;
+      .header-actions {
+        width: 100%;
+      }
+
+      .header-actions .btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Mobile Table - Stack vertically */
+      .applications-table {
+        display: block;
+      }
+
+      .table-header {
+        display: none;
+      }
+
+      .application-row {
+        display: block;
+        padding: 20px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background-color: white;
+      }
+
+      .application-row:last-child {
+        margin-bottom: 0;
+      }
+
+      .row-cell {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .row-cell:before {
+        content: attr(data-label) ": ";
+        font-weight: 600;
+        color: var(--muted);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .application-actions {
+        justify-content: flex-start;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
       }
     }
   </style>
-</head>
-<body>
-  <div id="nav-container"></div>
 
-  <main class="main-container">
-    <div class="page-header">
-      <h1 class="page-title">My Applications</h1>
-      <p class="page-subtitle">Track the status of your internship applications</p>
-    </div>
-
-    <div id="applicationsContainer" class="loading">
-      <div class="spinner"></div>
-      Loading your applications...
-    </div>
-  </main>
-
-  <script src="shared.js"></script>
   <script>
-    // Initialize page
-    async function initApplicationsPage() {
-      try {
-        // OAuth hash cleanup
-        if (location.hash.includes('access_token')) {
-          history.replaceState(null, '', location.pathname);
-        }
+    // Sample functions for demo purposes
+    function viewApplication(id) {
+      alert(`Viewing application ${id} - This would show detailed application information.`);
+    }
 
-        const user = await requireAuth();
-        if (!user) return;
-
-        await loadApplications();
-
-      } catch (error) {
-        console.error('[applications/init]', { error });
-        showError('Failed to load applications. Please try again.');
+    function handleWithdrawApplication(id) {
+      if (confirm('Are you sure you want to withdraw this application? This action cannot be undone.')) {
+        alert(`Application ${id} withdrawn successfully!`);
+        // In real implementation, this would remove the row from the table
       }
     }
 
-    // Load user's applications
-    async function loadApplications() {
-      try {
-        const user = await getSession();
-        
-        const { data: applications, error } = await supabase
-          .from('applications')
-          .select(`
-            *,
-            opportunities (
-              title,
-              company,
-              location,
-              questions
-            )
-          `)
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false });
-
-        if (error) {
-          console.error('[applications/select]', { error, userId: user.id });
-          throw error;
-        }
-
-        const container = document.getElementById('applicationsContainer');
-        
-        if (applications && applications.length > 0) {
-          container.innerHTML = `
-            <div class="applications-grid">
-              ${applications.map(application => renderApplicationCard(application)).join('')}
-            </div>
-          `;
-          
-          // Add toggle event listeners
-          document.querySelectorAll('.answers-toggle').forEach(toggle => {
-            toggle.addEventListener('click', handleAnswersToggle);
-          });
-          
-        } else {
-          container.innerHTML = `
-            <div class="empty-state">
-              <h3>No Applications Yet</h3>
-              <p>You haven't submitted any applications yet. Start browsing opportunities to find your perfect internship!</p>
-              <a href="/opportunities.html" class="btn" style="margin-top: 1.5rem;">
-                Browse Opportunities
-              </a>
-            </div>
-          `;
-        }
-
-      } catch (error) {
-        console.error('[applications/load]', { error });
-        document.getElementById('applicationsContainer').innerHTML = `
-          <div class="empty-state">
-            <h3 style="color: var(--error);">Failed to load applications</h3>
-            <p>Please try refreshing the page.</p>
-            <button class="btn" onclick="window.location.reload()" style="margin-top: 1rem;">
-              Try Again
-            </button>
-          </div>
-        `;
+    // New application button handler
+    document.addEventListener('DOMContentLoaded', function() {
+      const newAppBtn = document.getElementById('new-application-btn');
+      if (newAppBtn) {
+        newAppBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          alert('This would redirect to the internship browsing page where you can find new opportunities to apply for.');
+        });
       }
-    }
-
-    // Render application card
-    function renderApplicationCard(application) {
-      const opportunity = application.opportunities;
-      const answers = application.answers || {};
-      const questions = opportunity?.questions || [];
-      
-      return `
-        <div class="application-card">
-          <div class="application-header">
-            <div>
-              <h3 class="application-title">${opportunity?.title || 'Unknown Position'}</h3>
-              <div class="application-company">${opportunity?.company || 'Unknown Company'}</div>
-            </div>
-            <div class="status-badge status-${application.status}">
-              ${getStatusLabel(application.status)}
-            </div>
-          </div>
-          
-          <div class="application-meta">
-            <span>Applied ${formatDate(application.created_at)}</span>
-            ${opportunity?.location ? `<span>• ${opportunity.location}</span>` : ''}
-            <span>• ${Object.keys(answers).length} answer${Object.keys(answers).length !== 1 ? 's' : ''}</span>
-          </div>
-          
-          ${questions.length > 0 ? `
-            <div class="application-answers">
-              <button class="answers-toggle" data-application-id="${application.id}">
-                View Answers & Files
-              </button>
-              <div class="answers-content" id="answers-${application.id}">
-                ${questions.map(q => renderAnswerItem(q, answers[q.id])).join('')}
-              </div>
-            </div>
-          ` : ''}
-        </div>
-      `;
-    }
-
-    // Render answer item
-    function renderAnswerItem(question, answer) {
-      if (!answer) {
-        return `
-          <div class="answer-item">
-            <div class="answer-question">${question.text}</div>
-            <div class="answer-text" style="color: var(--text-muted); font-style: italic;">No answer provided</div>
-          </div>
-        `;
-      }
-
-      if (question.type === 'file') {
-        return `
-          <div class="answer-item">
-            <div class="answer-question">${question.text}</div>
-            <a href="#" class="file-link" onclick="downloadFile('${answer}')">
-              📎 ${getFileName(answer)}
-            </a>
-          </div>
-        `;
-      }
-
-      return `
-        <div class="answer-item">
-          <div class="answer-question">${question.text}</div>
-          <div class="answer-text">${answer}</div>
-        </div>
-      `;
-    }
-
-    // Handle answers toggle
-    function handleAnswersToggle(event) {
-      const applicationId = event.target.dataset.applicationId;
-      const content = document.getElementById(`answers-${applicationId}`);
-      const isShowing = content.classList.contains('show');
-      
-      if (isShowing) {
-        content.classList.remove('show');
-        event.target.textContent = 'View Answers & Files';
-      } else {
-        content.classList.add('show');
-        event.target.textContent = 'Hide Answers & Files';
-      }
-    }
-
-    // Download file
-    async function downloadFile(filePath) {
-      try {
-        const signedUrl = await getSignedUrl('application-files', filePath);
-        if (signedUrl) {
-          window.open(signedUrl, '_blank');
-        } else {
-          showToast('Failed to access file', 'error');
-        }
-      } catch (error) {
-        console.error('[storage/download]', { error, filePath });
-        showToast('Failed to download file', 'error');
-      }
-    }
-
-    // Get filename from path
-    function getFileName(filePath) {
-      if (!filePath) return 'Unknown file';
-      const parts = filePath.split('/');
-      const filename = parts[parts.length - 1];
-      // Remove timestamp prefix if present
-      return filename.replace(/^\d+_/, '');
-    }
-
-    // Get status label
-    function getStatusLabel(status) {
-      const labels = {
-        submitted: 'Submitted',
-        reviewed: 'Under Review',
-        accepted: 'Accepted',
-        rejected: 'Rejected'
-      };
-      return labels[status] || 'Unknown';
-    }
-
-    // Show error
-    function showError(message) {
-      showToast(message, 'error');
-    }
-
-    // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', initApplicationsPage);
+    });
   </script>
 </body>
 </html>

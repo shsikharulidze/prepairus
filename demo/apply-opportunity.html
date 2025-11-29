@@ -12,6 +12,8 @@
   
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
 
   <style>
     :root {
@@ -443,6 +445,8 @@
 
   <script src="shared.js"></script>
   <script>
+    const supabase = window.sb;
+
     // Get opportunity ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const opportunityId = urlParams.get('id');
@@ -494,12 +498,19 @@
         }
 
         // Check for existing application
-        const user = await getSession();
+        const session = await getSession();
+        const user = session?.user;
+
+        if (!user) {
+          showError('Please sign in to continue.');
+          return;
+        }
+
         const { data: existingApplication } = await supabase
           .from('applications')
           .select('id')
           .eq('opportunity_id', opportunityId)
-          .eq('user_id', user.id)
+          .eq('user_id', user?.id || '')
           .limit(1);
 
         if (existingApplication && existingApplication.length > 0) {
@@ -640,7 +651,8 @@
         const submitBtn = document.getElementById('submitBtn');
         setLoading(submitBtn, true);
 
-        const user = await getSession();
+        const session = await getSession();
+        const user = session?.user;
         if (!user) {
           showToast('Authentication error. Please sign in again.', 'error');
           return;

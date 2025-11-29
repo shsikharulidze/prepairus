@@ -1,28 +1,54 @@
 -- PrePair Database Schema and Setup
 -- Run this in Supabase SQL Editor
 
--- Create or update student_profiles table
 CREATE TABLE IF NOT EXISTS public.student_profiles (
-    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    id uuid PRIMARY KEY DEFAULT auth.uid(),
+    user_id uuid UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
+    email text,
+    "firstName" text,
+    "lastName" text,
     university text,
     major text,
-    graduation_year integer,
+    "graduationYear" integer,
     campus text,
     nationality text,
-    created_at timestamptz DEFAULT now()
+    phone text,
+    linkedin text,
+    portfolio text,
+    bio text,
+    skills text,
+    interests text,
+    avatar_url text,
+    onboarding_complete boolean DEFAULT false,
+    created_at timestamptz DEFAULT now(),
+    updated_at timestamptz DEFAULT now()
 );
 
 -- Add missing columns to existing student_profiles if they don't exist
 DO $$ 
 BEGIN
+    -- Ensure core identity fields exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'user_id') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN user_id uuid UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'email') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN email text;
+    END IF;
+    -- Profile fields (keep camelCase to match client payloads)
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'firstName') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN "firstName" text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'lastName') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN "lastName" text;
+    END IF;
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'university') THEN
         ALTER TABLE public.student_profiles ADD COLUMN university text;
     END IF;
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'major') THEN
         ALTER TABLE public.student_profiles ADD COLUMN major text;
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'graduation_year') THEN
-        ALTER TABLE public.student_profiles ADD COLUMN graduation_year integer;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'graduationYear') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN "graduationYear" integer;
     END IF;
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'campus') THEN
         ALTER TABLE public.student_profiles ADD COLUMN campus text;
@@ -30,7 +56,40 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'nationality') THEN
         ALTER TABLE public.student_profiles ADD COLUMN nationality text;
     END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'phone') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN phone text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'linkedin') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN linkedin text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'portfolio') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN portfolio text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'bio') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN bio text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'skills') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN skills text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'interests') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN interests text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'avatar_url') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN avatar_url text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'onboarding_complete') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN onboarding_complete boolean DEFAULT false;
+    END IF;
+    -- Ensure updated_at exists for trigger
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'student_profiles' AND column_name = 'updated_at') THEN
+        ALTER TABLE public.student_profiles ADD COLUMN updated_at timestamptz DEFAULT now();
+    END IF;
 END $$;
+
+-- Keep auth linkage in sync
+ALTER TABLE public.student_profiles ALTER COLUMN id SET DEFAULT auth.uid();
+ALTER TABLE public.student_profiles ALTER COLUMN user_id SET DEFAULT auth.uid();
+UPDATE public.student_profiles SET user_id = id WHERE user_id IS NULL;
 
 -- Create opportunities table
 CREATE TABLE IF NOT EXISTS public.opportunities (
@@ -75,7 +134,9 @@ DROP POLICY IF EXISTS "Users can update own applications" ON public.applications
 
 -- Student profiles policies
 CREATE POLICY "Users can view and edit own profile" ON public.student_profiles
-    FOR ALL USING (auth.uid() = user_id);
+    FOR ALL USING (auth.uid() = id OR auth.uid() = user_id);
+CREATE POLICY "Users can insert own profile" ON public.student_profiles
+    FOR INSERT WITH CHECK (auth.uid() = id OR auth.uid() = user_id);
 
 -- Opportunities policies (public read)
 CREATE POLICY "Anyone can view active opportunities" ON public.opportunities

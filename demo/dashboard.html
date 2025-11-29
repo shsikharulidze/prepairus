@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard — PrePair</title>
+  <title>PrePair Dashboard</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,230 +18,204 @@
   <script src="js/config.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="shared.js"></script>
+  <script src="prepair.js"></script>
 </head>
-<body>
-  <div class="container">
-    <div id="header-shell"></div>
+<body id="dashboard-page">
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" aria-label="Main Navigation">
+      <div class="sidebar-brand">
+        <span class="wordmark">PrePair</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="active"><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="edit-profile.html">Edit Profile</a></li>
+          <li><a href="applications.html">Applications</a></li>
+          <li><a href="help.html">Help</a></li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><button type="button" id="signout-btn" role="button">Sign Out</button></li>
+        </ul>
+      </nav>
+    </aside>
 
-    <main>
-      <!-- Welcome Section -->
-      <section class="welcome-section mb-3">
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Welcome Card -->
+      <section class="welcome-section">
         <div class="card welcome-card">
           <div class="user-avatar" id="userAvatar">
-            U
+            A
           </div>
           <div class="welcome-content">
-            <h1 id="welcomeTitle">Welcome back!</h1>
+            <h2 id="welcomeTitle">Welcome back, Alex!</h2>
             <p id="welcomeSubtitle" class="muted">Ready to explore new opportunities?</p>
           </div>
         </div>
       </section>
 
-      <!-- Profile Completeness Banner -->
-      <div class="card profile-banner" id="profileBanner" style="display: none; background: var(--sand); border-left: 4px solid var(--clay);">
-        <div class="flex items-center gap-2">
-          <div class="warning-icon">⚠️</div>
-          <div class="flex-1">
-            <div class="font-weight-600 mb-1">Complete your profile</div>
-            <div class="text-muted">Add more details to get better matched with opportunities</div>
-          </div>
-          <a href="profile.html" class="btn">Complete Profile</a>
+      <!-- Quick Actions -->
+      <section class="quick-actions-section">
+        <h3>Quick Actions</h3>
+        <div class="cta">
+          <a href="#" class="btn ghost">Browse Internships</a>
+          <a href="applications.html" class="btn ghost">Apply Now</a>
+          <a href="#" class="btn ghost">View Matches</a>
         </div>
-      </div>
+      </section>
 
-      <!-- Featured Opportunity -->
-      <section class="opportunities-section">
-        <h2 class="h-sg mb-2">Featured Opportunity</h2>
-        <div id="opportunityContainer">
-          <div class="card text-center" style="padding: 3rem;">
-            <div class="spinner" style="margin: 0 auto 1rem;"></div>
-            <p class="muted">Loading opportunities...</p>
+      <!-- Recent Applications Panel -->
+      <section class="recent-applications-section">
+        <div class="card">
+          <h3>Recent Applications</h3>
+          <div id="recentApplicationsList">
+            <div class="application-item">
+              <h4 class="position-title">Software Engineering Intern</h4>
+              <p class="muted">TechStart NYC • <span class="status applied">Applied</span></p>
+              <p class="application-date">Nov 25, 2025</p>
+            </div>
+            <div class="application-item">
+              <h4 class="position-title">Marketing Assistant</h4>
+              <p class="muted">Creative Agency • <span class="status interview">Interview</span></p>
+              <p class="application-date">Nov 22, 2025</p>
+            </div>
+            <div class="application-item">
+              <h4 class="position-title">Data Analyst Intern</h4>
+              <p class="muted">Analytics Corp • <span class="status applied">Applied</span></p>
+              <p class="application-date">Nov 20, 2025</p>
+            </div>
           </div>
         </div>
       </section>
-    </main>
 
-    <footer></footer>
+      <!-- Internship Suggestions -->
+      <section class="suggestions-section">
+        <div class="card sage">
+          <h3>Recommended for You</h3>
+          <div class="suggestion-item">
+            <h4>Marketing Intern</h4>
+            <p class="muted">Bronx Marketing Agency • Remote/On-site</p>
+          </div>
+          <div class="suggestion-item">
+            <h4>Software Development Intern</h4>
+            <p class="muted">Tech Startup NYC • Hybrid</p>
+          </div>
+          <a href="#" class="btn ghost">View All Suggestions</a>
+        </div>
+      </section>
+
+      <!-- Notifications/Announcements -->
+      <section class="notifications-section">
+        <div class="card sand">
+          <h3>Announcements</h3>
+          <p>New internships added this week! Check out our latest opportunities in tech and marketing.</p>
+        </div>
+      </section>
+
+    </main>
   </div>
 
-  <script src="shared.js"></script>
-  <script>
-    let userProfile = null;
-
-    // Initialize dashboard
-    async function initDashboard() {
-      try {
-        // OAuth hash cleanup
-        if (location.hash.includes('access_token')) {
-          history.replaceState(null, '', location.pathname);
-        }
-
-        const user = await requireAuth();
-        if (!user) return;
-
-        // Load user profile
-        await loadUserProfile(user);
-        
-        // Load featured opportunity
-        await loadFeaturedOpportunity();
-
-      } catch (error) {
-        console.error('[dashboard/init]', { error });
-        showToast('Failed to load dashboard. Please refresh the page.', 'error');
-      }
-    }
-
-    // Load user profile and setup welcome section
-    async function loadUserProfile(user) {
-      try {
-        const profile = await loadProfile(user.id);
-        
-        if (!profile) {
-          // Create minimal profile if none exists
-          await createMinimalProfile(user);
-          userProfile = {
-            firstName: user.user_metadata?.name || user.email?.split('@')[0] || 'Student',
-            avatar_url: user.user_metadata?.avatar_url
-          };
-        } else {
-          userProfile = profile;
-        }
-
-        // Setup welcome section
-        const firstName = userProfile.firstName || user.email?.split('@')[0] || 'Student';
-        const welcomeTitle = document.getElementById('welcomeTitle');
-        const welcomeSubtitle = document.getElementById('welcomeSubtitle');
-        const userAvatar = document.getElementById('userAvatar');
-
-        welcomeTitle.textContent = `Welcome back, ${firstName}!`;
-        
-        // Setup avatar
-        if (userProfile.avatar_url) {
-          userAvatar.innerHTML = `<img src="${userProfile.avatar_url}" alt="${firstName}" onerror="this.style.display='none'; this.parentNode.textContent='${firstName.charAt(0).toUpperCase()}'">`;
-        } else {
-          userAvatar.textContent = firstName.charAt(0).toUpperCase();
-        }
-
-        // Check profile completeness
-        checkProfileCompletenessDisplay();
-
-      } catch (error) {
-        console.error('[dashboard/loadProfile]', { error, userId: user.id });
-        // Continue with basic setup
-        const firstName = user.email?.split('@')[0] || 'Student';
-        document.getElementById('welcomeTitle').textContent = `Welcome back, ${firstName}!`;
-        document.getElementById('userAvatar').textContent = firstName.charAt(0).toUpperCase();
-      }
-    }
-
-    // Check if profile needs completion
-    function checkProfileCompletenessDisplay() {
-      if (!userProfile) return;
-      
-      const completenessData = checkProfileCompleteness(userProfile);
-      
-      if (!completenessData.isComplete || !userProfile.onboarding_complete) {
-        const banner = document.getElementById('profileBanner');
-        const content = banner.querySelector('.flex-1');
-        if (content) {
-          content.innerHTML = `
-            <div class="font-weight-600 mb-1">Complete your profile (${completenessData.completeness}% complete)</div>
-            <div class="text-muted">Missing: ${completenessData.missingFields.join(', ')}</div>
-          `;
-        }
-        banner.style.display = 'block';
-      }
-    }
-
-    // Load featured opportunity
-    async function loadFeaturedOpportunity() {
-      try {
-        const { data, error } = await supabase
-          .from('opportunities')
-          .select('*')
-          .eq('is_active', true)
-          .order('created_at', { ascending: false })
-          .limit(1);
-
-        if (error) {
-          console.error('[opportunities/select]', { error });
-          throw error;
-        }
-
-        const container = document.getElementById('opportunityContainer');
-        
-        if (data && data.length > 0) {
-          const opportunity = data[0];
-          container.innerHTML = renderOpportunityCard(opportunity);
-        } else {
-          container.innerHTML = `
-            <div class="card text-center" style="padding: 3rem;">
-              <h3>No opportunities available</h3>
-              <p class="muted">Check back soon for new opportunities!</p>
-            </div>
-          `;
-        }
-
-      } catch (error) {
-        console.error('[dashboard/loadOpportunity]', { error });
-        document.getElementById('opportunityContainer').innerHTML = `
-          <div class="card text-center" style="padding: 3rem; border-color: var(--error);">
-            <p style="color: var(--error);">Failed to load opportunities. Please try again later.</p>
-          </div>
-        `;
-      }
-    }
-
-    // Render opportunity card
-    function renderOpportunityCard(opportunity) {
-      return `
-        <div class="card sage">
-          <div class="opportunity-header mb-2">
-            <h3 class="h-sg mb-1">${opportunity.title}</h3>
-            <div style="color: var(--clay); font-weight: 600;">${opportunity.company}</div>
-          </div>
-          
-          <div class="opportunity-tags mb-2">
-            <span class="tag">${opportunity.location}</span>
-            <span class="tag">${opportunity.work_type}</span>
-          </div>
-          
-          <p class="muted mb-3">
-            ${opportunity.description.length > 200 
-              ? opportunity.description.substring(0, 200) + '...' 
-              : opportunity.description}
-          </p>
-          
-          <div class="opportunity-actions flex gap-2">
-            <a href="opportunity.html?id=${opportunity.id}" class="btn">
-              View Details
-            </a>
-            <a href="apply-opportunity.html?id=${opportunity.id}" class="btn ghost">
-              Apply Now
-            </a>
-          </div>
-        </div>
-      `;
-    }
-
-    // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', initDashboard);
-  </script>
-
   <style>
-    /* Dashboard-specific styles using design tokens */
+    /* Dashboard Layout */
+    .app-container {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+      background-color: var(--bg);
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      background-color: var(--card);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar-brand {
+      padding: 0 24px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-brand .wordmark {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .sidebar-nav {
+      padding-top: 24px;
+    }
+
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-nav li {
+      margin: 0;
+    }
+
+    .sidebar-nav a,
+    .sidebar-nav button {
+      display: block;
+      padding: 12px 24px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-nav a:hover,
+    .sidebar-nav button:hover {
+      background-color: var(--sage);
+      transform: translateY(-1px);
+    }
+
+    .sidebar-nav .active a {
+      background-color: var(--sage);
+      font-weight: 600;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    .main-content section {
+      margin-bottom: 32px;
+    }
+
+    .main-content h3 {
+      margin-bottom: 16px;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Welcome Card */
     .welcome-card {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
-      padding: 2rem;
+      gap: 24px;
+      padding: 32px;
     }
 
     .user-avatar {
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--clay), var(--sand));
+      background: linear-gradient(135deg, var(--text), var(--muted));
       display: flex;
       align-items: center;
       justify-content: center;
@@ -258,9 +232,9 @@
       object-fit: cover;
     }
 
-    .welcome-content h1 {
+    .welcome-content h2 {
       font-size: 2rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 8px;
     }
 
     .welcome-content p {
@@ -268,61 +242,103 @@
       margin: 0;
     }
 
-    .profile-banner {
-      padding: 1.5rem;
-      margin-bottom: 2rem;
+    /* Application Items */
+    .application-item {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
     }
 
-    .warning-icon {
-      font-size: 1.25rem;
+    .application-item:last-child {
+      border-bottom: none;
     }
 
-    .font-weight-600 {
+    .application-item h4 {
+      margin-bottom: 4px;
+      font-size: 1rem;
       font-weight: 600;
     }
 
-    .opportunity-tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      background: rgba(230, 118, 77, 0.1);
-      color: var(--clay);
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
+    .application-item .status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
       font-size: 0.875rem;
       font-weight: 500;
-      border: 1px solid rgba(230, 118, 77, 0.2);
+      background-color: var(--sage);
+      color: var(--text);
     }
 
-    .opportunity-actions {
-      margin-top: auto;
+    .application-item .status.applied {
+      background-color: var(--sage);
     }
 
-    /* Responsive */
+    .application-item .status.interview {
+      background-color: var(--lilac);
+    }
+
+    /* Suggestion Items */
+    .suggestion-item {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .suggestion-item:last-of-type {
+      border-bottom: none;
+      margin-bottom: 20px;
+    }
+
+    .suggestion-item h4 {
+      margin-bottom: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .loading-state {
+      text-align: center;
+      padding: 32px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px;
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
+      .app-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .sidebar-nav ul {
+        display: flex;
+        overflow-x: auto;
+        padding: 0 16px;
+      }
+
+      .sidebar-nav li {
+        flex-shrink: 0;
+      }
+
       .welcome-card {
         flex-direction: column;
         text-align: center;
-        padding: 1.5rem;
+        padding: 24px;
       }
 
-      .profile-banner .flex {
+      .main-content {
+        padding: 16px;
+      }
+
+      .cta {
         flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-      }
-
-      .opportunity-actions {
-        flex-direction: column;
-        width: 100%;
-      }
-
-      .opportunity-actions .btn {
-        width: 100%;
-        justify-content: center;
+        gap: 12px;
       }
     }
   </style>
