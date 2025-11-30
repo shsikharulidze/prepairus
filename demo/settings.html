@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Main Styles -->
-  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="shared.css">
   
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -37,8 +37,8 @@
         <a href="applications.html" class="nav-item">
           <span>Applications</span>
         </a>
-        <a href="edit-profile.html" class="nav-item">
-          <span>Edit Profile</span>
+        <a href="profile.html" class="nav-item">
+          <span>Profile</span>
         </a>
         <a href="help.html" class="nav-item">
           <span>Help</span>
@@ -56,94 +56,173 @@
     <main class="app-main">
       <div class="container">
         
-        <!-- Page Header -->
-        <section class="page-header">
-          <div class="header-content">
-            <h1>Account settings</h1>
-            <p class="muted">Manage your account preferences and security.</p>
+        <!-- Hero Header -->
+        <section class="hero-section">
+          <div class="hero-container">
+            <div class="hero-content">
+              <div class="hero-text">
+                <h1 class="text-5xl font-bold text-primary mb-3">Settings</h1>
+                <p class="text-xl text-secondary">Manage your account preferences and privacy settings</p>
+              </div>
+              <div class="hero-actions">
+                <button type="button" class="btn-secondary btn-large" id="resetAllBtn">
+                  <span>🔄 Reset All</span>
+                </button>
+                <button type="button" class="btn-primary btn-large" id="saveAllBtn">
+                  <span>💾 Save Changes</span>
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
-        <!-- Settings Sections -->
-        <div class="settings-grid">
+        <!-- Settings Content -->
+        <section class="settings-section">
           
-          <!-- Account Information -->
-          <section class="settings-section">
-            <div class="card">
+          <!-- Account Settings Card -->
+          <div class="settings-card card">
+            <div class="card-padding">
               <div class="section-header">
-                <h3>Account Information</h3>
-                <p class="muted">Your basic account details</p>
+                <div class="section-info">
+                  <h3 class="section-title">Account Settings</h3>
+                  <p class="section-description">Manage your account information and security</p>
+                </div>
+                <div class="section-icon">👤</div>
               </div>
               
-              <div class="account-info">
-                <div class="info-row">
-                  <div class="info-label">Email Address</div>
-                  <div class="info-value" id="userEmail">Loading...</div>
+              <div class="settings-items">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Email Address</h4>
+                    <p class="text-secondary">john.smith@email.com</p>
+                  </div>
+                  <div class="setting-control">
+                    <button class="btn-ghost btn-small">Change</button>
+                  </div>
                 </div>
                 
-                <div class="info-row">
-                  <div class="info-label">Account Created</div>
-                  <div class="info-value" id="accountCreated">Loading...</div>
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Password</h4>
+                    <p class="text-secondary">Last updated 30 days ago</p>
+                  </div>
+                  <div class="setting-control">
+                    <button class="btn-ghost btn-small">Change</button>
+                  </div>
                 </div>
                 
-                <div class="info-row">
-                  <div class="info-label">Email Verified</div>
-                  <div class="info-value">
-                    <span class="status-badge verified" id="emailVerified">Verified</span>
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Two-Factor Authentication</h4>
+                    <p class="text-secondary">Add an extra layer of security to your account</p>
+                  </div>
+                  <div class="setting-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="twoFactorAuth">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Account Deactivation</h4>
+                    <p class="text-secondary">Temporarily disable your account</p>
+                  </div>
+                  <div class="setting-control">
+                    <button class="btn-ghost btn-small text-error">Deactivate</button>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
-
-          <!-- Security Settings -->
-          <section class="settings-section">
-            <div class="card">
+          </div>
+          
+          <!-- Privacy Settings Card -->
+          <div class="settings-card card">
+            <div class="card-padding">
               <div class="section-header">
-                <h3>Security</h3>
-                <p class="muted">Manage your password and account security</p>
+                <div class="section-info">
+                  <h3 class="section-title">Privacy & Visibility</h3>
+                  <p class="section-description">Control who can see your profile and information</p>
+                </div>
+                <div class="section-icon">🔒</div>
               </div>
               
-              <div class="security-settings">
+              <div class="settings-items">
                 <div class="setting-item">
-                  <div class="setting-content">
-                    <h4>Password Reset</h4>
-                    <p class="setting-description">Send a secure link to your email to reset your password</p>
+                  <div class="setting-info">
+                    <h4>Profile Visibility</h4>
+                    <p class="text-secondary">Who can see your profile and application history</p>
                   </div>
-                  <div class="setting-action">
-                    <button type="button" class="btn ghost" id="resetPasswordBtn">
-                      Send Reset Link
-                    </button>
+                  <div class="setting-control">
+                    <select class="setting-select">
+                      <option value="public">Public - Anyone can view</option>
+                      <option value="employers" selected>Employers Only</option>
+                      <option value="private">Private - Only me</option>
+                    </select>
                   </div>
                 </div>
-              </div>
-              
-              <div class="security-info">
-                <div class="info-box">
-                  <div class="info-icon">🔒</div>
-                  <div class="info-content">
-                    <p>We'll send a secure password reset link to your email address. Click the link to create a new password.</p>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Search Engine Indexing</h4>
+                    <p class="text-secondary">Allow search engines to index your public profile</p>
+                  </div>
+                  <div class="setting-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="searchIndexing">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Activity Status</h4>
+                    <p class="text-secondary">Show when you're active on the platform</p>
+                  </div>
+                  <div class="setting-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="activityStatus" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Application History</h4>
+                    <p class="text-secondary">Allow employers to see your application patterns</p>
+                  </div>
+                  <div class="setting-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="applicationHistory" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
-
-          <!-- Preferences -->
-          <section class="settings-section">
-            <div class="card">
+          </div>
+          
+          <!-- Notification Settings Card -->
+          <div class="settings-card card">
+            <div class="card-padding">
               <div class="section-header">
-                <h3>Preferences</h3>
-                <p class="muted">Customize your PrePair experience</p>
+                <div class="section-info">
+                  <h3 class="section-title">Notifications</h3>
+                  <p class="section-description">Choose how you want to be notified about updates</p>
+                </div>
+                <div class="section-icon">🔔</div>
               </div>
               
-              <div class="preferences-settings">
+              <div class="settings-items">
                 <div class="setting-item">
-                  <div class="setting-content">
+                  <div class="setting-info">
                     <h4>Email Notifications</h4>
-                    <p class="setting-description">Receive updates about new opportunities and application status</p>
+                    <p class="text-secondary">Receive updates about applications and new opportunities</p>
                   </div>
-                  <div class="setting-action">
+                  <div class="setting-control">
                     <label class="toggle-switch">
                       <input type="checkbox" id="emailNotifications" checked>
                       <span class="toggle-slider"></span>
@@ -152,187 +231,413 @@
                 </div>
                 
                 <div class="setting-item">
-                  <div class="setting-content">
-                    <h4>Opportunity Recommendations</h4>
-                    <p class="setting-description">Show personalized internship recommendations on your dashboard</p>
+                  <div class="setting-info">
+                    <h4>Application Updates</h4>
+                    <p class="text-secondary">Get notified when application status changes</p>
                   </div>
-                  <div class="setting-action">
+                  <div class="setting-control">
                     <label class="toggle-switch">
-                      <input type="checkbox" id="recommendations" checked>
+                      <input type="checkbox" id="applicationUpdates" checked>
                       <span class="toggle-slider"></span>
                     </label>
                   </div>
                 </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Danger Zone -->
-          <section class="settings-section">
-            <div class="card danger-zone">
-              <div class="section-header">
-                <h3>Danger Zone</h3>
-                <p class="muted">Actions that cannot be undone</p>
-              </div>
-              
-              <div class="danger-settings">
+                
                 <div class="setting-item">
-                  <div class="setting-content">
-                    <h4>Delete Account</h4>
-                    <p class="setting-description">Permanently delete your PrePair account and all associated data</p>
+                  <div class="setting-info">
+                    <h4>New Opportunities</h4>
+                    <p class="text-secondary">Weekly digest of opportunities matching your profile</p>
                   </div>
-                  <div class="setting-action">
-                    <button type="button" class="btn danger" disabled id="deleteAccountBtn">
-                      Delete Account
-                    </button>
+                  <div class="setting-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="newOpportunities">
+                      <span class="toggle-slider"></span>
+                    </label>
                   </div>
                 </div>
-              </div>
-              
-              <div class="danger-info">
-                <div class="info-box warning">
-                  <div class="info-icon">⚠️</div>
-                  <div class="info-content">
-                    <p>This action cannot be reversed. All your data, including applications and profile information, will be permanently deleted.</p>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Marketing Communications</h4>
+                    <p class="text-secondary">Tips, resources, and platform updates</p>
+                  </div>
+                  <div class="setting-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="marketing">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Notification Frequency</h4>
+                    <p class="text-secondary">How often you want to receive email updates</p>
+                  </div>
+                  <div class="setting-control">
+                    <select class="setting-select">
+                      <option value="immediate">Immediately</option>
+                      <option value="daily" selected>Daily Digest</option>
+                      <option value="weekly">Weekly Summary</option>
+                      <option value="never">Never</option>
+                    </select>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
-
-        </div>
-
+          </div>
+          
+          <!-- Application Preferences Card -->
+          <div class="settings-card card">
+            <div class="card-padding">
+              <div class="section-header">
+                <div class="section-info">
+                  <h3 class="section-title">Application Preferences</h3>
+                  <p class="section-description">Set your default preferences for job applications</p>
+                </div>
+                <div class="section-icon">📝</div>
+              </div>
+              
+              <div class="settings-items">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Auto-Apply</h4>
+                    <p class="text-secondary">Automatically apply to opportunities matching your criteria</p>
+                  </div>
+                  <div class="setting-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="autoApply">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Preferred Work Type</h4>
+                    <p class="text-secondary">Your preferred type of work arrangements</p>
+                  </div>
+                  <div class="setting-control">
+                    <select class="setting-select">
+                      <option value="any">Any</option>
+                      <option value="remote" selected>Remote</option>
+                      <option value="hybrid">Hybrid</option>
+                      <option value="onsite">On-site</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Salary Expectations</h4>
+                    <p class="text-secondary">Show salary expectations on applications</p>
+                  </div>
+                  <div class="setting-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="salaryExpectations">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Application Deadline Reminders</h4>
+                    <p class="text-secondary">Get reminded before application deadlines</p>
+                  </div>
+                  <div class="setting-control">
+                    <select class="setting-select">
+                      <option value="1day">1 Day Before</option>
+                      <option value="3days" selected>3 Days Before</option>
+                      <option value="1week">1 Week Before</option>
+                      <option value="never">Never</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Data & Export Card -->
+          <div class="settings-card card">
+            <div class="card-padding">
+              <div class="section-header">
+                <div class="section-info">
+                  <h3 class="section-title">Data & Export</h3>
+                  <p class="section-description">Manage your data and download your information</p>
+                </div>
+                <div class="section-icon">📊</div>
+              </div>
+              
+              <div class="settings-items">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Export Application Data</h4>
+                    <p class="text-secondary">Download a copy of all your applications and data</p>
+                  </div>
+                  <div class="setting-control">
+                    <button class="btn-secondary btn-small">Download</button>
+                  </div>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Data Retention</h4>
+                    <p class="text-secondary">How long to keep your application history</p>
+                  </div>
+                  <div class="setting-control">
+                    <select class="setting-select">
+                      <option value="1year">1 Year</option>
+                      <option value="2years" selected>2 Years</option>
+                      <option value="5years">5 Years</option>
+                      <option value="forever">Forever</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h4>Analytics & Insights</h4>
+                    <p class="text-secondary">Allow us to analyze your data to provide insights</p>
+                  </div>
+                  <div class="setting-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="analytics" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="setting-item danger">
+                  <div class="setting-info">
+                    <h4>Delete All Data</h4>
+                    <p class="text-secondary">Permanently delete your account and all associated data</p>
+                  </div>
+                  <div class="setting-control">
+                    <button class="btn-ghost btn-small text-error">Delete Account</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </section>
       </div>
     </main>
   </div>
 
-  <!-- Success Toast -->
-  <div class="toast" id="successToast" style="display: none;">
-    <div class="toast-content">
-      <span id="toastMessage">Success!</span>
-    </div>
-  </div>
-
   <script>
-    // Supabase Configuration
-    const SUPABASE_URL = 'https://aezybthbsmpihbyzfiqi.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenlidGhic21waWhieXpmaXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTUwNTUsImV4cCI6MjA3ODEzMTA1NX0.ojh8dzVpF62hqU_MrXI9EfCBJGX74NMse_1t55m32go';
-    
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // Global state
+    const supabase = window.sb || window.supabase.createClient('your-url', 'your-anon-key');
     let currentUser = null;
+    let hasUnsavedChanges = false;
 
-    // Authentication check
-    async function requireAuth() {
+    // Initialize settings page
+    async function initSettings() {
       try {
+        // Check authentication
         const { data: { user }, error } = await supabase.auth.getUser();
-        
         if (error || !user) {
           window.location.href = '/signin.html';
-          return false;
+          return;
         }
-        
         currentUser = user;
-        return true;
+        
+        // Setup event listeners
+        setupEventListeners();
+        
+        // Load user settings
+        await loadUserSettings();
+        
       } catch (error) {
-        console.error('Auth check failed:', error);
-        window.location.href = '/signin.html';
-        return false;
+        console.error('Settings initialization error:', error);
+        showToast('Failed to load settings. Please refresh the page.', 'error');
       }
     }
-
-    // Load account information
-    function loadAccountInfo(user) {
-      // Update email
-      document.getElementById('userEmail').textContent = user.email;
-
-      // Update account created date
-      const createdDate = new Date(user.created_at).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-      document.getElementById('accountCreated').textContent = createdDate;
-
-      // Update email verified status
-      const emailVerified = user.email_confirmed_at !== null;
-      const verifiedElement = document.getElementById('emailVerified');
+    
+    // Setup event listeners
+    function setupEventListeners() {
+      // Save all button
+      document.getElementById('saveAllBtn').addEventListener('click', saveAllSettings);
       
-      if (emailVerified) {
-        verifiedElement.textContent = 'Verified';
-        verifiedElement.className = 'status-badge verified';
-      } else {
-        verifiedElement.textContent = 'Not Verified';
-        verifiedElement.className = 'status-badge unverified';
+      // Reset all button
+      document.getElementById('resetAllBtn').addEventListener('click', resetAllSettings);
+      
+      // Sign out button
+      document.getElementById('signout-btn').addEventListener('click', handleSignOut);
+      
+      // Track changes on all form inputs
+      const allInputs = document.querySelectorAll('input, select');
+      allInputs.forEach(input => {
+        input.addEventListener('change', () => {
+          hasUnsavedChanges = true;
+          updateSaveButtonState();
+        });
+      });
+      
+      // Warn about unsaved changes before leaving
+      window.addEventListener('beforeunload', (e) => {
+        if (hasUnsavedChanges) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+      });
+      
+      // Handle specific setting changes
+      document.getElementById('twoFactorAuth').addEventListener('change', handleTwoFactorToggle);
+    }
+    
+    // Load user settings from database/localStorage
+    async function loadUserSettings() {
+      try {
+        // Mock settings data - in real app, load from database
+        const userSettings = {
+          twoFactorAuth: false,
+          searchIndexing: false,
+          activityStatus: true,
+          applicationHistory: true,
+          emailNotifications: true,
+          applicationUpdates: true,
+          newOpportunities: false,
+          marketing: false,
+          notificationFrequency: 'daily',
+          autoApply: false,
+          preferredWorkType: 'remote',
+          salaryExpectations: false,
+          deadlineReminders: '3days',
+          dataRetention: '2years',
+          analytics: true
+        };
+        
+        // Apply settings to form
+        Object.keys(userSettings).forEach(key => {
+          const element = document.getElementById(key);
+          if (element) {
+            if (element.type === 'checkbox') {
+              element.checked = userSettings[key];
+            } else {
+              element.value = userSettings[key];
+            }
+          }
+        });
+        
+        hasUnsavedChanges = false;
+        updateSaveButtonState();
+        
+      } catch (error) {
+        console.error('Error loading settings:', error);
+        showToast('Failed to load your settings.', 'error');
       }
     }
-
-    // Handle password reset
-    async function handlePasswordReset() {
-      const resetBtn = document.getElementById('resetPasswordBtn');
+    
+    // Save all settings
+    async function saveAllSettings() {
+      try {
+        const saveBtn = document.getElementById('saveAllBtn');
+        setLoading(saveBtn, true);
+        
+        // Collect all settings
+        const settings = {};
+        const allInputs = document.querySelectorAll('input[id], select[id]');
+        
+        allInputs.forEach(input => {
+          if (input.type === 'checkbox') {
+            settings[input.id] = input.checked;
+          } else {
+            settings[input.id] = input.value;
+          }
+        });
+        
+        // Simulate saving to database
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // In real app, save to database:
+        // const { error } = await supabase
+        //   .from('user_settings')
+        //   .upsert({ user_id: currentUser.id, ...settings });
+        
+        hasUnsavedChanges = false;
+        updateSaveButtonState();
+        showToast('Settings saved successfully!', 'success');
+        
+      } catch (error) {
+        console.error('Error saving settings:', error);
+        showToast('Failed to save settings. Please try again.', 'error');
+      } finally {
+        setLoading(document.getElementById('saveAllBtn'), false);
+      }
+    }
+    
+    // Reset all settings to defaults
+    async function resetAllSettings() {
+      if (!confirm('Are you sure you want to reset all settings to their default values? This action cannot be undone.')) {
+        return;
+      }
       
       try {
-        resetBtn.disabled = true;
-        resetBtn.textContent = 'Sending...';
-
-        const { error } = await supabase.auth.resetPasswordForEmail(currentUser.email, {
-          redirectTo: `${window.location.origin}/update-password.html`
+        // Reset to defaults
+        const defaultSettings = {
+          twoFactorAuth: false,
+          searchIndexing: false,
+          activityStatus: true,
+          applicationHistory: true,
+          emailNotifications: true,
+          applicationUpdates: true,
+          newOpportunities: false,
+          marketing: false,
+          notificationFrequency: 'daily',
+          autoApply: false,
+          preferredWorkType: 'remote',
+          salaryExpectations: false,
+          deadlineReminders: '3days',
+          dataRetention: '2years',
+          analytics: true
+        };
+        
+        // Apply defaults to form
+        Object.keys(defaultSettings).forEach(key => {
+          const element = document.getElementById(key);
+          if (element) {
+            if (element.type === 'checkbox') {
+              element.checked = defaultSettings[key];
+            } else {
+              element.value = defaultSettings[key];
+            }
+          }
         });
-
-        if (error) {
-          throw error;
-        }
-
-        showToast(`Password reset link sent to ${currentUser.email}`, 'success');
-
+        
+        hasUnsavedChanges = true;
+        updateSaveButtonState();
+        showToast('Settings reset to defaults. Click Save to apply changes.', 'info');
+        
       } catch (error) {
-        console.error('Password reset error:', error);
-        showToast('Failed to send password reset link. Please try again.', 'error');
-      } finally {
-        resetBtn.disabled = false;
-        resetBtn.textContent = 'Send Reset Link';
+        console.error('Error resetting settings:', error);
+        showToast('Failed to reset settings.', 'error');
       }
     }
-
-    // Load preferences from localStorage
-    function loadPreferences() {
-      const emailNotifications = localStorage.getItem('emailNotifications') !== 'false';
-      const recommendations = localStorage.getItem('recommendations') !== 'false';
-
-      document.getElementById('emailNotifications').checked = emailNotifications;
-      document.getElementById('recommendations').checked = recommendations;
-    }
-
-    // Save preferences to localStorage
-    function savePreference(key, value) {
-      localStorage.setItem(key, value.toString());
-      
-      // Show feedback based on the preference
-      let message = '';
-      if (key === 'emailNotifications') {
-        message = value ? 'Email notifications enabled' : 'Email notifications disabled';
-      } else if (key === 'recommendations') {
-        message = value ? 'Recommendations enabled' : 'Recommendations disabled';
+    
+    // Handle two-factor authentication toggle
+    function handleTwoFactorToggle(e) {
+      if (e.target.checked) {
+        showToast('Two-factor authentication setup would open here in a real app.', 'info');
+      } else {
+        showToast('Two-factor authentication disabled.', 'warning');
       }
-      
-      showToast(message, 'success');
     }
-
-    // Show toast
-    function showToast(message, type = 'success') {
-      const toast = document.getElementById('successToast');
-      const messageEl = document.getElementById('toastMessage');
-      
-      messageEl.textContent = message;
-      toast.className = `toast ${type}`;
-      toast.style.display = 'block';
-
-      setTimeout(() => {
-        toast.style.display = 'none';
-      }, 4000);
+    
+    // Update save button state
+    function updateSaveButtonState() {
+      const saveBtn = document.getElementById('saveAllBtn');
+      if (hasUnsavedChanges) {
+        saveBtn.textContent = '💾 Save Changes';
+        saveBtn.classList.remove('btn-primary');
+        saveBtn.classList.add('btn-primary');
+      } else {
+        saveBtn.textContent = '✓ Saved';
+        saveBtn.classList.remove('btn-primary');
+        saveBtn.classList.add('btn-secondary');
+      }
     }
-
+    
     // Sign out
     async function handleSignOut() {
       try {
@@ -342,52 +647,57 @@
         console.error('Sign out error:', error);
       }
     }
-
-    // Initialize settings page
-    async function initializeSettingsPage() {
-      // Check authentication
-      const isAuthenticated = await requireAuth();
-      if (!isAuthenticated) return;
-
-      // Load account information
-      loadAccountInfo(currentUser);
-
-      // Load preferences
-      loadPreferences();
+    
+    // Utility functions
+    function setLoading(button, loading) {
+      if (loading) {
+        button.disabled = true;
+        button.dataset.originalText = button.innerHTML;
+        button.innerHTML = 'Saving...';
+      } else {
+        button.disabled = false;
+        button.innerHTML = button.dataset.originalText || button.innerHTML;
+      }
+    }
+    
+    function showToast(message, type = 'success') {
+      // Create and show toast notification
+      const toast = document.createElement('div');
+      toast.className = `toast ${type} show`;
+      toast.innerHTML = `
+        <div class="toast-content">
+          <div class="toast-text">
+            <div class="toast-message">${message}</div>
+          </div>
+          <button class="toast-close">&times;</button>
+        </div>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      // Auto dismiss after 4 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+      
+      // Manual dismiss
+      toast.querySelector('.toast-close').addEventListener('click', () => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      });
     }
 
-    // Event listeners
-    document.addEventListener('DOMContentLoaded', function() {
-      initializeSettingsPage();
-
-      // Password reset
-      document.getElementById('resetPasswordBtn').addEventListener('click', handlePasswordReset);
-
-      // Preference toggles
-      document.getElementById('emailNotifications').addEventListener('change', function(e) {
-        savePreference('emailNotifications', e.target.checked);
-      });
-
-      document.getElementById('recommendations').addEventListener('change', function(e) {
-        savePreference('recommendations', e.target.checked);
-      });
-
-      // Sign out
-      document.getElementById('signout-btn').addEventListener('click', handleSignOut);
-
-      // Delete account button (placeholder)
-      document.getElementById('deleteAccountBtn').addEventListener('click', function() {
-        showToast('Account deletion feature will be available in a future update.', 'info');
-      });
-    });
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initSettings);
   </script>
 
   <style>
-    /* Settings Page Layout */
+    /* Settings Page Specific Styles */
     .app-layout {
-      background-color: var(--bg, #fefefe);
+      background-color: var(--bg-primary);
     }
-
+    
     .app-container {
       display: grid;
       grid-template-columns: 280px 1fr;
@@ -395,411 +705,346 @@
     }
 
     .app-sidebar {
-      background: var(--card, white);
-      border-right: 1px solid var(--border, #e5e5e5);
-      padding: 32px 0;
+      background: var(--bg-card);
+      border-right: 1px solid var(--border-light);
+      padding: var(--space-4) 0;
       overflow-y: auto;
     }
 
     .sidebar-brand {
-      padding: 0 32px 32px;
-      border-bottom: 1px solid var(--border, #e5e5e5);
+      padding: 0 var(--space-4) var(--space-4);
+      border-bottom: 1px solid var(--border-light);
     }
 
     .sidebar-brand .wordmark {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text, #1a1a1a);
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
     }
 
     .sidebar-nav {
-      padding-top: 32px;
+      padding-top: var(--space-4);
       display: flex;
       flex-direction: column;
     }
 
     .nav-item {
       display: block;
-      padding: 12px 32px;
-      color: var(--text, #1a1a1a);
+      padding: var(--space-3) var(--space-4);
+      color: var(--text-primary);
       text-decoration: none;
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
+      font-family: var(--font-primary);
+      font-weight: var(--font-medium);
       border: none;
       background: none;
       width: 100%;
       text-align: left;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all var(--transition-fast) ease;
       margin: 2px 0;
     }
 
     .nav-item:hover {
-      background-color: var(--sage, #f0f4f0);
+      background-color: var(--bg-cream);
       transform: translateY(-1px);
     }
 
     .nav-item.active {
-      background-color: var(--sage, #f0f4f0);
-      font-weight: 600;
+      background-color: var(--bg-cream);
+      font-weight: var(--font-semibold);
     }
 
     .nav-signout {
       margin-top: auto;
-      color: var(--muted, #666);
+      color: var(--text-muted);
     }
 
     .app-main {
-      padding: 40px;
+      padding: var(--space-6);
       overflow-y: auto;
     }
+    
+    /* Hero Section */
+    .hero-section {
+      background: var(--bg-gradient-hero);
+      padding: var(--space-8);
+      border-radius: var(--radius-2xl);
+      margin-bottom: var(--space-6);
+    }
 
-    .container {
-      max-width: 800px;
+    .hero-container {
+      max-width: var(--container-xl);
       margin: 0 auto;
     }
 
-    /* Page Header */
-    .page-header {
-      margin-bottom: 40px;
-    }
-
-    .header-content h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2rem;
-      margin-bottom: 8px;
-    }
-
-    .header-content p {
-      font-size: 1.1rem;
-      margin: 0;
-    }
-
-    /* Settings Grid */
-    .settings-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-    }
-
-    .settings-section {
-      width: 100%;
-    }
-
-    /* Section Headers */
-    .section-header {
-      margin-bottom: 24px;
-    }
-
-    .section-header h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .section-header p {
-      margin: 0;
-      font-size: 0.95rem;
-    }
-
-    /* Account Information */
-    .account-info {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .info-row {
+    .hero-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border, #e5e5e5);
+      gap: var(--space-6);
     }
 
-    .info-row:last-child {
-      border-bottom: none;
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
     }
 
-    .info-label {
-      font-weight: 600;
-      color: var(--text, #1a1a1a);
+    .hero-text h1 {
+      font-family: var(--font-heading);
+      color: var(--text-primary);
     }
 
-    .info-value {
-      color: var(--muted, #666);
-      font-family: 'Inter', sans-serif;
+    .hero-text p {
+      color: var(--text-secondary);
     }
-
-    .status-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.025em;
-    }
-
-    .status-badge.verified {
-      background: #e8f5e8;
-      color: #2e7d32;
-    }
-
-    .status-badge.unverified {
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    /* Settings Items */
-    .security-settings,
-    .preferences-settings,
-    .danger-settings {
+    
+    /* Settings Section */
+    .settings-section {
+      max-width: var(--container-xl);
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: var(--space-6);
     }
-
+    
+    .settings-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+    
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--border-light);
+    }
+    
+    .section-info h3 {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+      margin: 0 0 var(--space-1) 0;
+    }
+    
+    .section-description {
+      color: var(--text-secondary);
+      font-size: var(--text-base);
+      margin: 0;
+    }
+    
+    .section-icon {
+      font-size: var(--text-3xl);
+      background: var(--bg-cream);
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Settings Items */
+    .settings-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    
     .setting-item {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-      padding: 20px 0;
-      border-bottom: 1px solid var(--border, #e5e5e5);
+      align-items: center;
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--border-light);
+      transition: background-color var(--transition-fast) ease;
     }
-
+    
     .setting-item:last-child {
       border-bottom: none;
     }
-
-    .setting-content {
+    
+    .setting-item:hover {
+      background-color: var(--bg-cream);
+    }
+    
+    .setting-item.danger {
+      background-color: var(--error-light);
+      border-color: var(--error);
+    }
+    
+    .setting-info {
       flex: 1;
+      min-width: 0;
+      margin-right: var(--space-4);
     }
-
-    .setting-content h4 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 4px;
+    
+    .setting-info h4 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-semibold);
+      margin: 0 0 var(--space-1) 0;
+      color: var(--text-primary);
     }
-
-    .setting-description {
-      color: var(--muted, #666);
-      font-size: 0.9rem;
+    
+    .setting-info p {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
       margin: 0;
-      line-height: 1.4;
+      line-height: var(--leading-relaxed);
     }
-
-    .setting-action {
+    
+    .setting-control {
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
     }
-
-    /* Toggle Switch */
-    .toggle-switch {
-      position: relative;
-      display: inline-block;
-      width: 48px;
-      height: 24px;
-      cursor: pointer;
+    
+    .setting-select {
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      font-size: var(--text-sm);
+      font-family: var(--font-primary);
+      min-width: 150px;
     }
-
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
+    
+    .setting-select:focus {
+      outline: none;
+      border-color: var(--coral);
     }
-
-    .toggle-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: var(--border, #e5e5e5);
-      border-radius: 24px;
-      transition: 0.3s ease;
-    }
-
-    .toggle-slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      border-radius: 50%;
-      transition: 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    input:checked + .toggle-slider {
-      background-color: var(--sage, #90c695);
-    }
-
-    input:checked + .toggle-slider:before {
-      transform: translateX(24px);
-    }
-
-    /* Info Boxes */
-    .security-info,
-    .danger-info {
-      margin-top: 20px;
-    }
-
-    .info-box {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 16px;
-      border-radius: 8px;
-      background-color: var(--sand, #f8f7f4);
-      border: 1px solid var(--border, #e5e5e5);
-    }
-
-    .info-box.warning {
-      background-color: #fff3cd;
-      border-color: #ffeaa7;
-    }
-
-    .info-icon {
-      font-size: 1.25rem;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .info-content p {
-      margin: 0;
-      font-size: 0.9rem;
-      line-height: 1.4;
-      color: var(--text, #1a1a1a);
-    }
-
-    /* Danger Zone */
-    .danger-zone {
-      border: 1px solid #dc3545;
-      background-color: #fff5f5;
-    }
-
-    .danger-zone .section-header h3 {
-      color: #dc3545;
-    }
-
-    .btn.danger {
-      background-color: #dc3545;
-      color: white;
-    }
-
-    .btn.danger:hover {
-      background-color: #c82333;
-    }
-
-    .btn.danger:disabled {
-      background-color: #6c757d;
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    /* Toast */
+    
+    /* Toggle Switch - Using existing styles from shared.css */
+    
+    /* Toast Notifications */
     .toast {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 2000;
-      padding: 16px 24px;
-      border-radius: 8px;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      top: var(--space-4);
+      right: var(--space-4);
+      z-index: var(--z-toast);
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xl);
+      padding: var(--space-4);
+      border-left: 4px solid var(--coral);
+      max-width: 400px;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: all var(--transition-normal) ease;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
     }
 
     .toast.success {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
+      border-left-color: var(--success);
+    }
+
+    .toast.warning {
+      border-left-color: var(--warning);
     }
 
     .toast.error {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+      border-left-color: var(--error);
     }
 
     .toast.info {
-      background: #e2e3e5;
-      color: #383d41;
-      border: 1px solid #d6d8db;
+      border-left-color: var(--info);
     }
 
+    .toast-content {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+
+    .toast-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .toast-message {
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      line-height: var(--leading-normal);
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: var(--text-lg);
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: all var(--transition-fast) ease;
+      margin-left: var(--space-2);
+    }
+
+    .toast-close:hover {
+      color: var(--text-primary);
+    }
+    
     /* Responsive Design */
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .app-container {
         grid-template-columns: 1fr;
       }
-
+      
       .app-sidebar {
         border-right: none;
-        border-bottom: 1px solid var(--border, #e5e5e5);
-        padding: 16px 0;
+        border-bottom: 1px solid var(--border-light);
+        padding: var(--space-2) 0;
       }
-
-      .sidebar-brand {
-        padding: 0 16px 16px;
-      }
-
+      
       .sidebar-nav {
-        padding-top: 16px;
         flex-direction: row;
         overflow-x: auto;
         gap: 0;
       }
-
+      
       .nav-item {
-        padding: 12px 16px;
         white-space: nowrap;
         flex-shrink: 0;
       }
-
-      .app-main {
-        padding: 20px;
-      }
-
-      .setting-item {
+    }
+    
+    @media (max-width: 768px) {
+      .hero-content {
         flex-direction: column;
         align-items: stretch;
-        gap: 16px;
+        text-align: center;
+        gap: var(--space-4);
       }
-
-      .setting-action {
-        justify-content: flex-end;
-      }
-
-      .info-row {
+      
+      .section-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
+        gap: var(--space-3);
       }
-    }
-
-    @media (max-width: 480px) {
-      .app-main {
-        padding: 16px;
+      
+      .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
       }
-
-      .page-header {
-        margin-bottom: 24px;
+      
+      .setting-control {
+        width: 100%;
       }
-
-      .settings-grid {
-        gap: 24px;
+      
+      .setting-select {
+        width: 100%;
+        min-width: auto;
       }
     }
   </style>
-
 </body>
 </html>
