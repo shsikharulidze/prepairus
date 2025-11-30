@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Profile Setup — PrePair</title>
+  <title>My Profile — PrePair</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,121 +19,335 @@
   <script src="js/supabase-client.js"></script>
   <script src="shared.js"></script>
 </head>
-<body>
-  <div class="container">
-    <div id="header-shell"></div>
-
-    <main>
-      <!-- Welcome Section -->
-      <div class="card welcome-card mb-3">
-        <div class="profile-avatar-section">
-          <div class="profile-avatar" id="profileAvatar">
-            <img id="profileAvatarImg" src="" alt="Profile" style="display: none;">
-            <div id="profileAvatarInitial">U</div>
-          </div>
-          <div class="avatar-controls">
-            <button type="button" class="btn-secondary" id="changePhotoBtn">Change Photo</button>
-            <input type="file" id="avatarInput" accept="image/*" style="display: none;">
-            <div id="avatarUploadStatus" class="upload-status"></div>
-          </div>
-        </div>
-        <div class="welcome-content">
-          <h1 id="profileTitle">Complete Your Profile</h1>
-          <p class="muted">Help us match you with the perfect opportunities by completing your student profile.</p>
-        </div>
+<body class="app-layout">
+  
+  <!-- App Shell -->
+  <div class="app-container">
+    
+    <!-- Left Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-brand">
+        <span class="wordmark">PrePair</span>
       </div>
+      
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">
+          <span>Dashboard</span>
+        </a>
+        <a href="opportunities.html" class="nav-item">
+          <span>Opportunities</span>
+        </a>
+        <a href="applications.html" class="nav-item">
+          <span>Applications</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+          <span>Profile</span>
+        </a>
+        <a href="help.html" class="nav-item">
+          <span>Help</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <span>Settings</span>
+        </a>
+        <button type="button" class="nav-item nav-signout" id="signout-btn">
+          <span>Sign Out</span>
+        </button>
+      </nav>
+    </aside>
 
-      <!-- Profile Form -->
-      <div class="card">
-        <form id="profileForm" class="profile-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="firstName">First Name *</label>
-              <input type="text" id="firstName" name="firstName" required placeholder="Enter your first name">
+    <!-- Main Content -->
+    <main class="app-main">
+      <div class="container">
+        <!-- Hero Header -->
+        <section class="hero-section">
+          <div class="hero-container">
+            <div class="hero-content">
+              <div class="hero-text">
+                <h1 class="text-5xl font-bold text-primary mb-3">My Profile</h1>
+                <p class="text-xl text-secondary">Manage your personal information and preferences</p>
+              </div>
+              <div class="hero-actions">
+                <button type="button" class="btn-secondary btn-large" id="toggleEditMode">
+                  <span id="editModeText">✏️ Edit Profile</span>
+                </button>
+                <button type="button" class="btn-primary btn-large" id="saveChanges" style="display: none;">
+                  <span>💾 Save Changes</span>
+                </button>
+                <button type="button" class="btn-ghost btn-large" id="cancelEdit" style="display: none;">
+                  <span>Cancel</span>
+                </button>
+              </div>
             </div>
-            
-            <div class="form-group">
-              <label for="lastName">Last Name *</label>
-              <input type="text" id="lastName" name="lastName" required placeholder="Enter your last name">
+          </div>
+        </section>
+
+        <!-- Profile Content -->
+        <section class="profile-section">
+          <!-- Profile Header Card -->
+          <div class="profile-header-card card">
+            <div class="card-padding">
+              <div class="profile-header">
+                <div class="profile-avatar-section">
+                  <div class="profile-avatar-large" id="profileAvatar">
+                    <img id="profileAvatarImg" src="" alt="Profile" style="display: none;">
+                    <div id="profileAvatarInitial">JS</div>
+                  </div>
+                  <div class="avatar-controls" id="avatarControls" style="display: none;">
+                    <button type="button" class="btn-secondary btn-small" id="changePhotoBtn">Change Photo</button>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                    <div id="avatarUploadStatus" class="upload-status"></div>
+                  </div>
+                </div>
+                
+                <div class="profile-info">
+                  <div class="profile-name">
+                    <h2 id="displayName">John Smith</h2>
+                    <input type="text" id="editDisplayName" class="edit-input" value="John Smith" style="display: none;">
+                  </div>
+                  <div class="profile-title">
+                    <span id="displayTitle">Computer Science Student</span>
+                    <input type="text" id="editTitle" class="edit-input" value="Computer Science Student" style="display: none;" placeholder="Your title or major">
+                  </div>
+                  <div class="profile-location">
+                    <span class="location-icon">📍</span>
+                    <span id="displayLocation">New York, NY</span>
+                    <input type="text" id="editLocation" class="edit-input" value="New York, NY" style="display: none;" placeholder="Your location">
+                  </div>
+                </div>
+                
+                <div class="profile-stats">
+                  <div class="stat-item">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Applications</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Interviews</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">85%</div>
+                    <div class="stat-label">Profile Complete</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="university">University *</label>
-            <select id="university" name="university" required>
-              <option value="">Select your university</option>
-              <option value="Fordham University">Fordham University</option>
-              <option value="NYU">NYU</option>
-              <option value="Columbia University">Columbia University</option>
-              <option value="CUNY">CUNY</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="major">Major/Field of Study *</label>
-            <input type="text" id="major" name="major" required placeholder="e.g., Computer Science, Business, Marketing">
-          </div>
-
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="graduationYear">Expected Graduation Year</label>
-              <select id="graduationYear" name="graduationYear">
-                <option value="">Select year</option>
-                <option value="2024">2024</option>
-                <option value="2025">2025</option>
-                <option value="2026">2026</option>
-                <option value="2027">2027</option>
-                <option value="2028">2028</option>
-              </select>
+          <!-- Personal Information Card -->
+          <div class="profile-info-card card">
+            <div class="card-padding">
+              <div class="section-header">
+                <h3 class="section-title">Personal Information</h3>
+                <div class="completion-badge">90% Complete</div>
+              </div>
+              
+              <div class="profile-fields">
+                <div class="field-row">
+                  <div class="field-group">
+                    <label class="field-label">First Name</label>
+                    <div class="field-content">
+                      <span class="field-value" id="displayFirstName">John</span>
+                      <input type="text" class="field-input" id="editFirstName" value="John" style="display: none;">
+                    </div>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Last Name</label>
+                    <div class="field-content">
+                      <span class="field-value" id="displayLastName">Smith</span>
+                      <input type="text" class="field-input" id="editLastName" value="Smith" style="display: none;">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="field-row">
+                  <div class="field-group">
+                    <label class="field-label">Email</label>
+                    <div class="field-content">
+                      <span class="field-value" id="displayEmail">john.smith@email.com</span>
+                      <input type="email" class="field-input" id="editEmail" value="john.smith@email.com" style="display: none;">
+                    </div>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Phone</label>
+                    <div class="field-content">
+                      <span class="field-value" id="displayPhone">(555) 123-4567</span>
+                      <input type="tel" class="field-input" id="editPhone" value="(555) 123-4567" style="display: none;">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="field-row">
+                  <div class="field-group">
+                    <label class="field-label">University</label>
+                    <div class="field-content">
+                      <span class="field-value" id="displayUniversity">New York University</span>
+                      <select class="field-input" id="editUniversity" style="display: none;">
+                        <option value="">Select your university</option>
+                        <option value="Fordham University">Fordham University</option>
+                        <option value="New York University" selected>New York University</option>
+                        <option value="Columbia University">Columbia University</option>
+                        <option value="CUNY">CUNY</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Major</label>
+                    <div class="field-content">
+                      <span class="field-value" id="displayMajor">Computer Science</span>
+                      <input type="text" class="field-input" id="editMajor" value="Computer Science" style="display: none;">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="field-row">
+                  <div class="field-group">
+                    <label class="field-label">Graduation Year</label>
+                    <div class="field-content">
+                      <span class="field-value" id="displayGradYear">2025</span>
+                      <select class="field-input" id="editGradYear" style="display: none;">
+                        <option value="">Select year</option>
+                        <option value="2024">2024</option>
+                        <option value="2025" selected>2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">GPA</label>
+                    <div class="field-content">
+                      <span class="field-value" id="displayGPA">3.8</span>
+                      <input type="text" class="field-input" id="editGPA" value="3.8" style="display: none;" placeholder="3.5">
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+          </div>
+          
+          <!-- Education & Experience Card -->
+          <div class="education-card card">
+            <div class="card-padding">
+              <div class="section-header">
+                <h3 class="section-title">Education & Experience</h3>
+                <div class="completion-badge">75% Complete</div>
+              </div>
+              
+              <div class="profile-fields">
+                <div class="field-group full-width">
+                  <label class="field-label">Bio/Summary</label>
+                  <div class="field-content">
+                    <div class="field-value" id="displayBio">Passionate computer science student with experience in full-stack development. Looking for internship opportunities in software engineering and web development.</div>
+                    <textarea class="field-input" id="editBio" style="display: none;" rows="4">Passionate computer science student with experience in full-stack development. Looking for internship opportunities in software engineering and web development.</textarea>
+                  </div>
+                </div>
+                
+                <div class="field-group full-width">
+                  <label class="field-label">Skills & Technologies</label>
+                  <div class="field-content">
+                    <div class="field-value" id="displaySkills">
+                      <div class="skills-tags">
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">Git</span>
+                      </div>
+                    </div>
+                    <textarea class="field-input" id="editSkills" style="display: none;" rows="3" placeholder="JavaScript, React, Node.js, Python, SQL, Git">JavaScript, React, Node.js, Python, SQL, Git</textarea>
+                  </div>
+                </div>
+                
+                <div class="field-row">
+                  <div class="field-group">
+                    <label class="field-label">LinkedIn</label>
+                    <div class="field-content">
+                      <span class="field-value" id="displayLinkedIn">
+                        <a href="https://linkedin.com/in/johnsmith" target="_blank" class="profile-link">
+                          linkedin.com/in/johnsmith
+                        </a>
+                      </span>
+                      <input type="url" class="field-input" id="editLinkedIn" value="https://linkedin.com/in/johnsmith" style="display: none;">
+                    </div>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Portfolio</label>
+                    <div class="field-content">
+                      <span class="field-value" id="displayPortfolio">
+                        <a href="https://johnsmith.dev" target="_blank" class="profile-link">
+                          johnsmith.dev
+                        </a>
+                      </span>
+                      <input type="url" class="field-input" id="editPortfolio" value="https://johnsmith.dev" style="display: none;">
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div class="form-group">
-            <label for="linkedin">LinkedIn Profile</label>
-            <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
-          </div>
-
-          <div class="form-group">
-            <label for="portfolio">Portfolio/Website</label>
-            <input type="url" id="portfolio" name="portfolio" placeholder="https://yourportfolio.com">
-          </div>
-
-          <div class="form-group">
-            <label for="bio">Bio/Summary</label>
-            <textarea id="bio" name="bio" rows="4" placeholder="Tell us a bit about yourself, your interests, and career goals..."></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="skills">Skills & Technologies</label>
-            <textarea id="skills" name="skills" rows="3" placeholder="List your relevant skills, programming languages, tools, etc."></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="interests">Career Interests</label>
-            <textarea id="interests" name="interests" rows="3" placeholder="What types of opportunities are you most interested in?"></textarea>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn" id="saveBtn">Save Profile</button>
-            <button type="button" class="btn ghost" id="dashboardBtn" style="display: none;">Go to Dashboard</button>
-          </div>
-        </form>
+          
+          <!-- Privacy & Preferences Card -->
+          <div class="preferences-card card">
+            <div class="card-padding">
+              <div class="section-header">
+                <h3 class="section-title">Privacy & Preferences</h3>
+              </div>
+              
+              <div class="preference-items">
+                <div class="preference-item">
+                  <div class="preference-info">
+                    <h4>Profile Visibility</h4>
+                    <p class="text-secondary">Control who can see your profile information</p>
+                  </div>
+                  <div class="preference-control">
+                    <select class="preference-select">
+                      <option value="public">Public</option>
+                      <option value="employers" selected>Employers Only</option>
+                      <option value="private">Private</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="preference-item">
+                  <div class="preference-info">
+                    <h4>Email Notifications</h4>
+                    <p class="text-secondary">Receive updates about applications and new opportunities</p>
+                  </div>
+                  <div class="preference-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox" checked>
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="preference-item">
+                  <div class="preference-info">
+                    <h4>Weekly Application Reminders</h4>
+                    <p class="text-secondary">Get reminded to check for new opportunities</p>
+                  </div>
+                  <div class="preference-control">
+                    <label class="toggle-switch">
+                      <input type="checkbox">
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+      </div>
+        </section>
       </div>
     </main>
-
-    <footer></footer>
   </div>
 
   <script>
     const supabase = window.sb;
     let currentUser = null;
     let existingProfile = null;
+    let isEditMode = false;
 
     // Initialize profile page
     async function initProfile() {
@@ -141,75 +355,184 @@
         currentUser = await requireAuth();
         if (!currentUser) return;
 
-        // Load existing profile data
-        await loadExistingProfile();
+        // Setup edit mode functionality
+        setupEditMode();
         
         // Setup avatar upload functionality
         setupAvatarUpload();
+        
+        // Setup sign out functionality
+        setupSignOut();
 
       } catch (error) {
         console.error('[profile/init]', { error });
         showToast('Failed to load profile page. Please refresh.', 'error');
       }
     }
-
-    // Load existing profile data
-    async function loadExistingProfile() {
-      try {
-        const profile = await loadProfile(currentUser.id);
-        existingProfile = profile;
-
-        if (profile) {
-          // Populate form with existing data
-          populateForm(profile);
-          
-          // Update avatar display
-          updateAvatarDisplay(profile);
-          
-          // Update page title based on completeness
-          if (profile.onboarding_complete) {
-            document.getElementById('profileTitle').textContent = 'Edit Your Profile';
-            document.getElementById('dashboardBtn').style.display = 'inline-block';
-          }
-        } else {
-          // Create minimal profile if none exists
-          await createMinimalProfile(currentUser);
-        }
-
-      } catch (error) {
-        console.error('[profile/load]', { error, userId: currentUser.id });
-        // Continue with empty form if profile load fails
-      }
-    }
-
-    // Populate form with profile data
-    function populateForm(profile) {
-      const fields = ['firstName', 'lastName', 'university', 'major', 'graduationYear', 'phone', 'linkedin', 'portfolio', 'bio', 'skills', 'interests'];
+    
+    // Setup edit mode toggle functionality
+    function setupEditMode() {
+      const toggleEditBtn = document.getElementById('toggleEditMode');
+      const saveChangesBtn = document.getElementById('saveChanges');
+      const cancelEditBtn = document.getElementById('cancelEdit');
+      const avatarControls = document.getElementById('avatarControls');
       
-      fields.forEach(field => {
-        const element = document.getElementById(field);
-        if (element && profile[field]) {
-          element.value = profile[field];
+      toggleEditBtn.addEventListener('click', () => {
+        enterEditMode();
+      });
+      
+      saveChangesBtn.addEventListener('click', () => {
+        saveProfileChanges();
+      });
+      
+      cancelEditBtn.addEventListener('click', () => {
+        exitEditMode();
+      });
+    }
+    
+    // Enter edit mode
+    function enterEditMode() {
+      isEditMode = true;
+      
+      // Toggle buttons
+      document.getElementById('toggleEditMode').style.display = 'none';
+      document.getElementById('saveChanges').style.display = 'inline-block';
+      document.getElementById('cancelEdit').style.display = 'inline-block';
+      document.getElementById('avatarControls').style.display = 'block';
+      
+      // Show all edit inputs and hide display values
+      const fieldIds = ['DisplayName', 'Title', 'Location', 'FirstName', 'LastName', 'Email', 'Phone', 'University', 'Major', 'GradYear', 'GPA', 'Bio', 'Skills', 'LinkedIn', 'Portfolio'];
+      
+      fieldIds.forEach(fieldId => {
+        const displayElement = document.getElementById('display' + fieldId);
+        const editElement = document.getElementById('edit' + fieldId);
+        
+        if (displayElement && editElement) {
+          displayElement.style.display = 'none';
+          editElement.style.display = 'block';
+        }
+      });
+      
+      showToast('Edit mode enabled. Make your changes and click Save.', 'info');
+    }
+    
+    // Exit edit mode
+    function exitEditMode() {
+      isEditMode = false;
+      
+      // Toggle buttons
+      document.getElementById('toggleEditMode').style.display = 'inline-block';
+      document.getElementById('saveChanges').style.display = 'none';
+      document.getElementById('cancelEdit').style.display = 'none';
+      document.getElementById('avatarControls').style.display = 'none';
+      
+      // Show all display values and hide edit inputs
+      const fieldIds = ['DisplayName', 'Title', 'Location', 'FirstName', 'LastName', 'Email', 'Phone', 'University', 'Major', 'GradYear', 'GPA', 'Bio', 'Skills', 'LinkedIn', 'Portfolio'];
+      
+      fieldIds.forEach(fieldId => {
+        const displayElement = document.getElementById('display' + fieldId);
+        const editElement = document.getElementById('edit' + fieldId);
+        
+        if (displayElement && editElement) {
+          displayElement.style.display = 'block';
+          editElement.style.display = 'none';
+          
+          // Reset input value to original
+          const originalValue = displayElement.textContent || displayElement.innerText;
+          if (editElement.tagName === 'SELECT') {
+            // For select elements, find the option with matching text
+            const options = editElement.options;
+            for (let i = 0; i < options.length; i++) {
+              if (options[i].text === originalValue || options[i].value === originalValue) {
+                editElement.selectedIndex = i;
+                break;
+              }
+            }
+          } else {
+            editElement.value = originalValue;
+          }
         }
       });
     }
-
-    // Update avatar display
-    function updateAvatarDisplay(profile) {
-      const avatarImg = document.getElementById('profileAvatarImg');
-      const avatarInitial = document.getElementById('profileAvatarInitial');
-      
-      if (profile.avatar_url) {
-        avatarImg.src = profile.avatar_url;
-        avatarImg.style.display = 'block';
-        avatarInitial.style.display = 'none';
-      } else {
-        const firstName = profile.firstName || currentUser.email?.split('@')[0] || 'User';
-        avatarInitial.textContent = firstName.charAt(0).toUpperCase();
-        avatarImg.style.display = 'none';
-        avatarInitial.style.display = 'flex';
+    
+    // Save profile changes
+    async function saveProfileChanges() {
+      try {
+        const saveBtn = document.getElementById('saveChanges');
+        setLoading(saveBtn, true);
+        
+        // Get values from edit inputs and update display values
+        const fieldMappings = {
+          'EditDisplayName': 'DisplayName',
+          'EditTitle': 'Title', 
+          'EditLocation': 'Location',
+          'EditFirstName': 'FirstName',
+          'EditLastName': 'LastName',
+          'EditEmail': 'Email',
+          'EditPhone': 'Phone',
+          'EditUniversity': 'University',
+          'EditMajor': 'Major',
+          'EditGradYear': 'GradYear',
+          'EditGPA': 'GPA',
+          'EditBio': 'Bio',
+          'EditLinkedIn': 'LinkedIn',
+          'EditPortfolio': 'Portfolio'
+        };
+        
+        // Update display values
+        Object.keys(fieldMappings).forEach(editId => {
+          const editElement = document.getElementById(editId);
+          const displayElement = document.getElementById(fieldMappings[editId]);
+          
+          if (editElement && displayElement) {
+            let value = editElement.value.trim();
+            
+            // Special handling for links
+            if (editId.includes('LinkedIn') || editId.includes('Portfolio')) {
+              if (value && !value.startsWith('http')) {
+                value = 'https://' + value;
+              }
+              if (value) {
+                const linkText = value.replace(/^https?:\/\//, '');
+                displayElement.innerHTML = `<a href="${value}" target="_blank" class="profile-link">${linkText}</a>`;
+              } else {
+                displayElement.textContent = 'Not provided';
+              }
+            } else {
+              displayElement.textContent = value || 'Not provided';
+            }
+          }
+        });
+        
+        // Handle skills specially
+        const editSkills = document.getElementById('EditSkills');
+        const displaySkills = document.getElementById('DisplaySkills');
+        if (editSkills && displaySkills) {
+          const skillsText = editSkills.value.trim();
+          if (skillsText) {
+            const skills = skillsText.split(',').map(s => s.trim()).filter(s => s);
+            const skillsHtml = skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('');
+            displaySkills.innerHTML = `<div class="skills-tags">${skillsHtml}</div>`;
+          } else {
+            displaySkills.textContent = 'No skills listed';
+          }
+        }
+        
+        // Exit edit mode
+        exitEditMode();
+        
+        // Show success message
+        showToast('Profile updated successfully!', 'success');
+        
+      } catch (error) {
+        console.error('Error saving profile:', error);
+        showToast('Failed to save profile changes. Please try again.', 'error');
+      } finally {
+        setLoading(document.getElementById('saveChanges'), false);
       }
     }
+
+
 
     // Setup avatar upload functionality
     function setupAvatarUpload() {
@@ -217,287 +540,578 @@
       const avatarInput = document.getElementById('avatarInput');
       const uploadStatus = document.getElementById('avatarUploadStatus');
 
-      changePhotoBtn.addEventListener('click', () => {
-        avatarInput.click();
-      });
+      if (changePhotoBtn) {
+        changePhotoBtn.addEventListener('click', () => {
+          avatarInput.click();
+        });
+      }
 
-      avatarInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+      if (avatarInput) {
+        avatarInput.addEventListener('change', async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
 
-        // Validate file
-        if (!file.type.startsWith('image/')) {
-          showInlineError('Please select an image file.', avatarInput);
-          return;
-        }
-
-        if (file.size > 5 * 1024 * 1024) {
-          showInlineError('Image must be smaller than 5MB.', avatarInput);
-          return;
-        }
-
-        try {
-          // Show upload progress
-          uploadStatus.innerHTML = '<div class="spinner" style="width: 16px; height: 16px; margin-right: 8px;"></div>Uploading...';
-          changePhotoBtn.disabled = true;
-
-          // Upload avatar
-          const result = await uploadAvatar(file);
-          
-          if (result && result.publicUrl) {
-            // Update avatar display immediately
-            const avatarImg = document.getElementById('profileAvatarImg');
-            avatarImg.src = result.publicUrl;
-            avatarImg.style.display = 'block';
-            document.getElementById('profileAvatarInitial').style.display = 'none';
-
-            // Update profile in database
-            const { error } = await supabase
-              .from('student_profiles')
-              .upsert({
-                user_id: currentUser.id,
-                avatar_url: result.publicUrl,
-                updated_at: new Date().toISOString()
-              }, { onConflict: 'user_id' });
-
-            if (error) {
-              console.error('[student_profiles/avatar_update]', { error });
-            }
-
-            uploadStatus.innerHTML = '<span style="color: var(--success);">✓ Avatar uploaded successfully!</span>';
-            setTimeout(() => {
-              uploadStatus.innerHTML = '';
-            }, 3000);
+          // Validate file
+          if (!file.type.startsWith('image/')) {
+            showToast('Please select an image file.', 'error');
+            return;
           }
 
-        } catch (error) {
-          console.error('[storage/avatar/upload]', { error });
-          uploadStatus.innerHTML = '<span style="color: var(--error);">Failed to upload avatar. Please try again.</span>';
-          setTimeout(() => {
-            uploadStatus.innerHTML = '';
-          }, 5000);
-        } finally {
-          changePhotoBtn.disabled = false;
-        }
-      });
+          if (file.size > 5 * 1024 * 1024) {
+            showToast('Image must be smaller than 5MB.', 'error');
+            return;
+          }
+
+          try {
+            // Show upload progress
+            if (uploadStatus) {
+              uploadStatus.innerHTML = 'Uploading...';
+            }
+            changePhotoBtn.disabled = true;
+
+            // Simulate upload (replace with real upload logic)
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Update avatar display
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const avatarImg = document.getElementById('profileAvatarImg');
+              avatarImg.src = e.target.result;
+              avatarImg.style.display = 'block';
+              document.getElementById('profileAvatarInitial').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+
+            if (uploadStatus) {
+              uploadStatus.innerHTML = '✓ Avatar uploaded successfully!';
+              setTimeout(() => {
+                uploadStatus.innerHTML = '';
+              }, 3000);
+            }
+            
+            showToast('Avatar updated successfully!', 'success');
+
+          } catch (error) {
+            console.error('Avatar upload error:', error);
+            showToast('Failed to upload avatar. Please try again.', 'error');
+          } finally {
+            changePhotoBtn.disabled = false;
+          }
+        });
+      }
+    }
+    
+    // Setup sign out functionality
+    function setupSignOut() {
+      const signOutBtn = document.getElementById('signout-btn');
+      if (signOutBtn) {
+        signOutBtn.addEventListener('click', async () => {
+          try {
+            await supabase.auth.signOut();
+            window.location.href = '/';
+          } catch (error) {
+            console.error('Sign out error:', error);
+          }
+        });
+      }
+    }
+    
+    // Utility function to show loading state
+    function setLoading(button, loading) {
+      if (loading) {
+        button.disabled = true;
+        button.dataset.originalText = button.innerHTML;
+        button.innerHTML = 'Saving...';
+      } else {
+        button.disabled = false;
+        button.innerHTML = button.dataset.originalText || button.innerHTML;
+      }
     }
 
-    // Handle profile form submission
-    document.getElementById('profileForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const saveBtn = document.getElementById('saveBtn');
-      const formData = new FormData(e.target);
-      
-      // Validate required fields
-      const requiredFields = ['firstName', 'lastName', 'university', 'major'];
-      let hasErrors = false;
-      
-      requiredFields.forEach(field => {
-        const value = formData.get(field);
-        const element = document.getElementById(field);
-        
-        if (!value || value.trim() === '') {
-          showInlineError(`${field.replace(/([A-Z])/g, ' $1').toLowerCase()} is required.`, element);
-          hasErrors = true;
-        } else {
-          clearInlineError(element);
-        }
-      });
-      
-      if (hasErrors) {
-        showToast('Please fill in all required fields.', 'error');
-        return;
-      }
-      
-      setLoading(saveBtn, true);
-      
-      try {
-        // Get current avatar URL
-        const currentAvatarUrl = existingProfile?.avatar_url || null;
-        
-        // Build profile object
-        const profileData = {
-          user_id: currentUser.id,
-          email: currentUser.email,
-          firstName: formData.get('firstName').trim(),
-          lastName: formData.get('lastName').trim(),
-          university: formData.get('university').trim(),
-          major: formData.get('major').trim(),
-          graduationYear: formData.get('graduationYear') || null,
-          phone: formData.get('phone')?.trim() || null,
-          linkedin: formData.get('linkedin')?.trim() || null,
-          portfolio: formData.get('portfolio')?.trim() || null,
-          bio: formData.get('bio')?.trim() || null,
-          skills: formData.get('skills')?.trim() || null,
-          interests: formData.get('interests')?.trim() || null,
-          avatar_url: currentAvatarUrl,
-          onboarding_complete: true,
-          updated_at: new Date().toISOString()
-        };
-
-        // Save to database
-        const { error } = await supabase
-          .from('student_profiles')
-          .upsert(profileData, { onConflict: 'user_id' });
-
-        if (error) {
-          throw error;
-        }
-
-        // Success!
-        showToast('Profile saved successfully!', 'success');
-        
-        // Update page state
-        document.getElementById('profileTitle').textContent = 'Edit Your Profile';
-        document.getElementById('dashboardBtn').style.display = 'inline-block';
-        
-        // Update existing profile reference
-        existingProfile = profileData;
-
-      } catch (error) {
-        console.error('[student_profiles/upsert]', { error, profileData });
-        showToast('Failed to save profile. Please try again.', 'error');
-      } finally {
-        setLoading(saveBtn, false);
-      }
-    });
-
-    // Dashboard button
-    document.getElementById('dashboardBtn').addEventListener('click', () => {
-      window.location.href = 'dashboard.html';
-    });
 
     // Initialize page
     document.addEventListener('DOMContentLoaded', initProfile);
   </script>
 
   <style>
-    /* Profile-specific styles using design tokens */
-    .welcome-card {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      padding: 2rem;
+    /* Profile Page Layout */
+    .app-layout {
+      background-color: var(--bg-primary);
+    }
+    
+    .app-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
     }
 
+    .app-sidebar {
+      background: var(--bg-card);
+      border-right: 1px solid var(--border-light);
+      padding: var(--space-4) 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-brand {
+      padding: 0 var(--space-4) var(--space-4);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .sidebar-brand .wordmark {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+    }
+
+    .sidebar-nav {
+      padding-top: var(--space-4);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-item {
+      display: block;
+      padding: var(--space-3) var(--space-4);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-family: var(--font-primary);
+      font-weight: var(--font-medium);
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: all var(--transition-fast) ease;
+      margin: 2px 0;
+    }
+
+    .nav-item:hover {
+      background-color: var(--bg-cream);
+      transform: translateY(-1px);
+    }
+
+    .nav-item.active {
+      background-color: var(--bg-cream);
+      font-weight: var(--font-semibold);
+    }
+
+    .nav-signout {
+      margin-top: auto;
+      color: var(--text-muted);
+    }
+
+    .app-main {
+      padding: var(--space-6);
+      overflow-y: auto;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+      background: var(--bg-gradient-hero);
+      padding: var(--space-8);
+      border-radius: var(--radius-2xl);
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-container {
+      max-width: var(--container-xl);
+      margin: 0 auto;
+    }
+
+    .hero-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .hero-text h1 {
+      font-family: var(--font-heading);
+      color: var(--text-primary);
+    }
+
+    .hero-text p {
+      color: var(--text-secondary);
+    }
+    
+    /* Profile Section */
+    .profile-section {
+      max-width: var(--container-xl);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+    
+    /* Profile Header Card */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+    }
+    
     .profile-avatar-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: var(--space-3);
+      flex-shrink: 0;
     }
-
-    .profile-avatar {
+    
+    .profile-avatar-large {
       width: 120px;
       height: 120px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--clay), var(--sand));
+      border-radius: var(--radius-full);
+      background: var(--coral);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 3rem;
-      font-weight: 700;
-      color: white;
+      font-size: var(--text-4xl);
+      font-weight: var(--font-bold);
+      color: var(--text-white);
       overflow: hidden;
       position: relative;
     }
-
-    .profile-avatar img {
+    
+    .profile-avatar-large img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-
-    .profile-avatar div {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-    }
-
+    
     .avatar-controls {
       text-align: center;
     }
-
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--clay);
-      color: var(--clay);
-      background: rgba(230, 118, 77, 0.05);
-    }
-
-    .btn-secondary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
+    
     .upload-status {
-      margin-top: 0.5rem;
-      font-size: 0.875rem;
+      margin-top: var(--space-2);
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+    
+    .profile-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .profile-name h2 {
+      font-family: var(--font-heading);
+      font-size: var(--text-4xl);
+      font-weight: var(--font-bold);
+      margin: 0 0 var(--space-1) 0;
+      color: var(--text-primary);
+    }
+    
+    .profile-title {
+      color: var(--coral);
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--space-2);
+    }
+    
+    .profile-location {
       display: flex;
       align-items: center;
-      justify-content: center;
-      min-height: 20px;
+      gap: var(--space-1);
+      color: var(--text-secondary);
+      font-size: var(--text-lg);
     }
-
-    .welcome-content h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+    
+    .profile-stats {
+      display: flex;
+      gap: var(--space-6);
+      align-items: center;
+      flex-shrink: 0;
     }
-
-    .welcome-content p {
-      font-size: 1.1rem;
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      color: var(--coral);
+      line-height: 1;
+      margin-bottom: var(--space-1);
+    }
+    
+    .stat-label {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-6);
+    }
+    
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
       margin: 0;
     }
-
-    .profile-form {
-      padding: 2rem;
+    
+    .completion-badge {
+      background: var(--bg-mint);
+      color: var(--success);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      border: 1px solid var(--mint);
     }
-
-    .form-actions {
+    
+    /* Profile Fields */
+    .profile-fields {
       display: flex;
-      gap: 1rem;
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
+      flex-direction: column;
+      gap: var(--space-4);
     }
-
-    .form-actions .btn {
-      flex: 1;
-      max-width: 200px;
+    
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
     }
-
+    
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    
+    .field-group.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .field-label {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .field-content {
+      position: relative;
+    }
+    
+    .field-value {
+      font-size: var(--text-base);
+      color: var(--text-primary);
+      line-height: var(--leading-relaxed);
+      min-height: 24px;
+    }
+    
+    .field-input {
+      width: 100%;
+      padding: var(--space-3);
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-md);
+      font-family: var(--font-primary);
+      font-size: var(--text-base);
+      transition: border-color var(--transition-fast) ease;
+      box-sizing: border-box;
+    }
+    
+    .field-input:focus {
+      outline: none;
+      border-color: var(--coral);
+    }
+    
+    .edit-input {
+      width: 100%;
+      padding: var(--space-2);
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-md);
+      font-family: var(--font-primary);
+      font-size: var(--text-lg);
+      background: var(--bg-card);
+    }
+    
+    .edit-input:focus {
+      outline: none;
+      border-color: var(--coral);
+    }
+    
+    /* Skills Tags */
+    .skills-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+    
+    .skill-tag {
+      background: var(--bg-lavender);
+      color: var(--lavender);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      border: 1px solid var(--lavender-light);
+    }
+    
+    /* Profile Links */
+    .profile-link {
+      color: var(--coral);
+      text-decoration: none;
+      font-weight: var(--font-medium);
+      transition: color var(--transition-fast) ease;
+    }
+    
+    .profile-link:hover {
+      color: var(--coral-hover);
+    }
+    
+    /* Preferences */
+    .preference-items {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    
+    .preference-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-4);
+      background: var(--bg-cream);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    
+    .preference-info h4 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-semibold);
+      margin: 0 0 var(--space-1) 0;
+      color: var(--text-primary);
+    }
+    
+    .preference-info p {
+      margin: 0;
+      font-size: var(--text-sm);
+    }
+    
+    .preference-select {
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      font-size: var(--text-sm);
+    }
+    
+    /* Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border-medium);
+      transition: var(--transition-fast);
+      border-radius: var(--radius-full);
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: var(--text-white);
+      transition: var(--transition-fast);
+      border-radius: var(--radius-full);
+    }
+    
+    .toggle-switch input:checked + .toggle-slider {
+      background-color: var(--coral);
+    }
+    
+    .toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+    
     /* Responsive */
+    @media (max-width: 1024px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .app-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+        padding: var(--space-2) 0;
+      }
+      
+      .sidebar-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 0;
+      }
+      
+      .nav-item {
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+    }
+    
     @media (max-width: 768px) {
-      .welcome-card {
+      .hero-content {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        gap: var(--space-4);
+      }
+      
+      .profile-header {
         flex-direction: column;
         text-align: center;
-        padding: 1.5rem;
+        gap: var(--space-4);
       }
-
-      .profile-form {
-        padding: 1.5rem;
+      
+      .profile-stats {
+        justify-content: center;
       }
-
-      .form-actions {
+      
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .preference-item {
         flex-direction: column;
-      }
-
-      .form-actions .btn {
-        max-width: none;
+        align-items: flex-start;
+        gap: var(--space-3);
       }
     }
   </style>

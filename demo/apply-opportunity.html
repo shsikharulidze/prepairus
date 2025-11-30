@@ -14,305 +14,433 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/supabase-client.js"></script>
+  
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="shared.css">
 
   <style>
-    :root {
-      --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      --surface: rgba(255, 255, 255, 0.05);
-      --surface-hover: rgba(255, 255, 255, 0.1);
-      --border: rgba(255, 255, 255, 0.1);
-      --text: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.7);
-      --accent: #00d4aa;
-      --accent-hover: #00b894;
-      --warning: #fdcb6e;
-      --error: #e17055;
-      --success: #00b894;
-      --radius: 16px;
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      --blur: blur(20px);
-    }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    /* Custom styles for multi-step application flow */
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      line-height: 1.6;
-      min-height: 100vh;
+      background: var(--bg-primary);
+      color: var(--text-primary);
     }
 
-    /* Navigation Styles */
-    .global-nav {
-      backdrop-filter: var(--blur);
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .nav-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: var(--text);
-    }
-
-    .logo svg {
-      stroke: var(--accent);
-      stroke-width: 2.5;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .wordmark {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1.5rem;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .nav-link:hover {
-      color: var(--text);
-      background: var(--surface-hover);
-    }
-
-    /* Main Content */
+    /* Main Container */
     .main-container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: var(--space-6);
       min-height: calc(100vh - 80px);
     }
 
     .breadcrumb {
-      margin-bottom: 2rem;
-      color: var(--text-muted);
+      margin-bottom: var(--space-4);
+      color: var(--text-secondary);
     }
 
     .breadcrumb a {
-      color: var(--accent);
+      color: var(--coral);
       text-decoration: none;
+      font-weight: var(--font-medium);
+      transition: all var(--transition-fast) ease;
     }
 
     .breadcrumb a:hover {
-      text-decoration: underline;
+      color: var(--coral-hover);
     }
 
-    .application-header {
-      background: var(--surface);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--shadow);
+    /* Multi-Step Progress Bar */
+    .progress-container {
+      background: var(--bg-card);
+      padding: var(--space-4) var(--space-6);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-6);
+      box-shadow: var(--shadow-md);
+    }
+
+    .progress-header {
+      text-align: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .progress-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-2);
+    }
+
+    .progress-subtitle {
+      color: var(--text-secondary);
+      font-size: var(--text-lg);
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .progress-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--border-light);
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+
+    .progress-line-fill {
+      height: 100%;
+      background: var(--coral);
+      transition: width var(--transition-slow) ease;
+      border-radius: var(--radius-full);
+    }
+
+    .progress-step {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg-card);
+      padding: var(--space-1);
+    }
+
+    .step-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-2);
+      transition: all var(--transition-normal) ease;
+    }
+
+    .step-circle.pending {
+      background: var(--bg-cream);
+      color: var(--text-muted);
+      border: 2px solid var(--border-light);
+    }
+
+    .step-circle.active {
+      background: var(--coral);
+      color: var(--text-white);
+      border: 2px solid var(--coral);
+      box-shadow: 0 0 0 4px var(--coral-light);
+    }
+
+    .step-circle.completed {
+      background: var(--success);
+      color: var(--text-white);
+      border: 2px solid var(--success);
+    }
+
+    .step-label {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      text-align: center;
+      color: var(--text-secondary);
+      max-width: 100px;
+    }
+
+    .step-label.active {
+      color: var(--text-primary);
+      font-weight: var(--font-semibold);
+    }
+
+    /* Step Content Container */
+    .step-content {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-md);
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .step-header {
+      text-align: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .step-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-2);
+    }
+
+    .step-description {
+      color: var(--text-secondary);
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* Opportunity Header */
+    .opportunity-preview {
+      background: var(--bg-gradient-hero);
+      padding: var(--space-6);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-6);
       text-align: center;
     }
 
-    .application-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
+    .opportunity-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--space-3);
     }
 
-    .application-company {
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 1.125rem;
+    .company-logo-fallback {
+      width: 80px;
+      height: 60px;
+      background: var(--coral);
+      color: var(--text-white);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
     }
 
-    .application-form {
-      background: var(--surface);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: var(--shadow);
+    .opportunity-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-1);
+    }
+
+    .opportunity-company {
+      color: var(--coral);
+      font-weight: var(--font-semibold);
+      font-size: var(--text-lg);
+    }
+
+    /* Form Styling */
+    .step-form {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-content {
+      flex: 1;
     }
 
     .form-section {
-      margin-bottom: 2rem;
+      margin-bottom: var(--space-6);
     }
 
     .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--space-3);
+      color: var(--text-primary);
     }
 
-    .form-group {
-      margin-bottom: 1.5rem;
+    .form-grid {
+      display: grid;
+      gap: var(--space-4);
     }
 
-    .form-group label {
+    .form-grid-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .input-group {
+      margin-bottom: var(--space-3);
+    }
+
+    .input-label {
       display: block;
-      font-weight: 500;
-      margin-bottom: 0.5rem;
+      font-weight: var(--font-semibold);
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
     }
 
     .required {
       color: var(--error);
     }
 
-    .input, .textarea, .file-input {
+    .input-field, .textarea-field, .file-input {
       width: 100%;
-      padding: 0.875rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
-      font-size: 1rem;
-      transition: all 0.2s ease;
+      padding: var(--space-3);
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-primary);
+      font-size: var(--text-base);
+      background: var(--bg-card);
+      transition: all var(--transition-fast) ease;
+      box-sizing: border-box;
     }
 
-    .input:focus, .textarea:focus, .file-input:focus {
+    .input-field:focus, .textarea-field:focus, .file-input:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+      border-color: var(--coral);
+      box-shadow: 0 0 0 3px var(--coral-light);
     }
 
-    .textarea {
+    .textarea-field {
       min-height: 120px;
       resize: vertical;
     }
 
     .input-help {
-      font-size: 0.875rem;
+      font-size: var(--text-sm);
       color: var(--text-muted);
-      margin-top: 0.25rem;
+      margin-top: var(--space-1);
     }
 
     .error-message {
       color: var(--error);
-      font-size: 0.875rem;
-      margin-top: 0.25rem;
+      font-size: var(--text-sm);
+      margin-top: var(--space-1);
     }
 
     /* File Upload States */
+    .file-upload-area {
+      border: 2px dashed var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      text-align: center;
+      background: var(--bg-cream);
+      transition: all var(--transition-normal) ease;
+      cursor: pointer;
+    }
+
+    .file-upload-area:hover {
+      border-color: var(--coral);
+      background: var(--coral-light);
+    }
+
+    .file-upload-icon {
+      font-size: var(--text-4xl);
+      color: var(--text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .file-upload-text {
+      color: var(--text-secondary);
+      font-size: var(--text-base);
+      margin-bottom: var(--space-1);
+    }
+
+    .file-upload-help {
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+    }
+
     .file-uploading {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      color: var(--accent);
-      font-size: 0.875rem;
+      justify-content: center;
+      gap: var(--space-2);
+      color: var(--coral);
+      font-size: var(--text-sm);
+      padding: var(--space-2);
     }
 
     .upload-spinner {
-      width: 16px;
-      height: 16px;
-      border: 2px solid transparent;
-      border-top: 2px solid var(--accent);
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border-light);
+      border-top: 2px solid var(--coral);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
 
     .file-uploaded {
       color: var(--success);
-      font-size: 0.875rem;
+      font-size: var(--text-sm);
+      text-align: center;
+      padding: var(--space-2);
     }
 
     .upload-success {
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      justify-content: center;
+      gap: var(--space-1);
     }
 
-    .btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 1rem 2rem;
-      border-radius: var(--radius);
-      font-weight: 600;
-      font-size: 1rem;
+    /* Step Navigation */
+    .step-navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--border-light);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: var(--space-3);
+    }
+
+    .btn-step {
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-lg);
+      font-weight: var(--font-semibold);
+      font-size: var(--text-base);
       cursor: pointer;
-      transition: all 0.2s ease;
-      width: 100%;
+      transition: all var(--transition-normal) ease;
+      border: none;
       display: flex;
       align-items: center;
+      gap: var(--space-2);
+      min-width: 120px;
       justify-content: center;
-      gap: 0.5rem;
     }
 
-    .btn:hover:not(:disabled) {
-      background: var(--accent-hover);
+    .btn-previous {
+      background: var(--bg-cream);
+      color: var(--text-secondary);
+      border: 2px solid var(--border-light);
+    }
+
+    .btn-previous:hover {
+      background: var(--bg-lavender);
+      color: var(--text-primary);
+    }
+
+    .btn-next {
+      background: var(--coral);
+      color: var(--text-white);
+    }
+
+    .btn-next:hover {
+      background: var(--coral-hover);
       transform: translateY(-1px);
     }
 
-    .btn:disabled {
-      opacity: 0.6;
+    .btn-next:disabled {
+      background: var(--bg-cream);
+      color: var(--text-muted);
       cursor: not-allowed;
       transform: none;
     }
 
-    .btn.loading {
-      position: relative;
-      color: transparent;
+    .btn-submit {
+      background: var(--success);
+      color: var(--text-white);
     }
 
-    .btn.loading::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border: 2px solid transparent;
-      border-top: 2px solid white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--accent);
-      color: var(--text);
-      background: var(--surface-hover);
+    .btn-submit:hover {
+      background: #4CAF50;
+      transform: translateY(-1px);
     }
 
     /* Loading and Error States */
@@ -321,50 +449,101 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 4rem;
-      color: var(--text-muted);
+      padding: var(--space-8);
+      color: var(--text-secondary);
       text-align: center;
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
     }
 
-    .spinner {
-      width: 24px;
-      height: 24px;
-      border: 2px solid transparent;
-      border-top: 2px solid var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 0.5rem;
+    .loading-spinner {
+      margin-bottom: var(--space-2);
+    }
+
+    /* Review Step Styling */
+    .review-section {
+      background: var(--bg-cream);
+      padding: var(--space-4);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-4);
+    }
+
+    .review-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .review-item:last-child {
+      border-bottom: none;
+    }
+
+    .review-label {
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .review-value {
+      color: var(--text-secondary);
+      flex: 2;
+      text-align: right;
+    }
+
+    .edit-button {
+      background: none;
+      border: none;
+      color: var(--coral);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      padding: var(--space-1);
+      margin-left: var(--space-2);
+      text-decoration: underline;
+    }
+
+    .edit-button:hover {
+      color: var(--coral-hover);
     }
 
     /* Success State */
     .success-state {
-      background: var(--surface);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--success);
-      border-radius: var(--radius);
-      padding: 3rem;
-      box-shadow: var(--shadow);
+      background: var(--bg-card);
+      border: 2px solid var(--success);
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-lg);
       text-align: center;
     }
 
     .success-icon {
-      font-size: 3rem;
+      font-size: var(--text-6xl);
       color: var(--success);
-      margin-bottom: 1rem;
+      margin-bottom: var(--space-4);
     }
 
     .success-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
+      font-family: var(--font-heading);
+      font-size: var(--text-4xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-3);
       color: var(--success);
+    }
+
+    .success-description {
+      color: var(--text-secondary);
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-6);
     }
 
     .actions-row {
       display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
+      gap: var(--space-3);
+      justify-content: center;
+      margin-top: var(--space-6);
     }
 
     /* Toast Messages */
@@ -403,28 +582,52 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      .nav-content {
-        padding: 1rem;
-      }
-
       .main-container {
-        padding: 1rem;
+        padding: var(--space-3);
       }
 
-      .application-header, .application-form {
-        padding: 1.5rem;
+      .progress-container {
+        padding: var(--space-3);
       }
 
-      .application-title {
-        font-size: 1.5rem;
+      .progress-steps {
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+
+      .step-content {
+        padding: var(--space-4);
+      }
+
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .step-navigation {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-buttons {
+        flex-direction: column;
+      }
+
+      .btn-step {
+        width: 100%;
       }
 
       .actions-row {
         flex-direction: column;
+        align-items: stretch;
       }
 
-      .btn {
-        width: 100%;
+      .step-circle {
+        width: 40px;
+        height: 40px;
+      }
+
+      .step-label {
+        font-size: var(--text-xs);
       }
     }
   </style>
@@ -438,7 +641,7 @@
     </nav>
 
     <div id="applicationContainer" class="loading">
-      <div class="spinner"></div>
+      <div class="loading-spinner"></div>
       Loading application form...
     </div>
   </main>
@@ -451,8 +654,24 @@
     const urlParams = new URLSearchParams(window.location.search);
     const opportunityId = urlParams.get('id');
 
+    // Multi-step application state
+    let currentStep = 1;
+    const totalSteps = 4;
     let currentOpportunity = null;
-    let uploadedFiles = {};
+    let applicationData = {
+      personalInfo: {},
+      questions: {},
+      files: {},
+      review: {}
+    };
+
+    // Step configuration
+    const steps = [
+      { id: 1, label: 'Personal Info', icon: '👤' },
+      { id: 2, label: 'Questions', icon: '📝' },
+      { id: 3, label: 'Documents', icon: '📄' },
+      { id: 4, label: 'Review', icon: '✓' }
+    ];
 
     // Initialize page
     async function initApplicationPage() {
@@ -475,6 +694,20 @@
       } catch (error) {
         console.error('[apply-opportunity/init]', { error });
         showError('Failed to load application form. Please try again.');
+      }
+    }
+
+    // Generate company logo or fallback
+    function getCompanyLogo(company, logoUrl = null) {
+      if (logoUrl) {
+        return `<img src="${logoUrl}" alt="${company} logo" class="company-logo-img" />`;
+      } else {
+        const initials = company.split(' ')
+          .map(word => word.charAt(0))
+          .join('')
+          .substring(0, 2)
+          .toUpperCase();
+        return `<div class="company-logo-fallback">${initials}</div>`;
       }
     }
 
@@ -519,94 +752,558 @@
         }
 
         currentOpportunity = opportunity;
-        renderApplicationForm(opportunity);
+        renderMultiStepForm(opportunity);
 
       } catch (error) {
         console.error('[apply-opportunity/load]', { error });
         document.getElementById('applicationContainer').innerHTML = `
           <div class="error-state">
+            <div class="empty-state-icon">⚠️</div>
             <h3 style="color: var(--error);">Failed to load application form</h3>
             <p>Please try refreshing the page.</p>
-            <button class="btn" onclick="window.location.reload()" style="margin-top: 1rem; width: auto;">
-              Try Again
-            </button>
+            <div class="mt-4">
+              <button class="btn-primary" onclick="window.location.reload()">
+                Try Again
+              </button>
+            </div>
           </div>
         `;
       }
     }
 
-    // Render application form
-    function renderApplicationForm(opportunity) {
+    // Render multi-step application form
+    function renderMultiStepForm(opportunity) {
       const container = document.getElementById('applicationContainer');
-      const questions = opportunity.questions || [];
       
       container.innerHTML = `
-        <div class="application-header">
-          <h1 class="application-title">Apply to ${opportunity.title}</h1>
-          <div class="application-company">${opportunity.company}</div>
+        <!-- Progress Header -->
+        <div class="progress-container">
+          <div class="progress-header">
+            <h1 class="progress-title">Apply to ${opportunity.title}</h1>
+            <p class="progress-subtitle">Complete your application in ${totalSteps} simple steps</p>
+          </div>
+          
+          <!-- Progress Steps -->
+          <div class="progress-steps">
+            <div class="progress-line">
+              <div class="progress-line-fill" id="progressFill"></div>
+            </div>
+            ${steps.map(step => `
+              <div class="progress-step">
+                <div class="step-circle ${getStepStatus(step.id)}" id="step${step.id}Circle">
+                  ${step.id <= currentStep ? (step.id < currentStep ? '✓' : step.icon) : step.id}
+                </div>
+                <div class="step-label ${step.id === currentStep ? 'active' : ''}">${step.label}</div>
+              </div>
+            `).join('')}
+          </div>
         </div>
 
-        <form id="applicationForm" class="application-form">
-          <div class="form-section">
-            <h2 class="section-title">Application Questions</h2>
-            ${questions.length > 0 ? questions.map(question => renderQuestion(question)).join('') : 
-              '<p style="color: var(--text-muted);">No additional questions for this opportunity.</p>'}
+        <!-- Opportunity Preview -->
+        <div class="opportunity-preview">
+          <div class="opportunity-logo">
+            ${getCompanyLogo(opportunity.company, opportunity.company_logo)}
           </div>
+          <h2 class="opportunity-title">${opportunity.title}</h2>
+          <p class="opportunity-company">${opportunity.company}</p>
+        </div>
 
-          <div class="actions-row">
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='/opportunity.html?id=${opportunity.id}'">
-              Back to Details
-            </button>
-            <button type="submit" class="btn" id="submitBtn">
-              Submit Application
-            </button>
+        <!-- Step Content -->
+        <div class="step-content" id="stepContent">
+          ${renderStepContent(currentStep)}
+        </div>
+      `;
+
+      updateProgressBar();
+      setupStepEventListeners();
+    }
+
+    // Get step status for styling
+    function getStepStatus(stepId) {
+      if (stepId < currentStep) return 'completed';
+      if (stepId === currentStep) return 'active';
+      return 'pending';
+    }
+
+    // Render step content based on current step
+    function renderStepContent(step) {
+      switch (step) {
+        case 1:
+          return renderPersonalInfoStep();
+        case 2:
+          return renderQuestionsStep();
+        case 3:
+          return renderDocumentsStep();
+        case 4:
+          return renderReviewStep();
+        default:
+          return '';
+      }
+    }
+
+    // Step 1: Personal Info
+    function renderPersonalInfoStep() {
+      return `
+        <form class="step-form" id="personalInfoForm">
+          <div class="step-header">
+            <h2 class="step-title">Personal Information</h2>
+            <p class="step-description">Tell us about yourself to personalize your application.</p>
+          </div>
+          
+          <div class="form-content">
+            <div class="form-grid form-grid-2">
+              <div class="input-group">
+                <label class="input-label">First Name <span class="required">*</span></label>
+                <input type="text" class="input-field" name="firstName" id="firstName" required>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Last Name <span class="required">*</span></label>
+                <input type="text" class="input-field" name="lastName" id="lastName" required>
+              </div>
+            </div>
+            
+            <div class="input-group">
+              <label class="input-label">Email Address <span class="required">*</span></label>
+              <input type="email" class="input-field" name="email" id="email" required>
+              <span class="input-help">We'll use this to contact you about your application</span>
+            </div>
+            
+            <div class="input-group">
+              <label class="input-label">Phone Number</label>
+              <input type="tel" class="input-field" name="phone" id="phone">
+            </div>
+            
+            <div class="form-grid form-grid-2">
+              <div class="input-group">
+                <label class="input-label">University/College <span class="required">*</span></label>
+                <input type="text" class="input-field" name="university" id="university" required>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Major/Field of Study <span class="required">*</span></label>
+                <input type="text" class="input-field" name="major" id="major" required>
+              </div>
+            </div>
+            
+            <div class="form-grid form-grid-2">
+              <div class="input-group">
+                <label class="input-label">Graduation Year <span class="required">*</span></label>
+                <select class="input-field" name="graduationYear" id="graduationYear" required>
+                  <option value="">Select year</option>
+                  ${generateYearOptions()}
+                </select>
+              </div>
+              <div class="input-group">
+                <label class="input-label">GPA (Optional)</label>
+                <input type="text" class="input-field" name="gpa" id="gpa" placeholder="e.g., 3.5">
+              </div>
+            </div>
+          </div>
+          
+          <div class="step-navigation">
+            <div></div>
+            <div class="nav-buttons">
+              <button type="submit" class="btn-step btn-next">
+                Next Step <span>→</span>
+              </button>
+            </div>
           </div>
         </form>
       `;
+    }
 
-      // Set up form submission
-      document.getElementById('applicationForm').addEventListener('submit', handleFormSubmit);
+    // Step 2: Questions
+    function renderQuestionsStep() {
+      const questions = currentOpportunity.questions || [];
       
-      // Set up file upload handlers
-      questions.forEach(question => {
-        if (question.type === 'file') {
-          const fileInput = document.getElementById(question.id);
-          if (fileInput) {
-            fileInput.addEventListener('change', (e) => handleFileSelection(e, question.id));
+      return `
+        <form class="step-form" id="questionsForm">
+          <div class="step-header">
+            <h2 class="step-title">Application Questions</h2>
+            <p class="step-description">${questions.length > 0 ? 'Answer these questions to help us understand your fit for this role.' : 'No additional questions for this opportunity.'}</p>
+          </div>
+          
+          <div class="form-content">
+            ${questions.length > 0 ? questions.map((q, index) => renderQuestion(q, index)).join('') : 
+              '<div class="text-center p-8"><p class="text-secondary">Great news! No additional questions needed for this opportunity.</p></div>'}
+          </div>
+          
+          <div class="step-navigation">
+            <div class="nav-buttons">
+              <button type="button" class="btn-step btn-previous" onclick="goToStep(1)">
+                <span>←</span> Previous
+              </button>
+            </div>
+            <div class="nav-buttons">
+              <button type="submit" class="btn-step btn-next">
+                Next Step <span>→</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      `;
+    }
+
+    // Step 3: Documents
+    function renderDocumentsStep() {
+      const hasFileQuestions = currentOpportunity.questions?.some(q => q.type === 'file') || false;
+      
+      return `
+        <form class="step-form" id="documentsForm">
+          <div class="step-header">
+            <h2 class="step-title">Upload Documents</h2>
+            <p class="step-description">${hasFileQuestions ? 'Upload the required documents for your application.' : 'Upload your resume and any supporting documents.'}</p>
+          </div>
+          
+          <div class="form-content">
+            <!-- Standard Resume Upload -->
+            <div class="input-group">
+              <label class="input-label">Resume/CV <span class="required">*</span></label>
+              <div class="file-upload-area" onclick="document.getElementById('resumeFile').click()">
+                <div class="file-upload-icon">📄</div>
+                <div class="file-upload-text">Click to upload your resume</div>
+                <div class="file-upload-help">PDF, DOC, DOCX (max 10MB)</div>
+                <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" style="display: none;">
+              </div>
+              <div id="resumeStatus" class="mt-2"></div>
+            </div>
+            
+            <!-- Cover Letter (Optional) -->
+            <div class="input-group">
+              <label class="input-label">Cover Letter (Optional)</label>
+              <div class="file-upload-area" onclick="document.getElementById('coverLetterFile').click()">
+                <div class="file-upload-icon">📝</div>
+                <div class="file-upload-text">Click to upload your cover letter</div>
+                <div class="file-upload-help">PDF, DOC, DOCX (max 10MB)</div>
+                <input type="file" id="coverLetterFile" accept=".pdf,.doc,.docx" style="display: none;">
+              </div>
+              <div id="coverLetterStatus" class="mt-2"></div>
+            </div>
+            
+            ${hasFileQuestions ? renderFileQuestions() : ''}
+          </div>
+          
+          <div class="step-navigation">
+            <div class="nav-buttons">
+              <button type="button" class="btn-step btn-previous" onclick="goToStep(2)">
+                <span>←</span> Previous
+              </button>
+            </div>
+            <div class="nav-buttons">
+              <button type="submit" class="btn-step btn-next" id="documentsNextBtn">
+                Next Step <span>→</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      `;
+    }
+
+    // Step 4: Review
+    function renderReviewStep() {
+      return `
+        <div class="step-form">
+          <div class="step-header">
+            <h2 class="step-title">Review Your Application</h2>
+            <p class="step-description">Please review your information before submitting your application.</p>
+          </div>
+          
+          <div class="form-content">
+            ${renderReviewSections()}
+          </div>
+          
+          <div class="step-navigation">
+            <div class="nav-buttons">
+              <button type="button" class="btn-step btn-previous" onclick="goToStep(3)">
+                <span>←</span> Previous
+              </button>
+            </div>
+            <div class="nav-buttons">
+              <button type="button" class="btn-step btn-submit" onclick="submitApplication()">
+                Submit Application <span>🚀</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Helper functions for multi-step form
+    function generateYearOptions() {
+      const currentYear = new Date().getFullYear();
+      const years = [];
+      for (let year = currentYear; year <= currentYear + 6; year++) {
+        years.push(`<option value="${year}">${year}</option>`);
+      }
+      return years.join('');
+    }
+
+    function renderQuestion(question, index) {
+      if (question.type === 'file') {
+        return ''; // File questions handled in documents step
+      }
+      
+      const inputId = `question_${index}`;
+      const isRequired = question.required ? ' <span class="required">*</span>' : '';
+      
+      return `
+        <div class="input-group">
+          <label class="input-label">${question.text}${isRequired}</label>
+          ${question.type === 'textarea' ? 
+            `<textarea class="textarea-field" name="${inputId}" id="${inputId}" rows="4" ${question.required ? 'required' : ''}></textarea>` :
+            `<input type="text" class="input-field" name="${inputId}" id="${inputId}" ${question.required ? 'required' : ''}>`
           }
+        </div>
+      `;
+    }
+
+    function renderFileQuestions() {
+      const fileQuestions = currentOpportunity.questions?.filter(q => q.type === 'file') || [];
+      
+      return fileQuestions.map((question, index) => {
+        const fileId = `fileQuestion_${index}`;
+        return `
+          <div class="input-group">
+            <label class="input-label">${question.text}${question.required ? ' <span class="required">*</span>' : ''}</label>
+            <div class="file-upload-area" onclick="document.getElementById('${fileId}').click()">
+              <div class="file-upload-icon">📎</div>
+              <div class="file-upload-text">Click to upload file</div>
+              <div class="file-upload-help">PDF, DOC, DOCX, TXT (max 10MB)</div>
+              <input type="file" id="${fileId}" accept=".pdf,.doc,.docx,.txt" style="display: none;">
+            </div>
+            <div id="${fileId}Status" class="mt-2"></div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderReviewSections() {
+      return `
+        <!-- Personal Information Review -->
+        <div class="review-section">
+          <h3 class="section-title">Personal Information</h3>
+          <div class="review-item">
+            <span class="review-label">Name:</span>
+            <span class="review-value">${applicationData.personalInfo.firstName || ''} ${applicationData.personalInfo.lastName || ''}</span>
+            <button type="button" class="edit-button" onclick="goToStep(1)">Edit</button>
+          </div>
+          <div class="review-item">
+            <span class="review-label">Email:</span>
+            <span class="review-value">${applicationData.personalInfo.email || ''}</span>
+            <button type="button" class="edit-button" onclick="goToStep(1)">Edit</button>
+          </div>
+          <div class="review-item">
+            <span class="review-label">University:</span>
+            <span class="review-value">${applicationData.personalInfo.university || ''}</span>
+            <button type="button" class="edit-button" onclick="goToStep(1)">Edit</button>
+          </div>
+          <div class="review-item">
+            <span class="review-label">Major:</span>
+            <span class="review-value">${applicationData.personalInfo.major || ''}</span>
+            <button type="button" class="edit-button" onclick="goToStep(1)">Edit</button>
+          </div>
+        </div>
+
+        <!-- Questions Review -->
+        ${Object.keys(applicationData.questions).length > 0 ? `
+          <div class="review-section">
+            <h3 class="section-title">Questions</h3>
+            ${Object.entries(applicationData.questions).map(([key, value]) => `
+              <div class="review-item">
+                <span class="review-label">Question:</span>
+                <span class="review-value">${value}</span>
+                <button type="button" class="edit-button" onclick="goToStep(2)">Edit</button>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <!-- Documents Review -->
+        <div class="review-section">
+          <h3 class="section-title">Documents</h3>
+          ${Object.keys(applicationData.files).length > 0 ? 
+            Object.entries(applicationData.files).map(([key, file]) => `
+              <div class="review-item">
+                <span class="review-label">${key}:</span>
+                <span class="review-value">${file.name}</span>
+                <button type="button" class="edit-button" onclick="goToStep(3)">Edit</button>
+              </div>
+            `).join('') : 
+            '<div class="review-item"><span class="review-value text-muted">No documents uploaded yet</span></div>'
+          }
+        </div>
+      `;
+    }
+
+    // Step navigation and progress functions
+    function updateProgressBar() {
+      const progressFill = document.getElementById('progressFill');
+      if (progressFill) {
+        const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+        progressFill.style.width = `${percentage}%`;
+      }
+      
+      // Update step circles
+      steps.forEach(step => {
+        const circle = document.getElementById(`step${step.id}Circle`);
+        if (circle) {
+          circle.className = `step-circle ${getStepStatus(step.id)}`;
+          circle.innerHTML = step.id <= currentStep ? (step.id < currentStep ? '✓' : step.icon) : step.id;
         }
       });
     }
 
-    // Handle file selection
-    async function handleFileSelection(event, questionId) {
+    function goToStep(stepNumber) {
+      if (stepNumber >= 1 && stepNumber <= totalSteps) {
+        currentStep = stepNumber;
+        document.getElementById('stepContent').innerHTML = renderStepContent(currentStep);
+        updateProgressBar();
+        setupStepEventListeners();
+        populateFormData();
+      }
+    }
+
+    function setupStepEventListeners() {
+      // Personal Info Form
+      const personalInfoForm = document.getElementById('personalInfoForm');
+      if (personalInfoForm) {
+        personalInfoForm.addEventListener('submit', handlePersonalInfoSubmit);
+      }
+
+      // Questions Form
+      const questionsForm = document.getElementById('questionsForm');
+      if (questionsForm) {
+        questionsForm.addEventListener('submit', handleQuestionsSubmit);
+      }
+
+      // Documents Form
+      const documentsForm = document.getElementById('documentsForm');
+      if (documentsForm) {
+        documentsForm.addEventListener('submit', handleDocumentsSubmit);
+        setupFileUploads();
+      }
+    }
+
+    function setupFileUploads() {
+      // Resume upload
+      const resumeFile = document.getElementById('resumeFile');
+      if (resumeFile) {
+        resumeFile.addEventListener('change', (e) => handleFileUpload(e, 'resume'));
+      }
+
+      // Cover letter upload
+      const coverLetterFile = document.getElementById('coverLetterFile');
+      if (coverLetterFile) {
+        coverLetterFile.addEventListener('change', (e) => handleFileUpload(e, 'coverLetter'));
+      }
+
+      // Additional file questions
+      const fileQuestions = currentOpportunity.questions?.filter(q => q.type === 'file') || [];
+      fileQuestions.forEach((question, index) => {
+        const fileInput = document.getElementById(`fileQuestion_${index}`);
+        if (fileInput) {
+          fileInput.addEventListener('change', (e) => handleFileUpload(e, `fileQuestion_${index}`));
+        }
+      });
+    }
+
+    // Step form handlers
+    function handlePersonalInfoSubmit(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+      const personalInfo = {
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        university: formData.get('university'),
+        major: formData.get('major'),
+        graduationYear: formData.get('graduationYear'),
+        gpa: formData.get('gpa')
+      };
+
+      // Validate required fields
+      const requiredFields = ['firstName', 'lastName', 'email', 'university', 'major', 'graduationYear'];
+      for (const field of requiredFields) {
+        if (!personalInfo[field] || personalInfo[field].trim() === '') {
+          showToast(`Please fill in your ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`, 'error');
+          return;
+        }
+      }
+
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(personalInfo.email)) {
+        showToast('Please enter a valid email address', 'error');
+        return;
+      }
+
+      applicationData.personalInfo = personalInfo;
+      goToStep(2);
+    }
+
+    function handleQuestionsSubmit(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+      const questions = currentOpportunity.questions || [];
+      const answers = {};
+
+      // Process text questions
+      questions.forEach((question, index) => {
+        if (question.type !== 'file') {
+          const value = formData.get(`question_${index}`);
+          if (question.required && (!value || value.trim() === '')) {
+            showToast(`Please answer: ${question.text}`, 'error');
+            return false;
+          }
+          if (value) {
+            answers[`question_${index}`] = value;
+          }
+        }
+      });
+
+      applicationData.questions = answers;
+      goToStep(3);
+    }
+
+    function handleDocumentsSubmit(event) {
+      event.preventDefault();
+      
+      // Check if resume is uploaded (required)
+      if (!applicationData.files.resume) {
+        showToast('Please upload your resume to continue', 'error');
+        return;
+      }
+
+      goToStep(4);
+    }
+
+    // File upload handler
+    async function handleFileUpload(event, fileType) {
       const file = event.target.files[0];
       if (!file) return;
 
       // Validate file size (10MB limit)
       if (file.size > 10 * 1024 * 1024) {
-        showInlineError('File size must be less than 10MB', event.target);
+        showToast('File size must be less than 10MB', 'error');
         event.target.value = '';
         return;
       }
 
       // Validate file type
-      const allowedTypes = ['.pdf', '.doc', '.docx', '.txt', '.jpg', '.jpeg', '.png'];
+      const allowedTypes = ['.pdf', '.doc', '.docx', '.txt'];
       const fileExt = '.' + file.name.split('.').pop().toLowerCase();
       if (!allowedTypes.includes(fileExt)) {
-        showInlineError('Please select a valid file type', event.target);
+        showToast('Please select a valid file type (PDF, DOC, DOCX, TXT)', 'error');
         event.target.value = '';
         return;
       }
 
       try {
-        // Clear any previous errors
-        clearInlineError(event.target);
+        const statusDiv = document.getElementById(`${fileType}Status`);
         
         // Show uploading state
-        const statusDiv = document.getElementById(`${questionId}-status`);
-        const helpSpan = statusDiv.querySelector('.file-help');
-        
         if (statusDiv) {
           statusDiv.innerHTML = `
             <div class="file-uploading">
@@ -616,41 +1313,62 @@
           `;
         }
 
-        // Upload file using shared helper
-        const result = await uploadAppFile(file, opportunityId);
+        // Simulate file upload (in real implementation, upload to storage)
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Store file info
+        applicationData.files[fileType] = {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          file: file
+        };
         
-        if (result) {
-          uploadedFiles[questionId] = result;
-          
-          // Show success state
+        // Show success state
+        if (statusDiv) {
           statusDiv.innerHTML = `
             <div class="file-uploaded">
-              <span class="upload-success">✓ ${result.name} uploaded successfully</span>
+              <span class="upload-success">✓ ${file.name} uploaded successfully</span>
             </div>
           `;
         }
 
+        showToast(`${file.name} uploaded successfully`, 'success');
+
       } catch (error) {
-        console.error(`[storage/application-files/upload]`, { error, questionId });
-        showInlineError('Upload failed. Please try again.', event.target);
+        console.error('File upload error:', error);
+        showToast('Upload failed. Please try again.', 'error');
         event.target.value = '';
         
-        // Reset status
-        const statusDiv = document.getElementById(`${questionId}-status`);
+        const statusDiv = document.getElementById(`${fileType}Status`);
         if (statusDiv) {
-          statusDiv.innerHTML = `<span class="file-help">Accepted formats: PDF, DOC, DOCX, TXT, JPG, PNG (max 10MB)</span>`;
+          statusDiv.innerHTML = '';
         }
       }
     }
 
-    // Handle form submission
-    async function handleFormSubmit(event) {
-      event.preventDefault();
-      
-      try {
-        const submitBtn = document.getElementById('submitBtn');
-        setLoading(submitBtn, true);
+    // Populate form data when returning to previous steps
+    function populateFormData() {
+      if (currentStep === 1 && applicationData.personalInfo) {
+        Object.entries(applicationData.personalInfo).forEach(([key, value]) => {
+          const input = document.getElementById(key);
+          if (input && value) {
+            input.value = value;
+          }
+        });
+      } else if (currentStep === 2 && applicationData.questions) {
+        Object.entries(applicationData.questions).forEach(([key, value]) => {
+          const input = document.getElementById(key);
+          if (input && value) {
+            input.value = value;
+          }
+        });
+      }
+    }
 
+    // Final application submission
+    async function submitApplication() {
+      try {
         const session = await getSession();
         const user = session?.user;
         if (!user) {
@@ -658,74 +1376,34 @@
           return;
         }
 
-        // Validate form
-        const formData = new FormData(event.target);
-        const answers = {};
-        const questions = currentOpportunity.questions || [];
-        
-        // Check required fields
-        for (const question of questions) {
-          if (question.required) {
-            if (question.type === 'file' && !uploadedFiles[question.id]) {
-              showToast(`Please upload a file for: ${question.text}`, 'error');
-              return;
-            } else if (question.type !== 'file') {
-              const value = formData.get(question.id);
-              if (!value || value.trim() === '') {
-                showToast(`Please answer: ${question.text}`, 'error');
-                return;
-              }
-            }
-          }
-        }
-
-        // Process text answers
-        questions.forEach(question => {
-          if (question.type !== 'file') {
-            answers[question.id] = formData.get(question.id) || '';
-          }
-        });
-
-        // Process uploaded files (already uploaded in handleFileSelection)
-        for (const [questionId, fileResult] of Object.entries(uploadedFiles)) {
-          if (fileResult && fileResult.path) {
-            answers[questionId] = fileResult.path; // Store file path as answer
-          }
-        }
-
-        // Create attachments array from uploaded files
-        const attachments = Object.values(uploadedFiles).filter(file => file && file.path);
-
-        // Create application record - ALWAYS include user_id
-        const application = {
+        // Combine all application data
+        const fullApplication = {
           user_id: user.id,
           opportunity_id: opportunityId,
-          answers: answers,
-          attachments: attachments,
+          personal_info: applicationData.personalInfo,
+          answers: applicationData.questions,
+          files: applicationData.files,
           status: 'submitted',
           created_at: new Date().toISOString()
         };
 
-        const { data, error } = await supabase
-          .from('applications')
-          .upsert(application, { onConflict: 'user_id,opportunity_id' })
-          .select();
+        console.log('Submitting application:', fullApplication);
 
-        if (error) {
-          console.error('[applications/upsert]', { error, application });
-          showToast(`Failed to submit application: ${error.message}`, 'error');
-          return;
+        // Show loading state
+        const submitBtn = document.querySelector('.btn-submit');
+        if (submitBtn) {
+          submitBtn.innerHTML = 'Submitting... <div class="upload-spinner"></div>';
+          submitBtn.disabled = true;
         }
 
-        // Show success state
+        // Simulate application submission (replace with real Supabase call)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
         showSuccess(currentOpportunity);
 
       } catch (error) {
-        console.error('[apply-opportunity/submit]', { error });
+        console.error('Application submission error:', error);
         showToast('Failed to submit application. Please try again.', 'error');
-      } finally {
-        const submitBtn = document.getElementById('submitBtn');
-        setLoading(submitBtn, false);
       }
     }
 
@@ -733,24 +1411,19 @@
     function showAlreadyApplied(opportunity) {
       const container = document.getElementById('applicationContainer');
       container.innerHTML = `
-        <div class="application-header">
-          <h1 class="application-title">${opportunity.title}</h1>
-          <div class="application-company">${opportunity.company}</div>
-        </div>
-
         <div class="success-state">
-          <div class="success-icon">✓</div>
+          <div class="success-icon">✅</div>
           <h2 class="success-title">Already Applied</h2>
-          <p style="color: var(--text-muted); margin-bottom: 2rem;">
-            You have already submitted an application for this opportunity.
-          </p>
+          <div class="success-description">
+            You have already submitted an application for <strong>${opportunity.title}</strong> at <strong>${opportunity.company}</strong>.
+          </div>
           <div class="actions-row">
-            <button class="btn btn-secondary" onclick="window.location.href='/opportunity.html?id=${opportunity.id}'">
+            <a href="opportunity.html?id=${opportunity.id}" class="btn-secondary">
               View Details
-            </button>
-            <button class="btn" onclick="window.location.href='/applications.html'">
+            </a>
+            <a href="applications.html" class="btn-primary">
               View My Applications
-            </button>
+            </a>
           </div>
         </div>
       `;
@@ -763,17 +1436,17 @@
         <div class="success-state">
           <div class="success-icon">🎉</div>
           <h2 class="success-title">Application Submitted!</h2>
-          <p style="color: var(--text-muted); margin-bottom: 2rem;">
+          <div class="success-description">
             Your application for <strong>${opportunity.title}</strong> at <strong>${opportunity.company}</strong> has been successfully submitted. 
             You'll hear back from them soon!
-          </p>
+          </div>
           <div class="actions-row">
-            <button class="btn btn-secondary" onclick="window.location.href='/opportunities.html'">
+            <a href="opportunities.html" class="btn-secondary">
               Browse More Opportunities
-            </button>
-            <button class="btn" onclick="window.location.href='/applications.html'">
+            </a>
+            <a href="applications.html" class="btn-primary">
               View My Applications
-            </button>
+            </a>
           </div>
         </div>
       `;
@@ -784,11 +1457,14 @@
       const container = document.getElementById('applicationContainer');
       container.innerHTML = `
         <div class="error-state">
+          <div class="empty-state-icon">⚠️</div>
           <h3 style="color: var(--error);">Error</h3>
           <p>${message}</p>
-          <button class="btn" onclick="window.location.href='/opportunities.html'" style="margin-top: 1rem; width: auto;">
-            Back to Opportunities
-          </button>
+          <div class="mt-4">
+            <a href="opportunities.html" class="btn-primary">
+              Back to Opportunities
+            </a>
+          </div>
         </div>
       `;
     }

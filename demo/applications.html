@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Main Styles -->
-  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="shared.css">
   
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -56,54 +56,76 @@
     <main class="app-main">
       <div class="container">
         
-        <!-- Page Header -->
-        <section class="page-header">
-          <div class="header-content">
-            <h1>My applications</h1>
-            <p class="muted">Track and manage your internship applications.</p>
-          </div>
-          <div class="header-actions">
-            <button type="button" class="btn" id="newApplicationBtn">
-              New application
-            </button>
+        <!-- Hero Header -->
+        <section class="hero-section">
+          <div class="hero-container">
+            <div class="hero-content">
+              <div class="hero-text">
+                <h1 class="text-5xl font-bold text-primary mb-3">My Applications</h1>
+                <p class="text-xl text-secondary">Track and manage your internship applications</p>
+              </div>
+              <div class="hero-actions">
+                <div class="notification-container" style="position: relative;">
+                  <button type="button" class="notification-bell" id="notificationBell">
+                    <span class="notification-bell-icon">🔔</span>
+                    <span class="notification-badge" id="notificationBadge">3</span>
+                  </button>
+                  
+                  <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                      <h3 class="notification-title">Notifications</h3>
+                      <button class="mark-all-read" id="markAllRead">Mark all read</button>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                      <!-- Notifications populated by JS -->
+                    </div>
+                    <div class="notification-footer">
+                      <a href="#" class="view-all-notifications">View all notifications</a>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" class="btn-primary btn-large" id="newApplicationBtn">
+                  <span>+</span> New Application
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
-        <!-- Applications Table -->
+        <!-- Filter Tabs -->
+        <section class="filter-section">
+          <div class="filter-container">
+            <div class="filter-tabs" id="filterTabs">
+              <button class="filter-tab active" data-filter="all">All Applications</button>
+              <button class="filter-tab" data-filter="applied">Applied</button>
+              <button class="filter-tab" data-filter="interview">Interview</button>
+              <button class="filter-tab" data-filter="offered">Offered</button>
+              <button class="filter-tab" data-filter="rejected">Rejected</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Applications Grid -->
         <section class="applications-section">
-          <div class="card">
-            <div class="table-container" id="tableContainer">
-              
-              <!-- Loading State -->
-              <div class="loading-state" id="loadingState">
-                <p>Loading your applications...</p>
-              </div>
+          <!-- Loading State -->
+          <div class="loading-state" id="loadingState">
+            <div class="loading-spinner"></div>
+            <p>Loading your applications...</p>
+          </div>
 
-              <!-- Applications Table -->
-              <div class="applications-table" id="applicationsTable" style="display: none;">
-                <div class="table-header">
-                  <div class="header-cell position">Position</div>
-                  <div class="header-cell company">Company</div>
-                  <div class="header-cell status">Status</div>
-                  <div class="header-cell date">Applied</div>
-                  <div class="header-cell actions">Actions</div>
-                </div>
-                <div class="table-body" id="tableBody">
-                  <!-- Applications rows populated by JS -->
-                </div>
-              </div>
+          <!-- Applications Cards Grid -->
+          <div class="applications-grid" id="applicationsGrid" style="display: none;">
+            <!-- Applications cards populated by JS -->
+          </div>
 
-              <!-- Empty State -->
-              <div class="empty-state" id="emptyState" style="display: none;">
-                <div class="empty-icon">📋</div>
-                <h3>No applications yet</h3>
-                <p class="muted">You haven't applied to any internships yet. Start by browsing opportunities or adding an application manually.</p>
-                <div class="empty-actions">
-                  <a href="dashboard.html" class="btn ghost">Browse opportunities</a>
-                  <button type="button" class="btn" id="emptyNewAppBtn">New application</button>
-                </div>
-              </div>
-
+          <!-- Empty State -->
+          <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-state-icon">📋</div>
+            <h3>No applications yet</h3>
+            <p class="text-secondary mb-6">You haven't applied to any internships yet. Start by browsing opportunities or adding an application manually.</p>
+            <div class="empty-actions">
+              <a href="opportunities.html" class="btn-secondary">Browse Opportunities</a>
+              <button type="button" class="btn-primary" id="emptyNewAppBtn">New Application</button>
             </div>
           </div>
         </section>
@@ -252,44 +274,74 @@
       });
     }
 
-    // Render applications table
-    function renderApplicationsTable(applications) {
+    // Generate company logo or fallback
+    function getCompanyLogo(company, logoUrl = null) {
+      if (logoUrl) {
+        return `<img src="${logoUrl}" alt="${company} logo" class="company-logo-img" />`;
+      } else {
+        // Create initials fallback
+        const initials = company.split(' ')
+          .map(word => word.charAt(0))
+          .join('')
+          .substring(0, 2)
+          .toUpperCase();
+        return `<div class="company-logo-fallback">${initials}</div>`;
+      }
+    }
+
+    // Render applications grid
+    function renderApplicationsGrid(applications) {
       const loadingState = document.getElementById('loadingState');
       const emptyState = document.getElementById('emptyState');
-      const applicationsTable = document.getElementById('applicationsTable');
-      const tableBody = document.getElementById('tableBody');
+      const applicationsGrid = document.getElementById('applicationsGrid');
 
       loadingState.style.display = 'none';
 
       if (!applications || applications.length === 0) {
         emptyState.style.display = 'block';
-        applicationsTable.style.display = 'none';
+        applicationsGrid.style.display = 'none';
         return;
       }
 
       emptyState.style.display = 'none';
-      applicationsTable.style.display = 'block';
+      applicationsGrid.style.display = 'grid';
 
-      tableBody.innerHTML = applications.map(app => `
-        <div class="table-row" data-application-id="${app.id}">
-          <div class="row-cell position" data-label="Position">
-            <div class="position-content">
-              <span class="position-title">${app.position}</span>
+      applicationsGrid.innerHTML = applications.map(app => `
+        <div class="application-card card" data-application-id="${app.id}">
+          <div class="card-padding">
+            <div class="application-header">
+              <div class="company-logo-section">
+                ${getCompanyLogo(app.company)}
+              </div>
+              <div class="application-info">
+                <h3 class="application-title">${app.position}</h3>
+                <div class="application-company">${app.company}</div>
+              </div>
+              <div class="application-status">
+                <span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
+              </div>
             </div>
-          </div>
-          <div class="row-cell company" data-label="Company">
-            <span class="company-name">${app.company}</span>
-          </div>
-          <div class="row-cell status" data-label="Status">
-            <span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
-          </div>
-          <div class="row-cell date" data-label="Applied">
-            <span class="application-date">${formatDate(app.applied_at)}</span>
-          </div>
-          <div class="row-cell actions" data-label="Actions">
-            <div class="row-actions">
-              <button type="button" class="action-btn" onclick="viewApplicationDetails('${app.id}')">View</button>
-              <button type="button" class="action-btn danger" onclick="confirmWithdrawApplication('${app.id}')">Withdraw</button>
+            
+            <div class="application-meta">
+              <div class="meta-item">
+                <span class="meta-label">Applied</span>
+                <span class="meta-value">${formatDate(app.applied_at)}</span>
+              </div>
+              ${app.interview_date ? `
+                <div class="meta-item">
+                  <span class="meta-label">Interview</span>
+                  <span class="meta-value">${formatDate(app.interview_date)}</span>
+                </div>
+              ` : ''}
+            </div>
+            
+            <div class="application-actions">
+              <button type="button" class="btn-secondary btn-small" onclick="viewApplicationDetails('${app.id}')">
+                View Details
+              </button>
+              <button type="button" class="btn-ghost btn-small text-error" onclick="confirmWithdrawApplication('${app.id}')">
+                Withdraw
+              </button>
             </div>
           </div>
         </div>
@@ -376,8 +428,8 @@
         // Remove from local array
         applications = applications.filter(app => app.id != selectedApplicationId);
         
-        // Re-render table
-        renderApplicationsTable(applications);
+        // Re-render grid
+        renderApplicationsGrid(applications);
 
         // Hide modal and show success
         hideConfirmDeleteModal();
@@ -454,8 +506,8 @@
         // Add to local array
         applications.unshift(data);
         
-        // Re-render table
-        renderApplicationsTable(applications);
+        // Re-render grid
+        renderApplicationsGrid(applications);
 
         // Show success and hide modal
         showToast('Application added successfully!');
@@ -485,6 +537,174 @@
       }, 4000);
     }
 
+    // Set up filter tabs
+    function setupFilterTabs() {
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Update active tab
+          filterTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          
+          // Filter applications
+          const filter = tab.dataset.filter;
+          filterApplications(filter);
+        });
+      });
+    }
+
+    // Filter applications
+    function filterApplications(filter) {
+      let filteredApps = [...applications];
+      
+      if (filter !== 'all') {
+        filteredApps = applications.filter(app => 
+          app.status.toLowerCase() === filter.toLowerCase()
+        );
+      }
+      
+      renderApplicationsGrid(filteredApps);
+    }
+
+    // Mock notification data
+    const mockNotifications = [
+      {
+        id: 1,
+        type: 'success',
+        icon: '✓',
+        message: 'Application Status Update',
+        details: 'Your application to TechCorp has been moved to the interview stage.',
+        time: '2 minutes ago',
+        unread: true
+      },
+      {
+        id: 2,
+        type: 'info',
+        icon: '📧',
+        message: 'New Message',
+        details: 'You have a new message from DataFlow regarding your application.',
+        time: '1 hour ago',
+        unread: true
+      },
+      {
+        id: 3,
+        type: 'warning',
+        icon: '⚠️',
+        message: 'Application Deadline',
+        details: 'Your application to StartupXYZ expires in 2 days.',
+        time: '3 hours ago',
+        unread: true
+      },
+      {
+        id: 4,
+        type: 'info',
+        icon: '📝',
+        message: 'Profile Update',
+        details: 'Please update your resume to improve your application success rate.',
+        time: '1 day ago',
+        unread: false
+      }
+    ];
+
+    // Notification system
+    function setupNotifications() {
+      const notificationBell = document.getElementById('notificationBell');
+      const notificationDropdown = document.getElementById('notificationDropdown');
+      const notificationBadge = document.getElementById('notificationBadge');
+      const markAllReadBtn = document.getElementById('markAllRead');
+      
+      let isDropdownOpen = false;
+      
+      // Show/hide notification dropdown
+      notificationBell.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isDropdownOpen = !isDropdownOpen;
+        
+        if (isDropdownOpen) {
+          notificationDropdown.classList.add('show');
+          renderNotifications();
+        } else {
+          notificationDropdown.classList.remove('show');
+        }
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', () => {
+        if (isDropdownOpen) {
+          notificationDropdown.classList.remove('show');
+          isDropdownOpen = false;
+        }
+      });
+      
+      // Prevent dropdown from closing when clicking inside
+      notificationDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+      
+      // Mark all as read
+      markAllReadBtn.addEventListener('click', () => {
+        mockNotifications.forEach(notif => notif.unread = false);
+        renderNotifications();
+        updateNotificationBadge();
+      });
+      
+      // Initial render
+      updateNotificationBadge();
+    }
+    
+    // Render notifications
+    function renderNotifications() {
+      const notificationList = document.getElementById('notificationList');
+      
+      if (mockNotifications.length === 0) {
+        notificationList.innerHTML = `
+          <div class="notification-empty">
+            <div class="notification-empty-icon">🔔</div>
+            <p>No notifications yet</p>
+          </div>
+        `;
+        return;
+      }
+      
+      notificationList.innerHTML = mockNotifications.map(notif => `
+        <div class="notification-item ${notif.unread ? 'unread' : ''}" onclick="markNotificationRead(${notif.id})">
+          <div class="notification-content">
+            <div class="notification-icon ${notif.type}">
+              ${notif.icon}
+            </div>
+            <div class="notification-text">
+              <div class="notification-message">${notif.message}</div>
+              <div class="notification-details">${notif.details}</div>
+              <div class="notification-time">${notif.time}</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Mark individual notification as read
+    function markNotificationRead(id) {
+      const notification = mockNotifications.find(n => n.id === id);
+      if (notification) {
+        notification.unread = false;
+        renderNotifications();
+        updateNotificationBadge();
+      }
+    }
+    
+    // Update notification badge
+    function updateNotificationBadge() {
+      const unreadCount = mockNotifications.filter(n => n.unread).length;
+      const badge = document.getElementById('notificationBadge');
+      
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+        badge.style.display = 'block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
     // Sign out
     async function handleSignOut() {
       try {
@@ -503,7 +723,13 @@
 
       // Load and render applications
       const applicationsData = await loadApplications();
-      renderApplicationsTable(applicationsData);
+      renderApplicationsGrid(applicationsData);
+      
+      // Set up filter functionality
+      setupFilterTabs();
+      
+      // Set up notifications
+      setupNotifications();
     }
 
     // Event listeners
@@ -555,7 +781,196 @@
   <style>
     /* Applications Page Layout */
     .app-layout {
-      background-color: var(--bg, #fefefe);
+      background-color: var(--bg-primary);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background: var(--bg-gradient-hero);
+      padding: var(--space-8);
+      border-radius: var(--radius-2xl);
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-container {
+      max-width: var(--container-xl);
+      margin: 0 auto;
+    }
+
+    .hero-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .hero-text h1 {
+      font-family: var(--font-heading);
+      color: var(--text-primary);
+    }
+
+    .hero-text p {
+      color: var(--text-secondary);
+    }
+
+    /* Filter Section */
+    .filter-section {
+      margin-bottom: var(--space-6);
+    }
+
+    .filter-container {
+      max-width: var(--container-xl);
+      margin: 0 auto;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: var(--space-2);
+      background: var(--bg-card);
+      padding: var(--space-2);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .filter-tab {
+      padding: var(--space-3) var(--space-4);
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: var(--font-medium);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast) ease;
+      white-space: nowrap;
+    }
+
+    .filter-tab:hover {
+      background: var(--bg-cream);
+      color: var(--text-primary);
+    }
+
+    .filter-tab.active {
+      background: var(--coral);
+      color: var(--text-white);
+    }
+
+    /* Applications Grid */
+    .applications-section {
+      max-width: var(--container-xl);
+      margin: 0 auto;
+    }
+
+    .applications-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .application-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      transition: all var(--transition-normal) ease;
+      border: 1px solid var(--border-light);
+    }
+
+    .application-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .application-header {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+
+    .company-logo-section {
+      flex-shrink: 0;
+    }
+
+    .company-logo-fallback {
+      width: 60px;
+      height: 45px;
+      background: var(--coral);
+      color: var(--text-white);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-lg);
+      font-weight: var(--font-bold);
+      letter-spacing: 0.05em;
+    }
+
+    .application-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .application-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-1);
+      color: var(--text-primary);
+      line-height: var(--leading-tight);
+    }
+
+    .application-company {
+      color: var(--coral);
+      font-weight: var(--font-semibold);
+      font-size: var(--text-base);
+    }
+
+    .application-status {
+      flex-shrink: 0;
+    }
+
+    .application-meta {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+      padding: var(--space-3);
+      background: var(--bg-cream);
+      border-radius: var(--radius-md);
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .meta-label {
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .meta-value {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+    }
+
+    .application-actions {
+      display: flex;
+      gap: var(--space-2);
+    }
+
+    .application-actions .btn-secondary,
+    .application-actions .btn-ghost {
+      flex: 1;
     }
 
     .app-container {
@@ -645,168 +1060,80 @@
       margin: 0;
     }
 
-    /* Applications Table */
-    .applications-section {
-      margin-bottom: 40px;
-    }
-
-    .table-container {
-      min-height: 400px;
-    }
-
-    .applications-table {
-      width: 100%;
-    }
-
-    .table-header {
-      display: grid;
-      grid-template-columns: 2.5fr 2fr 1fr 1.2fr 1fr;
-      gap: 16px;
-      padding: 16px 24px;
-      background-color: var(--sand, #f8f7f4);
-      border-radius: 8px 8px 0 0;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--muted, #666);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .header-cell {
-      font-family: 'Inter', sans-serif;
-    }
-
-    .table-body {
-      background: white;
-      border-radius: 0 0 8px 8px;
-      overflow: hidden;
-    }
-
-    .table-row {
-      display: grid;
-      grid-template-columns: 2.5fr 2fr 1fr 1.2fr 1fr;
-      gap: 16px;
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border, #e5e5e5);
-      align-items: center;
-      transition: background-color 0.15s ease;
-    }
-
-    .table-row:hover {
-      background-color: var(--bg, #fefefe);
-    }
-
-    .table-row:last-child {
-      border-bottom: none;
-    }
-
-    .row-cell {
-      font-family: 'Inter', sans-serif;
-    }
-
-    .position-title {
-      font-weight: 600;
-      color: var(--text, #1a1a1a);
-    }
-
-    .company-name {
-      font-weight: 500;
-      color: var(--text, #1a1a1a);
-    }
 
     .status-badge {
       display: inline-block;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
       text-transform: uppercase;
       letter-spacing: 0.025em;
     }
 
     .status-applied {
-      background: var(--sage, #90c695);
-      color: var(--text, #1a1a1a);
+      background: var(--bg-mint);
+      color: var(--success);
+      border: 1px solid var(--mint);
     }
 
     .status-interview {
-      background: #e3f2fd;
-      color: #1976d2;
+      background: var(--bg-lavender);
+      color: var(--lavender);
+      border: 1px solid var(--lavender-light);
     }
 
     .status-offered {
-      background: #e8f5e8;
-      color: #2e7d32;
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid var(--success);
     }
 
     .status-rejected {
-      background: #ffebee;
-      color: #d32f2f;
-    }
-
-    .application-date {
-      color: var(--muted, #666);
-      font-size: 0.9rem;
-    }
-
-    .row-actions {
-      display: flex;
-      gap: 12px;
-    }
-
-    .action-btn {
-      padding: 4px 8px;
-      border: none;
-      background: none;
-      color: var(--muted, #666);
-      font-size: 0.8rem;
-      cursor: pointer;
-      text-decoration: underline;
-      font-family: 'Inter', sans-serif;
-      transition: color 0.15s ease;
-    }
-
-    .action-btn:hover {
-      color: var(--text, #1a1a1a);
-    }
-
-    .action-btn.danger {
-      color: #dc3545;
-    }
-
-    .action-btn.danger:hover {
-      color: #c82333;
+      background: var(--error-light);
+      color: var(--error);
+      border: 1px solid var(--error);
     }
 
     /* Loading and Empty States */
     .loading-state,
     .empty-state {
       text-align: center;
-      padding: 80px 32px;
+      padding: var(--space-8);
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
     }
 
-    .empty-icon {
-      font-size: 3rem;
-      margin-bottom: 16px;
+    .loading-spinner {
+      margin-bottom: var(--space-2);
+    }
+
+    .empty-state-icon {
+      font-size: var(--text-6xl);
+      margin-bottom: var(--space-4);
     }
 
     .empty-state h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.25rem;
-      margin-bottom: 8px;
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-2);
+      color: var(--text-primary);
     }
 
     .empty-state p {
-      margin-bottom: 24px;
+      margin-bottom: var(--space-6);
       max-width: 400px;
       margin-left: auto;
       margin-right: auto;
+      color: var(--text-secondary);
     }
 
     .empty-actions {
       display: flex;
       justify-content: center;
-      gap: 16px;
+      gap: var(--space-3);
       flex-wrap: wrap;
     }
 
@@ -1025,64 +1352,56 @@
       }
 
       /* Mobile Table - Stack vertically */
-      .applications-table {
-        display: block;
+      .hero-content {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        gap: var(--space-4);
       }
 
-      .table-header {
-        display: none;
+      .filter-tabs {
+        flex-wrap: wrap;
+        justify-content: center;
       }
 
-      .table-body {
-        background: transparent;
-        border-radius: 0;
+      .filter-tab {
+        flex: 1;
+        min-width: 120px;
       }
 
-      .table-row {
-        display: block;
-        padding: 20px;
-        margin-bottom: 16px;
-        border-radius: 8px;
-        border: 1px solid var(--border, #e5e5e5);
-        background: white;
+      .applications-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
       }
 
-      .table-row:last-child {
-        margin-bottom: 0;
+      .application-header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-2);
       }
 
-      .row-cell {
-        display: block;
-        margin-bottom: 12px;
+      .application-meta {
+        flex-direction: column;
+        gap: var(--space-2);
       }
 
-      .row-cell:before {
-        content: attr(data-label) ": ";
-        font-weight: 600;
-        color: var(--muted, #666);
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-
-      .row-actions {
-        justify-content: flex-start;
-        margin-top: 12px;
-        padding-top: 12px;
-        border-top: 1px solid var(--border, #e5e5e5);
+      .application-actions {
+        flex-direction: column;
+        gap: var(--space-2);
       }
 
       .detail-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: var(--space-3);
       }
 
       .empty-actions {
         flex-direction: column;
+        align-items: stretch;
       }
 
       .modal-content {
-        margin: 20px;
+        margin: var(--space-4);
       }
     }
   </style>
