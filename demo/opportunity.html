@@ -14,270 +14,156 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/supabase-client.js"></script>
+  
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="shared.css">
 
   <style>
-    :root {
-      --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      --surface: rgba(255, 255, 255, 0.05);
-      --surface-hover: rgba(255, 255, 255, 0.1);
-      --border: rgba(255, 255, 255, 0.1);
-      --text: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.7);
-      --accent: #00d4aa;
-      --accent-hover: #00b894;
-      --warning: #fdcb6e;
-      --error: #e17055;
-      --success: #00b894;
-      --radius: 16px;
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      --blur: blur(20px);
-    }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    /* Custom styles for opportunity detail page */
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* Navigation Styles */
-    .global-nav {
-      backdrop-filter: var(--blur);
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .nav-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: var(--text);
-    }
-
-    .logo svg {
-      stroke: var(--accent);
-      stroke-width: 2.5;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .wordmark {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1.5rem;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .nav-link:hover {
-      color: var(--text);
-      background: var(--surface-hover);
-    }
-
-    .nav-link-cta {
-      background: var(--accent);
-      color: var(--text);
-      padding: 0.75rem 1.5rem;
-      border-radius: var(--radius);
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-
-    .nav-link-cta:hover {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
+      background: var(--bg-primary);
+      color: var(--text-primary);
     }
 
     /* Main Content */
     .main-container {
-      max-width: 1000px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: var(--space-6);
       min-height: calc(100vh - 80px);
     }
 
     .breadcrumb {
-      margin-bottom: 2rem;
-      color: var(--text-muted);
+      margin-bottom: var(--space-4);
+      color: var(--text-secondary);
     }
 
     .breadcrumb a {
-      color: var(--accent);
+      color: var(--coral);
       text-decoration: none;
+      font-weight: var(--font-medium);
+      transition: all var(--transition-fast) ease;
     }
 
     .breadcrumb a:hover {
-      text-decoration: underline;
+      color: var(--coral-hover);
     }
 
-    .opportunity-header {
-      background: var(--surface);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2.5rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--shadow);
+    /* Hero Header for Opportunity */
+    .opportunity-hero {
+      background: var(--bg-gradient-hero);
+      padding: var(--space-8);
+      border-radius: var(--radius-2xl);
+      margin-bottom: var(--space-6);
+      text-align: center;
+    }
+
+    .company-logo-large {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--space-4);
+    }
+
+    .company-logo-large .company-logo-fallback {
+      width: 120px;
+      height: 80px;
+      background: var(--coral);
+      color: var(--text-white);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
     }
 
     .opportunity-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
+      font-family: var(--font-heading);
+      font-size: var(--text-6xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-2);
+      line-height: var(--leading-tight);
     }
 
     .opportunity-company {
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 1.25rem;
-      margin-bottom: 1rem;
+      color: var(--coral);
+      font-weight: var(--font-semibold);
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-4);
     }
 
     .opportunity-meta {
       display: flex;
-      gap: 1rem;
+      justify-content: center;
+      gap: var(--space-2);
       flex-wrap: wrap;
-      margin-bottom: 1.5rem;
+      margin-bottom: var(--space-6);
     }
 
     .meta-tag {
-      background: rgba(0, 212, 170, 0.2);
-      color: var(--accent);
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-size: 0.875rem;
-      font-weight: 500;
-    }
-
-    .opportunity-description {
-      font-size: 1.1rem;
-      line-height: 1.7;
-      margin-bottom: 2rem;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      border: 1px solid var(--border-light);
     }
 
     .opportunity-actions {
       display: flex;
-      gap: 1rem;
+      justify-content: center;
+      gap: var(--space-3);
     }
 
-    .btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 1rem 2rem;
-      border-radius: var(--radius);
-      font-weight: 600;
-      font-size: 1rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
-    }
-
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--accent);
-      color: var(--text);
-      background: var(--surface-hover);
-    }
-
-    /* Application Section */
-    .application-section {
-      background: var(--surface);
-      backdrop-filter: var(--blur);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--shadow);
+    /* Content Sections */
+    .content-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      margin-bottom: var(--space-4);
+      box-shadow: var(--shadow-md);
     }
 
     .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-3);
+      color: var(--text-primary);
+    }
+
+    .opportunity-description {
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
     }
 
     .questions-list {
       list-style: none;
       padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
     }
 
     .question-item {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 0.75rem;
+      background: var(--bg-cream);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: var(--space-3);
     }
 
     .question-text {
-      font-weight: 500;
-      margin-bottom: 0.25rem;
+      font-weight: var(--font-medium);
+      margin-bottom: var(--space-1);
+      color: var(--text-primary);
     }
 
     .question-type {
       color: var(--text-muted);
-      font-size: 0.875rem;
+      font-size: var(--text-sm);
     }
 
     /* Loading and Error States */
@@ -286,102 +172,73 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 4rem;
-      color: var(--text-muted);
+      padding: var(--space-8);
+      color: var(--text-secondary);
+      text-align: center;
     }
 
-    .spinner {
-      width: 24px;
-      height: 24px;
-      border: 2px solid transparent;
-      border-top: 2px solid var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 0.5rem;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .loading-spinner {
+      margin-bottom: var(--space-2);
     }
 
     /* Already Applied State */
     .already-applied {
-      background: rgba(0, 184, 148, 0.1);
-      border: 1px solid var(--success);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      margin-bottom: 2rem;
+      background: var(--bg-mint);
+      border: 2px solid var(--success);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      margin-bottom: var(--space-4);
       text-align: center;
     }
 
     .already-applied h3 {
       color: var(--success);
-      margin-bottom: 0.5rem;
+      margin-bottom: var(--space-2);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
     }
 
-    /* Toast Messages */
-    .toast {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 1rem 1.5rem;
-      border-radius: var(--radius);
-      color: white;
-      font-weight: 500;
-      box-shadow: var(--shadow);
-      transform: translateX(400px);
-      transition: transform 0.3s ease;
-      z-index: 1000;
-      max-width: 350px;
+    .already-applied p {
+      color: var(--text-secondary);
     }
 
-    .toast.show {
-      transform: translateX(0);
-    }
-
-    .toast.success { background: var(--success); }
-    .toast.error { background: var(--error); }
-    .toast.info { background: var(--accent); }
-
-    .toast-content {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .toast-icon {
-      font-size: 1.125rem;
+    .already-applied a {
+      color: var(--success);
+      font-weight: var(--font-semibold);
     }
 
     /* Responsive */
     @media (max-width: 768px) {
-      .nav-content {
-        padding: 1rem;
-      }
-
       .main-container {
-        padding: 1rem;
+        padding: var(--space-3);
       }
 
-      .opportunity-header {
-        padding: 1.5rem;
+      .opportunity-hero {
+        padding: var(--space-6);
       }
 
       .opportunity-title {
-        font-size: 2rem;
+        font-size: var(--text-4xl);
       }
 
       .opportunity-actions {
         flex-direction: column;
+        align-items: stretch;
       }
 
-      .btn {
+      .opportunity-actions .btn-primary,
+      .opportunity-actions .btn-secondary {
         width: 100%;
         justify-content: center;
       }
 
-      .opportunity-meta {
-        justify-content: center;
+      .content-section {
+        padding: var(--space-4);
+      }
+
+      .meta-tag {
+        font-size: var(--text-xs);
+        padding: var(--space-1) var(--space-2);
       }
     }
   </style>
@@ -395,7 +252,7 @@
     </nav>
 
     <div id="opportunityContainer" class="loading">
-      <div class="spinner"></div>
+      <div class="loading-spinner"></div>
       Loading opportunity details...
     </div>
   </main>
@@ -480,6 +337,21 @@
       }
     }
 
+    // Generate company logo or fallback
+    function getCompanyLogo(company, logoUrl = null) {
+      if (logoUrl) {
+        return `<img src="${logoUrl}" alt="${company} logo" class="company-logo-img" />`;
+      } else {
+        // Create initials fallback
+        const initials = company.split(' ')
+          .map(word => word.charAt(0))
+          .join('')
+          .substring(0, 2)
+          .toUpperCase();
+        return `<div class="company-logo-fallback">${initials}</div>`;
+      }
+    }
+
     // Render opportunity details
     function renderOpportunity(opportunity, hasApplied) {
       const container = document.getElementById('opportunityContainer');
@@ -487,42 +359,51 @@
       const questions = opportunity.questions || [];
       
       container.innerHTML = `
-        <div class="opportunity-header">
+        <!-- Opportunity Hero Section -->
+        <div class="opportunity-hero">
+          <div class="company-logo-large">
+            ${getCompanyLogo(opportunity.company, opportunity.company_logo)}
+          </div>
+          
           <h1 class="opportunity-title">${opportunity.title}</h1>
           <div class="opportunity-company">${opportunity.company}</div>
           
           <div class="opportunity-meta">
-            <span class="meta-tag">${opportunity.location}</span>
-            <span class="meta-tag">${opportunity.work_type}</span>
-            ${opportunity.compensation ? `<span class="meta-tag">${opportunity.compensation}</span>` : ''}
-            ${opportunity.duration ? `<span class="meta-tag">${opportunity.duration}</span>` : ''}
-          </div>
-          
-          <div class="opportunity-description">
-            ${opportunity.description.replace(/\n/g, '<br>')}
+            <span class="meta-tag">📍 ${opportunity.location}</span>
+            <span class="meta-tag">💼 ${opportunity.work_type}</span>
+            ${opportunity.compensation ? `<span class="meta-tag">💰 ${opportunity.compensation}</span>` : ''}
+            ${opportunity.duration ? `<span class="meta-tag">⏱️ ${opportunity.duration}</span>` : ''}
           </div>
           
           ${hasApplied ? `
             <div class="already-applied">
               <h3>✓ Application Submitted</h3>
-              <p>You have already applied to this opportunity. Check your <a href="/applications.html" style="color: var(--success);">applications page</a> for status updates.</p>
+              <p>You have already applied to this opportunity. Check your <a href="applications.html">applications page</a> for status updates.</p>
             </div>
           ` : `
             <div class="opportunity-actions">
-              <a href="/apply-opportunity.html?id=${opportunity.id}" class="btn">
+              <a href="apply-opportunity.html?id=${opportunity.id}" class="btn-primary btn-large">
                 Apply Now
               </a>
-              <a href="/opportunities.html" class="btn btn-secondary">
+              <a href="opportunities.html" class="btn-secondary btn-large">
                 View More Opportunities
               </a>
             </div>
           `}
         </div>
         
+        <!-- Description Section -->
+        <div class="content-section">
+          <h2 class="section-title">About this opportunity</h2>
+          <div class="opportunity-description">
+            ${opportunity.description.replace(/\n/g, '<br>')}
+          </div>
+        </div>
+        
         ${questions.length > 0 ? `
-          <div class="application-section">
+          <div class="content-section">
             <h2 class="section-title">Application Questions</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+            <p class="text-secondary mb-4">
               You'll be asked to answer these questions when you apply:
             </p>
             <ul class="questions-list">
@@ -537,7 +418,7 @@
         ` : ''}
         
         ${opportunity.requirements ? `
-          <div class="application-section">
+          <div class="content-section">
             <h2 class="section-title">Requirements</h2>
             <div class="opportunity-description">
               ${opportunity.requirements.replace(/\n/g, '<br>')}
@@ -546,10 +427,26 @@
         ` : ''}
         
         ${opportunity.benefits ? `
-          <div class="application-section">
-            <h2 class="section-title">Benefits</h2>
+          <div class="content-section">
+            <h2 class="section-title">What you'll get</h2>
             <div class="opportunity-description">
               ${opportunity.benefits.replace(/\n/g, '<br>')}
+            </div>
+          </div>
+        ` : ''}
+        
+        <!-- Call to Action Footer -->
+        ${!hasApplied ? `
+          <div class="content-section text-center">
+            <h3 class="text-2xl font-semibold text-primary mb-4">Ready to apply?</h3>
+            <p class="text-secondary mb-6">Join ${opportunity.company} and kickstart your career with this exciting opportunity.</p>
+            <div class="flex justify-center gap-3">
+              <a href="apply-opportunity.html?id=${opportunity.id}" class="btn-primary btn-large">
+                Apply Now
+              </a>
+              <a href="opportunities.html" class="btn-ghost btn-large">
+                Browse More
+              </a>
             </div>
           </div>
         ` : ''}
