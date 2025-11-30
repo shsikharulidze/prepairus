@@ -51,8 +51,9 @@
               
               <div class="email-content">
                 <h3>Check your email</h3>
-                <p>We've sent you a confirmation link at <span id="user-email" class="email-highlight">your@email.com</span></p>
-                <p class="email-note">Click the link in the email to verify your account and continue to your dashboard.</p>
+                <p>We've sent you a verification email at <span id="user-email" class="email-highlight">your@email.com</span></p>
+                <p class="email-note">Click the link in the email to verify your account and complete your onboarding profile setup.</p>
+                <p class="onboarding-note"><strong>Important:</strong> The email contains your personal onboarding link where you'll fill out your profile information to get started with PrePair.</p>
               </div>
             </div>
 
@@ -84,6 +85,10 @@
                 <li>Try clicking "Resend Email" above</li>
                 <li>Contact support if you continue having issues</li>
               </ul>
+              <div class="flow-note">
+                <h4>What happens next?</h4>
+                <p>After clicking the verification link in your email, you'll be taken to a personalized onboarding page where you can complete your student profile with academic information, preferences, and more.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -140,42 +145,8 @@
       }
     });
 
-    // Auto-check for confirmed user periodically
-    let checkInterval = setInterval(async () => {
-      try {
-        const user = await getCurrentUser();
-        if (user?.email_confirmed_at) {
-          clearInterval(checkInterval);
-          showToast('Email confirmed! Redirecting...', 'success');
-          setTimeout(async () => {
-            // Check if user already has a profile
-            try {
-              const { data: profile } = await window.sb
-                .from('student_profiles')
-                .select('*')
-                .eq('id', user.id)
-                .single();
-              
-              if (profile) {
-                window.location.href = '/dashboard.html';
-              } else {
-                window.location.href = '/onboarding.html';
-              }
-            } catch (error) {
-              // No profile found, go to onboarding
-              window.location.href = '/onboarding.html';
-            }
-          }, 1000);
-        }
-      } catch (error) {
-        // Ignore errors during periodic check
-      }
-    }, 3000); // Check every 3 seconds
-
-    // Clean up interval when page is unloaded
-    window.addEventListener('beforeunload', () => {
-      if (checkInterval) clearInterval(checkInterval);
-    });
+    // Note: Users will complete onboarding via the email link
+    // This page serves as the endpoint after signup
   </script>
 
   <style>
@@ -272,6 +243,34 @@
     .email-note {
       font-size: 0.9rem;
       opacity: 0.8;
+    }
+
+    .onboarding-note {
+      font-size: 0.9rem;
+      color: #e6764d !important;
+      margin-top: 0.75rem;
+      padding: 0.5rem;
+      background: rgba(230, 118, 77, 0.05);
+      border-radius: 6px;
+    }
+
+    .flow-note {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(108, 99, 96, 0.15);
+    }
+
+    .flow-note h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #3c2e26;
+      margin-bottom: 0.75rem;
+    }
+
+    .flow-note p {
+      color: #6c6360;
+      margin: 0;
+      line-height: 1.5;
     }
 
     .welcome-actions {
