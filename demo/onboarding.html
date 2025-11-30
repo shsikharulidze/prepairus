@@ -45,6 +45,12 @@
           </div>
         </div>
 
+        <!-- Loading State -->
+        <div id="loading-state" class="loading-state" style="display: none;">
+          <div class="loading-spinner"></div>
+          <p>Verifying your email and setting up your profile...</p>
+        </div>
+
         <!-- Error Message Container -->
         <div id="error-message" class="error-message" style="display: none;"></div>
 
@@ -155,20 +161,89 @@
     const totalSteps = 3;
     let currentUser = null;
 
+    // --- URL Parameter Handling ---
+    function getUrlParameters() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return {
+        token: urlParams.get('token'),
+        type: urlParams.get('type'),
+        access_token: urlParams.get('access_token'),
+        refresh_token: urlParams.get('refresh_token')
+      };
+    }
+
+    // --- Email Verification ---
+    async function handleEmailVerification() {
+      const params = getUrlParameters();
+      
+      // Check if this is an email verification callback
+      if (params.access_token && params.refresh_token) {
+        try {
+          console.log('Setting session from email verification...');
+          
+          const { data, error } = await supabase.auth.setSession({
+            access_token: params.access_token,
+            refresh_token: params.refresh_token
+          });
+          
+          if (error) {
+            throw error;
+          }
+          
+          currentUser = data.user;
+          console.log('User authenticated via email verification:', currentUser.email);
+          
+          // Clean the URL parameters
+          const cleanUrl = window.location.pathname;
+          window.history.replaceState({}, document.title, cleanUrl);
+          
+          return true;
+        } catch (error) {
+          console.error('Email verification failed:', error);
+          showError('Invalid or expired verification link. Please try signing up again.');
+          return false;
+        }
+      }
+      
+      return false;
+    }
+
     // --- Authentication Check ---
     async function checkAuthentication() {
       try {
+        // First check if this is an email verification callback
+        const verificationResult = await handleEmailVerification();
+        if (verificationResult) {
+          return true;
+        }
+        
+        // Otherwise check existing session
         const { data: { user }, error } = await supabase.auth.getUser();
         
         if (error) {
           console.error('Auth error:', error);
-          window.location.href = '/signin.html';
+          showError('Authentication failed. Please sign in again.');
+          setTimeout(() => {
+            window.location.href = '/signin.html';
+          }, 3000);
           return false;
         }
         
         if (!user) {
           console.log('No authenticated user found');
-          window.location.href = '/signin.html';
+          showError('You need to be signed in to complete onboarding. Redirecting to sign in...');
+          setTimeout(() => {
+            window.location.href = '/signin.html';
+          }, 3000);
+          return false;
+        }
+        
+        // Check if email is verified
+        if (!user.email_confirmed_at) {
+          showError('Please verify your email address before completing your profile.');
+          setTimeout(() => {
+            window.location.href = '/welcome.html';
+          }, 3000);
           return false;
         }
         
@@ -177,7 +252,10 @@
         return true;
       } catch (error) {
         console.error('Authentication check failed:', error);
-        window.location.href = '/signin.html';
+        showError('Authentication failed. Please try again.');
+        setTimeout(() => {
+          window.location.href = '/signin.html';
+        }, 3000);
         return false;
       }
     }
@@ -336,13 +414,35 @@
       }
     }
 
+    // --- Loading State Management ---
+    function showLoading() {
+      document.getElementById('loading-state').style.display = 'block';
+      document.getElementById('onboarding-form').style.display = 'none';
+      document.querySelector('.progress-steps').style.display = 'none';
+    }
+    
+    function hideLoading() {
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('onboarding-form').style.display = 'block';
+      document.querySelector('.progress-steps').style.display = 'flex';
+    }
+
     // --- Event Listeners ---
     document.addEventListener('DOMContentLoaded', async function() {
+      // Show loading state if processing email verification
+      const params = getUrlParameters();
+      if (params.access_token && params.refresh_token) {
+        showLoading();
+      }
+      
       // Check authentication first
       const isAuthenticated = await checkAuthentication();
       if (!isAuthenticated) {
-        return; // Will redirect to signin
+        return; // Will redirect or show error
       }
+      
+      // Hide loading and show form
+      hideLoading();
       
       // Initialize onboarding form
       showStep(currentStep);
@@ -556,6 +656,32 @@
 
     .form-navigation .btn {
       min-width: 120px;
+    }
+
+    /* Loading State */
+    .loading-state {
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--text);
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loading-state p {
+      color: var(--muted);
+      font-weight: 500;
     }
 
     /* Error Message */
