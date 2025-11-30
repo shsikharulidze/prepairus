@@ -80,6 +80,7 @@ export async function signUpUser(
       email: email.trim().toLowerCase(),
       password: password,
       options: {
+        emailRedirectTo: 'https://prepairus.co/onboarding.html',
         // Add any additional user metadata here
         data: {
           full_name: options.fullName || '',

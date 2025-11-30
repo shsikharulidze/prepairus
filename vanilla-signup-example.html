@@ -132,7 +132,10 @@
                 // Perform signup
                 const { data, error } = await supabase.auth.signUp({
                     email: email.trim().toLowerCase(),
-                    password: password
+                    password: password,
+                    options: {
+                        emailRedirectTo: 'https://prepairus.co/onboarding.html'
+                    }
                 })
 
                 if (error) {

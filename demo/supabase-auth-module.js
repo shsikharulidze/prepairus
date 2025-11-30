@@ -69,6 +69,7 @@ async function signUpUser(email, password, options = {}) {
       email: email.trim().toLowerCase(),
       password: password,
       options: {
+        emailRedirectTo: 'https://prepairus.co/onboarding.html',
         data: {
           full_name: options.fullName || '',
           signup_source: 'web',
