@@ -71,9 +71,11 @@
                 <div class="hero-card">
                   <div class="hero-card-content">
                     <div class="achievement-icon">🎯</div>
-                    <h4>Profile Strength</h4>
-                    <div class="achievement-score">8.7/10</div>
-                    <p>You're in the top 15% of candidates</p>
+                    <div class="hero-card-text">
+                      <h4>Profile Strength</h4>
+                      <div class="achievement-score">8.7/10</div>
+                      <p>You're in the top 15% of candidates</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -604,7 +606,7 @@
     /* Clean Hero Section */
     .hero-section {
       background: var(--bg-card);
-      padding: var(--space-8) var(--space-8);
+      padding: var(--space-6) var(--space-8);
       border-radius: var(--radius-2xl);
       margin-bottom: var(--space-8);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
@@ -632,7 +634,7 @@
 
     .hero-right {
       flex: 0 0 auto;
-      width: 240px;
+      width: 320px;
     }
 
     .hero-greeting {
@@ -703,7 +705,7 @@
       display: flex;
       gap: var(--space-4);
       flex: 0 0 auto;
-      width: 240px;
+      width: 320px;
     }
 
     .hero-actions .btn-large {
@@ -714,37 +716,48 @@
       background: var(--bg-card);
       border: 1px solid var(--border-light);
       border-radius: var(--radius-xl);
-      padding: var(--space-6);
+      padding: var(--space-4) var(--space-6);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      text-align: center;
-      max-width: 240px;
+      width: 100%;
+    }
+
+    .hero-card-content {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      text-align: left;
+    }
+
+    .hero-card-text {
+      flex: 1;
     }
 
     .achievement-icon {
-      font-size: 3rem;
-      margin-bottom: var(--space-3);
+      font-size: 2.5rem;
+      flex-shrink: 0;
     }
 
-    .hero-card h4 {
+    .hero-card-text h4 {
       font-family: var(--font-heading);
       font-size: var(--text-lg);
       font-weight: var(--font-semibold);
-      margin-bottom: var(--space-2);
+      margin: 0 0 var(--space-1) 0;
       color: var(--text-primary);
     }
 
     .achievement-score {
       font-family: var(--font-heading);
-      font-size: var(--text-3xl);
+      font-size: var(--text-2xl);
       font-weight: var(--font-bold);
       color: var(--coral);
-      margin-bottom: var(--space-2);
+      margin: 0 0 var(--space-1) 0;
     }
 
-    .hero-card p {
+    .hero-card-text p {
       font-size: var(--text-sm);
       color: var(--text-secondary);
       margin: 0;
+      line-height: var(--leading-normal);
     }
     
     /* Dashboard Cards Grid */
@@ -1623,8 +1636,14 @@
 
       .hero-right {
         width: 100%;
-        max-width: 240px;
+        max-width: 100%;
         margin: 0 auto;
+      }
+
+      .hero-card-content {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-3);
       }
 
       .hero-bottom {
