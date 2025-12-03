@@ -74,7 +74,6 @@
                     <div class="hero-card-text">
                       <h4>Profile Strength</h4>
                       <div class="achievement-score">8.7/10</div>
-                      <p>You're in the top 15% of candidates</p>
                     </div>
                   </div>
                 </div>
@@ -624,16 +623,16 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: var(--space-6);
+      margin-bottom: var(--space-3);
     }
 
     .hero-left {
       flex: 1;
-      max-width: 60%;
+      max-width: calc(100% - 320px - var(--space-6));
     }
 
     .hero-right {
-      flex: 0 0 auto;
+      flex: 0 0 320px;
       width: 320px;
     }
 
@@ -661,7 +660,7 @@
     .hero-subtitle {
       font-size: var(--text-xl);
       color: var(--text-secondary);
-      margin: var(--space-6) 0;
+      margin: var(--space-2) 0 0 0;
       line-height: var(--leading-relaxed);
     }
 
