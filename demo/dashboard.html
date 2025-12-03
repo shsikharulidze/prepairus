@@ -57,21 +57,38 @@
         <section class="hero-section">
           <div class="hero-container">
             <div class="hero-content">
-              <div class="hero-text">
+              <!-- Left side: Text content -->
+              <div class="hero-left">
                 <div class="hero-greeting">
                   <span class="greeting-time">Good morning,</span>
                   <h1 class="hero-title">Alex Johnson</h1>
                 </div>
                 <p class="hero-subtitle">Ready to discover your next career opportunity?</p>
-                <div class="hero-stats-inline">
-                  <div class="stat-pill">
-                    <span class="stat-value">3</span>
-                    <span class="stat-label">New matches</span>
+              </div>
+              
+              <!-- Right side: Profile strength card -->
+              <div class="hero-right">
+                <div class="hero-card">
+                  <div class="hero-card-content">
+                    <div class="achievement-icon">🎯</div>
+                    <h4>Profile Strength</h4>
+                    <div class="achievement-score">8.7/10</div>
+                    <p>You're in the top 15% of candidates</p>
                   </div>
-                  <div class="stat-pill">
-                    <span class="stat-value">5</span>
-                    <span class="stat-label">Applications</span>
-                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Bottom row: Stats pills and action buttons -->
+            <div class="hero-bottom">
+              <div class="hero-stats-inline">
+                <div class="stat-pill">
+                  <span class="stat-value">3</span>
+                  <span class="stat-label">New matches</span>
+                </div>
+                <div class="stat-pill">
+                  <span class="stat-value">5</span>
+                  <span class="stat-label">Applications</span>
                 </div>
               </div>
               <div class="hero-actions">
@@ -87,16 +104,6 @@
                   </svg>
                   <span>Start Application</span>
                 </a>
-              </div>
-            </div>
-            <div class="hero-visual">
-              <div class="hero-card">
-                <div class="hero-card-content">
-                  <div class="achievement-icon">🎯</div>
-                  <h4>Profile Strength</h4>
-                  <div class="achievement-score">8.7/10</div>
-                  <p>You're in the top 15% of candidates</p>
-                </div>
               </div>
             </div>
           </div>
@@ -259,7 +266,7 @@
   </div>
 
   <script>
-    console.log('PrePair Dashboard v6.0');
+    console.log('PrePair Dashboard v10.0');
     
     // Mock data for opportunities
     const recommendedOpportunities = [
@@ -603,7 +610,7 @@
     /* Clean Hero Section */
     .hero-section {
       background: var(--bg-card);
-      padding: var(--space-12) var(--space-8);
+      padding: var(--space-8) var(--space-8);
       border-radius: var(--radius-2xl);
       margin-bottom: var(--space-8);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
@@ -618,10 +625,20 @@
     }
 
     .hero-content {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: var(--space-8);
-      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-left {
+      flex: 1;
+      max-width: 60%;
+    }
+
+    .hero-right {
+      flex: 0 0 auto;
+      width: 300px;
     }
 
     .hero-greeting {
@@ -655,7 +672,7 @@
     .hero-stats-inline {
       display: flex;
       gap: var(--space-4);
-      margin-bottom: var(--space-8);
+      flex: 1;
     }
 
     .stat-pill {
@@ -681,14 +698,22 @@
       font-weight: var(--font-medium);
     }
 
+    .hero-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
     .hero-actions {
       display: flex;
       gap: var(--space-4);
+      flex: 0 0 auto;
+      width: 300px;
     }
 
-    .hero-visual {
-      display: flex;
-      justify-content: center;
+    .hero-actions .btn-large {
+      flex: 1;
     }
 
     .hero-card {
@@ -1591,13 +1616,26 @@
       }
 
       .hero-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: var(--space-6);
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-4);
+        margin-bottom: var(--space-4);
       }
 
-      .hero-visual {
-        order: -1;
+      .hero-left {
+        max-width: 100%;
+        text-align: center;
+      }
+
+      .hero-right {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+      }
+
+      .hero-bottom {
+        flex-direction: column;
+        gap: var(--space-4);
       }
 
       .section-title-row {
@@ -1641,12 +1679,11 @@
       }
 
       .hero-actions {
-        flex-direction: column;
         width: 100%;
       }
 
-      .hero-actions .btn-large {
-        width: 100%;
+      .hero-stats-inline {
+        justify-content: center;
       }
 
       .dashboard-cards {
