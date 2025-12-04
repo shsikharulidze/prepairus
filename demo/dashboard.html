@@ -261,7 +261,8 @@
   </div>
 
   <script>
-    console.log('PrePair Dashboard v10.0 - Fully Interactive');
+    console.log('🎯 PrePair Dashboard - PRESENTATION DEMO MODE');
+    console.log('📊 Dashboard v10.0 with Onboarding Integration');
     
     // ===============================
     // DATA MANAGEMENT & PERSISTENCE
@@ -274,14 +275,53 @@
       }
       
       loadData() {
+        // Check for presentation mode data first
+        const onboardingData = sessionStorage.getItem('demoUserProfile');
+        
+        if (onboardingData) {
+          const userData = JSON.parse(onboardingData);
+          console.log('🎯 [Dashboard] Loading presentation mode data:', userData);
+          
+          // Create profile from onboarding data
+          const profile = {
+            name: `${userData.name || ''} ${userData.surname || ''}`.trim() || 'Demo User',
+            email: userData.email || 'demo@prepair.co',
+            university: userData.university || '',
+            major: userData.major || '',
+            graduationYear: userData.graduation_year || '',
+            campus: userData.campus || '',
+            nationality: userData.nationality || '',
+            birthday: userData.birthday || '',
+            workExperience: [],
+            portfolio: [],
+            completionPercentage: this.calculateCompletionPercentage(userData),
+            profileViews: 12,
+            applications: 3,
+            interviews: 1,
+            savedOpportunities: 8
+          };
+          
+          return {
+            profile,
+            applications: [],
+            savedOpportunities: [2, 5],
+            notifications: [
+              { id: 1, type: 'application', message: 'Your application for Marketing Internship was viewed', time: '2 hours ago', read: false },
+              { id: 2, type: 'match', message: 'New perfect match found: UX Design Intern', time: '5 hours ago', read: false },
+              { id: 3, type: 'interview', message: 'Interview scheduled for Software Development position', time: '1 day ago', read: true }
+            ]
+          };
+        }
+        
+        // Fallback to localStorage or defaults
         const stored = localStorage.getItem(this.storageKey);
         return stored ? JSON.parse(stored) : {
           profile: {
-            name: 'Shota Sikharulidze',
-            email: 'shota@example.com',
+            name: 'Demo User',
+            email: 'demo@prepair.co',
             workExperience: [],
             portfolio: [],
-            completionPercentage: 63,
+            completionPercentage: 45,
             profileViews: 12,
             applications: 3,
             interviews: 1,
@@ -295,6 +335,13 @@
             { id: 3, type: 'interview', message: 'Interview scheduled for Software Development position', time: '1 day ago', read: true }
           ]
         };
+      }
+      
+      calculateCompletionPercentage(userData) {
+        const fields = ['name', 'surname', 'email', 'university', 'major', 'graduation_year', 'campus'];
+        const completedFields = fields.filter(field => userData[field] && userData[field].toString().trim() !== '').length;
+        const percentage = Math.round((completedFields / fields.length) * 100);
+        return Math.min(percentage, 95); // Cap at 95% to encourage further profile building
       }
       
       saveData() {
@@ -962,6 +1009,29 @@
     // Initialize dashboard
     function initDashboard() {
       try {
+        console.log('🎯 [Dashboard] Initializing presentation demo dashboard...');
+        
+        // Check for onboarding data
+        const onboardingData = sessionStorage.getItem('demoUserProfile');
+        if (onboardingData) {
+          const userData = JSON.parse(onboardingData);
+          console.log('🎯 [Dashboard] ✅ Onboarding data found!');
+          console.log('👤 User Profile Integration:');
+          console.log('   • Name:', userData.name, userData.surname);
+          console.log('   • Email:', userData.email);
+          console.log('   • University:', userData.university);
+          console.log('   • Major:', userData.major);
+          console.log('   • Graduation Year:', userData.graduation_year);
+          console.log('   • Campus:', userData.campus);
+          console.log('   • Nationality:', userData.nationality || 'Not provided');
+          console.log('   • Birthday:', userData.birthday || 'Not provided');
+          
+          const completionPercentage = dataManager.calculateCompletionPercentage(userData);
+          console.log('📊 Profile Completion:', completionPercentage + '%');
+        } else {
+          console.log('🎯 [Dashboard] No onboarding data found, using defaults');
+        }
+        
         // Initialize event listeners
         initializeEventListeners();
         
@@ -972,6 +1042,7 @@
         // Show loading, then render opportunities
         setTimeout(() => {
           renderOpportunities();
+          console.log('🎯 [Dashboard] Dashboard fully loaded and ready for presentation!');
         }, 800);
         
       } catch (error) {

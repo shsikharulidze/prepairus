@@ -13,12 +13,7 @@
   <!-- Shared Styles -->
   <link rel="stylesheet" href="shared.css">
   
-  <!-- Supabase Scripts - Load Order Critical -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/supabase-client.js"></script>
-  <script src="supabase-auth-module.js"></script>
-  <script src="shared.js"></script>
+  <!-- Presentation Mode - No Database Dependencies -->
   
 </head>
 <body>
@@ -64,9 +59,9 @@
     <main class="flex justify-center items-center" style="min-height: 60vh; padding-top: 2rem;">
       <div class="card auth-card">
         
-        <!-- Version Update Banner -->
-        <div style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 8px 12px; border-radius: 6px; text-align: center; margin-bottom: 20px; font-size: 12px; font-weight: 600;">
-          🚀 Full Auth Restored v2.2 - Complete Authentication Flow Working
+        <!-- Presentation Mode Banner -->
+        <div style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; padding: 8px 12px; border-radius: 6px; text-align: center; margin-bottom: 20px; font-size: 12px; font-weight: 600;">
+          🎯 Presentation Demo Mode - User Journey Flow
         </div>
         
         <div class="auth-header text-center mb-3">
@@ -108,39 +103,16 @@
   </div>
 
   <script>
-    // IMMEDIATE VERSION LOG - SHOULD SHOW FIRST
-    console.log('🚀 APPLY.HTML V2.2 LOADED - FULL AUTH RESTORED!');
-    console.log('🚀 Fixed: Complete authentication flow, email verification, onboarding redirect, signin working');
+    console.log('🎯 PRESENTATION DEMO MODE - User Journey Flow');
+    console.log('📝 Signup → Onboarding → Dashboard Flow (No Database)');
     
-    // Temporary visible alert to confirm update
-    setTimeout(() => {
-      alert('🚀 APPLY.HTML V2.2 LOADED - FULL AUTH RESTORED!\n\n• Complete authentication flow working\n• Email verification redirects properly\n• Onboarding flow functional\n• Signin page working\n• All user states handled\n\nCheck console for detailed logs.');
-    }, 1000);
-    
-    // Wait for all scripts to load, then check authentication
-    window.addEventListener('load', async function() {
-      // Ensure functions are available
-      if (typeof getSession === 'undefined') {
-        console.error('getSession not available, shared.js may not have loaded');
-        return;
-      }
-      
-      const session = await getSession();
-      if (session) {
-        window.location.href = '/dashboard.html';
-        return;
-      }
-    });
-    
-    // Initialize form handlers after page loads
-    function initializeSignupForm() {
-      // DOM elements
+    // Simple presentation mode - no database dependencies
+    document.addEventListener('DOMContentLoaded', function() {
       const signupForm = document.getElementById('signup-form');
       const signupBtn = document.getElementById('signup-btn');
       const errorMessage = document.getElementById('error-message');
       const successMessage = document.getElementById('success-message');
 
-      // Show/hide messages
       function showError(message) {
         errorMessage.textContent = message;
         errorMessage.style.display = 'block';
@@ -158,7 +130,17 @@
         successMessage.style.display = 'none';
       }
 
-      // Email/Password Sign Up
+      // Simple loading state helper
+      function setLoading(button, loading) {
+        if (loading) {
+          button.disabled = true;
+          button.textContent = 'Creating Account...';
+        } else {
+          button.disabled = false;
+          button.textContent = 'Create Account';
+        }
+      }
+
       signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         hideMessages();
@@ -167,7 +149,7 @@
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
         
-        // Validation
+        // Basic validation
         if (!email || !password || !confirmPassword) {
           showError('Please fill in all fields.');
           return;
@@ -185,103 +167,23 @@
         
         setLoading(signupBtn, true);
         
-        try {
-          console.log('🚀 [Apply v2.2] Using full authentication flow with complete user state management');
+        // Simulate signup process
+        console.log('🎯 [Demo] Starting signup process for:', email);
+        
+        // Store user data for demo
+        const userData = { email, password, signupTime: new Date().toISOString() };
+        sessionStorage.setItem('demoUserData', JSON.stringify(userData));
+        
+        setTimeout(() => {
+          console.log('✅ [Demo] Signup successful! Redirecting to onboarding...');
+          showSuccess('Account created successfully! Redirecting to onboarding...');
           
-          // Use the new SupabaseAuth module
-          const result = await window.SupabaseAuth.signUpUser(email, password, {
-            fullName: '', // Could add a name field later
-            metadata: { signupSource: 'apply_page_v2.2' }
-          });
-
-          if (result.success) {
-            console.log('✅ [Apply v2.2] Signup successful!', result);
-            
-            // Create student profile
-            await createStudentProfileForNewUser(result.user);
-            
-            showSuccess(result.message || 'Account created successfully!');
-            
-            // Clear form
-            signupForm.reset();
-            
-            // Redirect based on email confirmation status
-            setTimeout(() => {
-              if (result.needsEmailConfirmation) {
-                window.location.href = '/welcome.html';
-              } else {
-                window.location.href = '/dashboard.html';
-              }
-            }, 2000);
-          } else {
-            console.error('❌ [Apply v2.2] Signup failed:', result);
-            showError(result.error || 'Failed to create account. Please try again.');
-          }
-
-        } catch (error) {
-          console.error('❌ [Apply v2.2] Unexpected error:', error);
-          showError('An unexpected error occurred. Please try again.');
-        } finally {
-          setLoading(signupBtn, false);
-        }
+          setTimeout(() => {
+            window.location.href = 'onboarding.html';
+          }, 1500);
+        }, 1000);
       });
-
-      // Create student profile for new user
-      async function createStudentProfileForNewUser(user) {
-        try {
-          console.log('🔍 [Debug] Creating profile for new user:', user.id);
-          
-          const profileData = {
-            id: user.id,  // Critical: Must set id = auth.uid() for RLS
-            user_id: user.id,
-            email: user.email,
-            firstName: '',
-            lastName: '',
-            onboarding_complete: false,
-            updated_at: new Date().toISOString()
-          };
-          
-          console.log('📝 [Debug] Profile data:', profileData);
-          
-          const { data, error } = await window.sb
-            .from('student_profiles')
-            .upsert(profileData, { onConflict: 'user_id' })  // Use upsert instead of insert
-            .select();
-
-          if (error) {
-            console.error('❌ [Debug] Profile creation error:', error);
-            console.error('❌ [Debug] Error details:', error.details);
-            console.error('❌ [Debug] Error code:', error.code);
-          } else {
-            console.log('✅ [Debug] Student profile created/updated successfully');
-            console.log('✅ [Debug] Profile data:', data);
-          }
-        } catch (error) {
-          console.error('[student_profiles/create]', { error });
-        }
-      }
-    } // Close initializeSignupForm function
-    
-    // Initialize everything when page loads
-    window.addEventListener('load', function() {
-      console.log('🚀 [Apply v2.2] Page loaded with complete authentication flow and user state management');
-      
-      // Ensure functions are available
-      if (typeof setLoading === 'undefined') {
-        console.error('setLoading not available, shared.js may not have loaded');
-        return;
-      }
-      
-      // Ensure new auth module is available
-      if (typeof window.SupabaseAuth === 'undefined') {
-        console.error('SupabaseAuth module not available');
-        return;
-      }
-      
-      console.log('✅ [Apply v2.2] All modules loaded successfully - Full authentication restored');
-      initializeSignupForm();
     });
-
   </script>
 
   <style>
