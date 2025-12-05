@@ -96,7 +96,7 @@
         <div id="error-message" class="error-message" style="display: none;"></div>
 
         <!-- Multi-Step Form -->
-        <form id="onboarding-form">
+        <form id="onboarding-form" novalidate>
           
           <!-- Step 1: Basic Info -->
           <div class="form-step active" data-step="1">
@@ -335,34 +335,34 @@
     }
 
     function setupValidation() {
-      // Mark required fields
-      const requiredFields = ['name', 'surname', 'university', 'major', 'graduation_year', 'phone', 'bio', 'skills', 'experience_level'];
-      requiredFields.forEach(fieldId => {
-        const field = document.getElementById(fieldId);
-        if (field) {
-          field.setAttribute('data-required', '');
-        }
-      });
+      // Validation is now handled by HTML required attributes and custom validateCurrentStep function
     }
 
     function validateCurrentStep() {
       const currentStepElement = document.querySelector(`.form-step[data-step="${currentStep}"]`);
       if (!currentStepElement) return false;
       
-      const requiredInputs = currentStepElement.querySelectorAll('input[data-required], select[data-required]');
+      const requiredInputs = currentStepElement.querySelectorAll('input[required], select[required], textarea[required]');
       let isValid = true;
       
       requiredInputs.forEach(input => {
-        if (!input.value.trim()) {
+        const value = input.value ? input.value.trim() : '';
+        if (!value) {
           isValid = false;
           input.classList.add('error');
-          if (!document.querySelector('input.error:focus, select.error:focus')) {
+          if (!document.querySelector('input.error:focus, select.error:focus, textarea.error:focus')) {
             input.focus();
+            showError(`Please fill in the ${input.previousElementSibling.textContent.replace('*', '').trim()} field.`);
           }
         } else {
           input.classList.remove('error');
         }
       });
+      
+      // If all required fields are filled, clear any error messages
+      if (isValid) {
+        hideError();
+      }
       
       return isValid;
     }
