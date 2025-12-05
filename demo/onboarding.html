@@ -8,15 +8,53 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Bricolage+Grotesque:wght@600;700;800&family=Plus+Jakarta+Sans:wght@700&display=swap" rel="stylesheet">
   
-  <!-- Existing Design System -->
-  <link rel="stylesheet" href="site.css">
+  <!-- Main Design System -->
+  <link rel="stylesheet" href="styles/site.css">
   
   <!-- Presentation Demo Mode -->
 </head>
 <body>
   <div class="container">
+    <div id="header-shell">
+      <header id="site-header">
+        <div class="nav-left">
+          <a href="how-it-works.html">How it works</a>
+          <a href="students.html">For Students</a>
+          <a href="business.html">For Businesses</a>
+        </div>
+
+        <a class="brand brand-center" href="index.html">
+          <div class="logo doodle" aria-hidden="true">
+            <svg viewBox="0 0 64 64" width="40" height="40" preserveAspectRatio="xMidYMid meet" role="img" aria-label="PrePair sprout logo">
+              <path d="M32 56V20m0 0c6 0 10-5 10-10M32 20c-6 0-10-5-10-10M24 36c4 0 8-4 8-8M40 44c4 0 8-4 8-8" />
+              <path d="M20 48c-4 2-6 5-7 8m6-4c2 0 5-1 8-3" />
+            </svg>
+          </div>
+          <span class="wordmark">PrePair</span>
+        </a>
+
+        <div class="nav-right">
+          <a href="about.html">About</a>
+          
+          <!-- Guest navigation (not signed in) -->
+          <div class="nav-guest">
+            <a href="signin.html">Sign in</a>
+            <a class="btn-chip" href="apply.html">Apply</a>
+          </div>
+          
+          <!-- Authenticated navigation (signed in) -->
+          <div class="nav-authenticated">
+            <a href="dashboard.html" class="profile-link">Dashboard</a>
+            <a href="profile.html" class="profile-link">My Profile</a>
+            <a href="applications.html" class="profile-link">Applications</a>
+            <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
+          </div>
+        </div>
+      </header>
+    </div>
+
     <main class="onboarding-main">
       
       <!-- Onboarding Card -->
@@ -145,6 +183,8 @@
         </form>
       </div>
     </main>
+
+    <footer></footer>
   </div>
 
   <script>
