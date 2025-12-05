@@ -13,11 +13,7 @@
   <!-- Shared Styles -->
   <link rel="stylesheet" href="shared.css">
   
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/supabase-client.js"></script>
-  <script src="shared.js"></script>
+  <!-- Presentation Demo Mode -->
 </head>
 <body class="app-layout">
   
@@ -341,16 +337,27 @@
   </div>
 
   <script>
-    const supabase = window.sb;
-    let currentUser = null;
-    let existingProfile = null;
+    console.log('🎯 PRESENTATION DEMO MODE - Profile Page');
+    console.log('📝 Loads user data from sessionStorage and enables editing');
+    
     let isEditMode = false;
-
-    // Initialize profile page
-    async function initProfile() {
+    
+    // Demo mode - no authentication required
+    function initProfile() {
       try {
-        currentUser = await requireAuth();
-        if (!currentUser) return;
+        console.log('🎯 [Demo] Profile page loaded');
+        
+        // Load user data from session storage
+        const userData = JSON.parse(sessionStorage.getItem('demoUserProfile') || '{}');
+        console.log('🎯 [Demo] Loading profile data:', userData);
+        
+        // Update profile with real user data
+        if (userData.name) {
+          console.log(`🎯 [Demo] Profile for: ${userData.name} ${userData.surname}`);
+          updateProfileDisplay(userData);
+        } else {
+          console.log('🎯 [Demo] No user profile found, using default data');
+        }
 
         // Setup edit mode functionality
         setupEditMode();
@@ -365,6 +372,101 @@
         console.error('[profile/init]', { error });
         showToast('Failed to load profile page. Please refresh.', 'error');
       }
+    }
+    
+    // Update profile display with real user data
+    function updateProfileDisplay(userData) {
+      // Avatar initial
+      if (userData.name && userData.surname) {
+        const initials = (userData.name.charAt(0) + userData.surname.charAt(0)).toUpperCase();
+        document.getElementById('profileAvatarInitial').textContent = initials;
+      }
+      
+      // Name and title
+      const fullName = userData.name && userData.surname ? `${userData.name} ${userData.surname}` : 'Demo User';
+      document.getElementById('displayName').textContent = fullName;
+      document.getElementById('editDisplayName').value = fullName;
+      
+      if (userData.major) {
+        document.getElementById('displayTitle').textContent = `${userData.major} Student`;
+        document.getElementById('editTitle').value = `${userData.major} Student`;
+      }
+      
+      // Personal information
+      if (userData.name) {
+        document.getElementById('displayFirstName').textContent = userData.name;
+        document.getElementById('editFirstName').value = userData.name;
+      }
+      
+      if (userData.surname) {
+        document.getElementById('displayLastName').textContent = userData.surname;
+        document.getElementById('editLastName').value = userData.surname;
+      }
+      
+      if (userData.email) {
+        document.getElementById('displayEmail').textContent = userData.email;
+        document.getElementById('editEmail').value = userData.email;
+      }
+      
+      if (userData.phone) {
+        document.getElementById('displayPhone').textContent = userData.phone;
+        document.getElementById('editPhone').value = userData.phone;
+      }
+      
+      if (userData.university) {
+        document.getElementById('displayUniversity').textContent = userData.university;
+        const universitySelect = document.getElementById('editUniversity');
+        for (let i = 0; i < universitySelect.options.length; i++) {
+          if (universitySelect.options[i].value === userData.university || universitySelect.options[i].text === userData.university) {
+            universitySelect.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      
+      if (userData.major) {
+        document.getElementById('displayMajor').textContent = userData.major;
+        document.getElementById('editMajor').value = userData.major;
+      }
+      
+      if (userData.graduation_year) {
+        document.getElementById('displayGradYear').textContent = userData.graduation_year;
+        const gradYearSelect = document.getElementById('editGradYear');
+        for (let i = 0; i < gradYearSelect.options.length; i++) {
+          if (gradYearSelect.options[i].value === userData.graduation_year) {
+            gradYearSelect.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      
+      // Bio and skills
+      if (userData.bio) {
+        document.getElementById('displayBio').textContent = userData.bio;
+        document.getElementById('editBio').value = userData.bio;
+      }
+      
+      if (userData.skills) {
+        const skills = userData.skills.split(',').map(s => s.trim()).filter(s => s);
+        const skillsHtml = skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('');
+        document.getElementById('displaySkills').innerHTML = `<div class="skills-tags">${skillsHtml}</div>`;
+        document.getElementById('editSkills').value = userData.skills;
+      }
+      
+      // Links
+      if (userData.linkedin) {
+        const linkedinText = userData.linkedin.replace(/^https?:\/\//, '');
+        document.getElementById('displayLinkedIn').innerHTML = `<a href="${userData.linkedin}" target="_blank" class="profile-link">${linkedinText}</a>`;
+        document.getElementById('editLinkedIn').value = userData.linkedin;
+      }
+      
+      if (userData.portfolio_url) {
+        const portfolioText = userData.portfolio_url.replace(/^https?:\/\//, '');
+        document.getElementById('displayPortfolio').innerHTML = `<a href="${userData.portfolio_url}" target="_blank" class="profile-link">${portfolioText}</a>`;
+        document.getElementById('editPortfolio').value = userData.portfolio_url;
+      }
+      
+      console.log('🎯 [Demo] Profile display updated with user data');
     }
     
     // Setup edit mode toggle functionality
@@ -602,15 +704,20 @@
     function setupSignOut() {
       const signOutBtn = document.getElementById('signout-btn');
       if (signOutBtn) {
-        signOutBtn.addEventListener('click', async () => {
-          try {
-            await supabase.auth.signOut();
-            window.location.href = '/';
-          } catch (error) {
-            console.error('Sign out error:', error);
-          }
+        signOutBtn.addEventListener('click', () => {
+          console.log('🎯 [Demo] Signing out - clearing session data');
+          sessionStorage.removeItem('demoUserData');
+          sessionStorage.removeItem('demoUserProfile');
+          sessionStorage.removeItem('demoSession');
+          window.location.href = 'index.html';
         });
       }
+    }
+    
+    // Show toast message (simple fallback implementation)
+    function showToast(message, type) {
+      console.log(`🎯 [Demo] Toast (${type}): ${message}`);
+      alert(message); // Simple fallback for demo
     }
     
     // Utility function to show loading state

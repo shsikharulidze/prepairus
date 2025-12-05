@@ -78,7 +78,11 @@
           </div>
           <div class="step" data-step="3">
             <div class="step-circle">3</div>
-            <span class="step-label">Personal</span>
+            <span class="step-label">Contact</span>
+          </div>
+          <div class="step" data-step="4">
+            <div class="step-circle">4</div>
+            <span class="step-label">Profile</span>
           </div>
         </div>
 
@@ -155,20 +159,58 @@
             </div>
           </div>
 
-          <!-- Step 3: Personal Info -->
+          <!-- Step 3: Contact Info -->
           <div class="form-step" data-step="3">
             <div class="form-step-content">
-              <h3>Personal Information</h3>
-              <p class="step-description">Optional details to help personalize your experience</p>
+              <h3>Contact Information</h3>
+              <p class="step-description">How can employers reach you?</p>
               
               <div class="form-group">
-                <label for="nationality">Nationality</label>
-                <input type="text" id="nationality" name="nationality" placeholder="e.g., American, Canadian, International">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" placeholder="e.g., (555) 123-4567" required>
               </div>
               
               <div class="form-group">
-                <label for="birthday">Birthday</label>
-                <input type="date" id="birthday" name="birthday">
+                <label for="linkedin">LinkedIn Profile</label>
+                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+              </div>
+              
+              <div class="form-group">
+                <label for="portfolio_url">Portfolio/Website</label>
+                <input type="url" id="portfolio_url" name="portfolio_url" placeholder="https://yourportfolio.com">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Profile Details -->
+          <div class="form-step" data-step="4">
+            <div class="form-step-content">
+              <h3>Profile Details</h3>
+              <p class="step-description">Tell us about yourself and your goals</p>
+              
+              <div class="form-group">
+                <label for="bio">Bio/About Me *</label>
+                <textarea id="bio" name="bio" rows="4" placeholder="Brief description about yourself, your interests, and career goals..." required></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="skills">Skills & Interests *</label>
+                <input type="text" id="skills" name="skills" placeholder="e.g., Marketing, Design, Programming, Business..." required>
+              </div>
+              
+              <div class="form-group">
+                <label for="career_goals">Career Goals</label>
+                <textarea id="career_goals" name="career_goals" rows="3" placeholder="What type of internships or career paths interest you?"></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="experience_level">Experience Level *</label>
+                <select id="experience_level" name="experience_level" required>
+                  <option value="">Select your experience level</option>
+                  <option value="beginner">Beginner - No work experience</option>
+                  <option value="some_experience">Some Experience - Part-time jobs, volunteering</option>
+                  <option value="experienced">Experienced - Previous internships or relevant work</option>
+                </select>
               </div>
             </div>
           </div>
@@ -193,7 +235,7 @@
 
     // Demo state management
     let currentStep = 1;
-    const totalSteps = 3;
+    const totalSteps = 4;
     let userData = {};
 
     // Load user data from signup
@@ -294,7 +336,7 @@
 
     function setupValidation() {
       // Mark required fields
-      const requiredFields = ['name', 'surname', 'university', 'major', 'graduation_year'];
+      const requiredFields = ['name', 'surname', 'university', 'major', 'graduation_year', 'phone', 'bio', 'skills', 'experience_level'];
       requiredFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
@@ -353,8 +395,13 @@
         major: formData.get('major')?.trim() || '',
         graduation_year: formData.get('graduation_year') || '',
         campus: formData.get('campus')?.trim() || '',
-        nationality: formData.get('nationality')?.trim() || '',
-        birthday: formData.get('birthday') || ''
+        phone: formData.get('phone')?.trim() || '',
+        linkedin: formData.get('linkedin')?.trim() || '',
+        portfolio_url: formData.get('portfolio_url')?.trim() || '',
+        bio: formData.get('bio')?.trim() || '',
+        skills: formData.get('skills')?.trim() || '',
+        career_goals: formData.get('career_goals')?.trim() || '',
+        experience_level: formData.get('experience_level') || ''
       };
       
       // Merge with existing user data
@@ -368,7 +415,8 @@
       console.log('👤 Personal Info:', {
         name: completeUserData.name,
         surname: completeUserData.surname,
-        email: completeUserData.email
+        email: completeUserData.email,
+        phone: completeUserData.phone
       });
       console.log('🎓 Academic Info:', {
         university: completeUserData.university,
@@ -376,9 +424,15 @@
         graduation_year: completeUserData.graduation_year,
         campus: completeUserData.campus
       });
-      console.log('🌍 Personal Details:', {
-        nationality: completeUserData.nationality,
-        birthday: completeUserData.birthday
+      console.log('🌐 Online Presence:', {
+        linkedin: completeUserData.linkedin,
+        portfolio_url: completeUserData.portfolio_url
+      });
+      console.log('💼 Profile Details:', {
+        bio: completeUserData.bio,
+        skills: completeUserData.skills,
+        career_goals: completeUserData.career_goals,
+        experience_level: completeUserData.experience_level
       });
       
       setTimeout(() => {

@@ -61,7 +61,7 @@
               <div class="hero-left">
                 <div class="hero-greeting">
                   <span class="greeting-time">Good morning,</span>
-                  <h1 class="hero-title">Shota Sikharulidze</h1>
+                  <h1 class="hero-title" id="user-name">Demo User</h1>
                 </div>
                 <p class="hero-subtitle">Ready to discover your next career opportunity?</p>
               </div>
@@ -338,10 +338,61 @@
       }
       
       calculateCompletionPercentage(userData) {
-        const fields = ['name', 'surname', 'email', 'university', 'major', 'graduation_year', 'campus'];
+        const fields = ['name', 'surname', 'email', 'university', 'major', 'graduation_year', 'campus', 'phone', 'bio', 'skills', 'experience_level'];
         const completedFields = fields.filter(field => userData[field] && userData[field].toString().trim() !== '').length;
         const percentage = Math.round((completedFields / fields.length) * 100);
         return Math.min(percentage, 95); // Cap at 95% to encourage further profile building
+      }
+      
+      getProfileCompletionItems(userData) {
+        const items = [];
+        
+        // Check for missing basic info
+        if (!userData.phone) {
+          items.push({
+            type: 'missing',
+            title: 'Add phone number',
+            subtitle: '1 minute',
+            action: 'Add'
+          });
+        }
+        
+        // Check for missing professional links
+        if (!userData.linkedin && !userData.portfolio_url) {
+          items.push({
+            type: 'missing',
+            title: 'Add professional links',
+            subtitle: '2 minutes',
+            action: 'Add'
+          });
+        } else if (!userData.linkedin) {
+          items.push({
+            type: 'missing',
+            title: 'Add LinkedIn profile',
+            subtitle: '1 minute',
+            action: 'Add'
+          });
+        } else if (!userData.portfolio_url) {
+          items.push({
+            type: 'missing',
+            title: 'Add portfolio link',
+            subtitle: '1 minute',
+            action: 'Add'
+          });
+        }
+        
+        // Check for basic profile info completion
+        const basicFields = ['name', 'surname', 'email', 'university', 'major', 'graduation_year'];
+        const basicComplete = basicFields.every(field => userData[field] && userData[field].toString().trim() !== '');
+        
+        items.push({
+          type: basicComplete ? 'complete' : 'missing',
+          title: 'Basic information',
+          subtitle: basicComplete ? 'Completed' : 'Almost done',
+          action: basicComplete ? null : 'Complete'
+        });
+        
+        return items.slice(0, 3); // Show max 3 items
       }
       
       saveData() {
@@ -382,14 +433,63 @@
       }
       
       updateProfileDisplay() {
+        // Update user name in greeting
+        const userNameElement = document.getElementById('user-name');
+        if (userNameElement) {
+          userNameElement.textContent = this.data.profile.name || 'Demo User';
+        }
+        
         // Update stats in dashboard
         document.querySelector('.stat-pill:first-child .stat-value').textContent = '3';
         document.querySelector('.stat-pill:last-child .stat-value').textContent = this.data.profile.applications;
         
-        // Update profile completion percentage
+        // Update profile completion section
+        this.updateProfileCompletion();
+      }
+      
+      updateProfileCompletion() {
+        const userData = JSON.parse(sessionStorage.getItem('demoUserProfile') || '{}');
+        const completionPercentage = this.calculateCompletionPercentage(userData);
+        const completionItems = this.getProfileCompletionItems(userData);
+        
+        // Update percentage display
         const completionText = document.querySelector('.progress-text');
         if (completionText) {
-          completionText.textContent = `${this.data.profile.completionPercentage}%`;
+          completionText.textContent = `${completionPercentage}%`;
+        }
+        
+        // Update progress ring visual
+        const progressRing = document.querySelector('.progress-ring-circle');
+        if (progressRing) {
+          const circumference = 2 * Math.PI * 26; // radius = 26
+          const strokeDashoffset = circumference - (completionPercentage / 100) * circumference;
+          progressRing.style.strokeDasharray = `${circumference}`;
+          progressRing.style.strokeDashoffset = `${strokeDashoffset}`;
+        }
+        
+        // Update action items
+        const actionItemsContainer = document.querySelector('.action-items');
+        if (actionItemsContainer && completionItems.length > 0) {
+          actionItemsContainer.innerHTML = completionItems.map(item => `
+            <div class="action-item ${item.type === 'complete' ? 'completed' : ''}">
+              <div class="action-icon ${item.type === 'complete' ? 'complete' : 'incomplete'}">
+                ${item.type === 'complete' ? 
+                  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' :
+                  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+                }
+              </div>
+              <div class="action-content">
+                <span class="action-title">${item.title}</span>
+                <span class="action-subtitle">${item.subtitle}</span>
+              </div>
+              ${item.action ? `<a href="profile.html" class="action-button">${item.action}</a>` : ''}
+            </div>
+          `).join('');
+          
+          console.log('🎯 [Demo] Profile completion updated:', {
+            percentage: completionPercentage,
+            items: completionItems.map(i => ({ title: i.title, type: i.type }))
+          });
         }
       }
     }
@@ -583,118 +683,11 @@
     }
     
     // ===============================
-    // PROFILE FUNCTIONALITY
+    // PROFILE COMPLETION MANAGEMENT
     // ===============================
     
-    function openProfileEditor(section = 'general') {
-      const profile = dataManager.data.profile;
-      
-      let content = '';
-      if (section === 'work') {
-        content = `
-          <form id="workExperienceForm">
-            <div class="form-group">
-              <label>Company Name</label>
-              <input type="text" name="company" placeholder="Enter company name" required>
-            </div>
-            <div class="form-group">
-              <label>Position</label>
-              <input type="text" name="position" placeholder="Enter your position" required>
-            </div>
-            <div class="form-group">
-              <label>Duration</label>
-              <input type="text" name="duration" placeholder="e.g., Jun 2023 - Present" required>
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <textarea name="description" placeholder="Describe your responsibilities and achievements"></textarea>
-            </div>
-          </form>
-        `;
-      } else if (section === 'portfolio') {
-        content = `
-          <form id="portfolioForm">
-            <div class="form-group">
-              <label>Project Title</label>
-              <input type="text" name="title" placeholder="Enter project title" required>
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <textarea name="description" placeholder="Describe your project"></textarea>
-            </div>
-            <div class="form-group">
-              <label>Technologies Used</label>
-              <input type="text" name="technologies" placeholder="e.g., React, Node.js, MongoDB">
-            </div>
-            <div class="form-group">
-              <label>Project URL (optional)</label>
-              <input type="url" name="url" placeholder="https://yourproject.com">
-            </div>
-          </form>
-        `;
-      } else {
-        content = `
-          <form id="generalProfileForm">
-            <div class="form-group">
-              <label>Full Name</label>
-              <input type="text" name="name" value="${profile.name}" required>
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" name="email" value="${profile.email}" required>
-            </div>
-            <div class="form-group">
-              <label>Bio</label>
-              <textarea name="bio" placeholder="Tell us about yourself">${profile.bio || ''}</textarea>
-            </div>
-          </form>
-        `;
-      }
-      
-      const actions = [
-        {
-          text: 'Cancel',
-          className: 'btn-secondary',
-          action: 'cancel'
-        },
-        {
-          text: 'Save',
-          className: 'btn-primary',
-          action: 'save',
-          handler: () => {
-            const form = document.querySelector(`#${section === 'work' ? 'workExperienceForm' : section === 'portfolio' ? 'portfolioForm' : 'generalProfileForm'}`);
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            
-            if (section === 'work') {
-              dataManager.data.profile.workExperience.push({
-                id: Date.now(),
-                ...data
-              });
-              dataManager.data.profile.completionPercentage = Math.min(100, dataManager.data.profile.completionPercentage + 15);
-            } else if (section === 'portfolio') {
-              dataManager.data.profile.portfolio.push({
-                id: Date.now(),
-                ...data
-              });
-              dataManager.data.profile.completionPercentage = Math.min(100, dataManager.data.profile.completionPercentage + 20);
-            } else {
-              dataManager.updateProfile(data);
-            }
-            
-            dataManager.saveData();
-            dataManager.updateProfileDisplay();
-            showNotification(`${section === 'work' ? 'Work experience' : section === 'portfolio' ? 'Portfolio item' : 'Profile'} saved successfully!`);
-          }
-        }
-      ];
-      
-      openModal(
-        `Edit ${section === 'work' ? 'Work Experience' : section === 'portfolio' ? 'Portfolio' : 'Profile'}`,
-        content,
-        actions
-      );
-    }
+    // Profile completion is now handled by onboarding data
+    // All detailed profile editing is done through the dedicated profile page
     
     // ===============================
     // OPPORTUNITY FUNCTIONALITY
@@ -957,24 +950,8 @@
     // ===============================
     
     function initializeEventListeners() {
-      // Profile action buttons
-      document.querySelectorAll('.action-button').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const text = btn.textContent.toLowerCase();
-          if (text.includes('add')) {
-            openProfileEditor('work');
-          } else if (text.includes('upload')) {
-            openProfileEditor('portfolio');
-          }
-        });
-      });
-      
-      // Continue setup button
-      document.querySelector('.btn-full')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        openProfileEditor('general');
-      });
+      // Profile completion actions now redirect to profile page
+      // (Action buttons naturally link to profile.html - no JavaScript override needed)
       
       // Filter buttons
       document.querySelectorAll('.filter-btn').forEach(btn => {
