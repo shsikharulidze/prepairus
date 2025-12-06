@@ -4,31 +4,900 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PrePair — For Businesses</title>
+  <meta name="description" content="Get real help on projects while mentoring local students. PrePair connects small businesses with motivated college students for low-cost, educational projects.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#FAF7F2; --text:#0F0F0F; --muted:#4A4A4A; --clay:#E6764D;
-      --sage:#CFE1D9; --lilac:#DCD8F2; --sand:#EDE4D9; --card:#F5EFE7;
-      --border:#E8E2D9; --radius-lg:20px; --shadow:0 6px 24px rgba(15,15,15,.06);
-      --container:1120px;
-    }
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-      line-height:1.5;
-    }
-    .container{max-width:var(--container);margin:0 auto;padding:24px}
-    h1{font-family:"Space Grotesk",Inter,sans-serif;font-size:clamp(34px,6vw,64px);line-height:1.05;letter-spacing:-.015em;margin:0 0 18px}
-    a{color:var(--clay);text-decoration:none}
-    a:hover{text-decoration:underline}
-  </style>
+  <link rel="stylesheet" href="styles/site.css">
 </head>
 <body>
   <div class="container">
-    <p><a href="index.html">← Back to Home</a></p>
-    <h1>For Businesses</h1>
-    <p>Placeholder content. This page will be built out later.</p>
+    <!-- Header Navigation -->
+    <div id="header-shell">
+      <header id="site-header">
+        <div class="nav-left">
+          <a href="how-it-works.html">How it works</a>
+          <a href="students.html">For Students</a>
+          <a href="business.html" class="current-page">For Businesses</a>
+        </div>
+
+        <a class="brand brand-center" href="index.html">
+          <div class="logo doodle" aria-hidden="true">
+            <svg viewBox="0 0 64 64" width="40" height="40" preserveAspectRatio="xMidYMid meet" role="img" aria-label="PrePair sprout logo">
+              <path d="M32 56V20m0 0c6 0 10-5 10-10M32 20c-6 0-10-5-10-10M24 36c4 0 8-4 8-8M40 44c4 0 8-4 8-8" />
+              <path d="M20 48c-4 2-6 5-7 8m6-4c2 0 5-1 8-3" />
+            </svg>
+          </div>
+          <span class="wordmark">PrePair</span>
+        </a>
+
+        <div class="nav-right">
+          <a href="about.html">About</a>
+          <div class="nav-guest">
+            <a href="signin.html">Sign in</a>
+            <a class="btn-chip" href="apply.html">Get Started</a>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-simple">
+      <h1>Get real help on projects while mentoring local students</h1>
+      <p class="subtitle">
+        PrePair connects small businesses with motivated college students for short-term, educational projects. Low cost, simple process, real results on tasks you've been putting off.
+      </p>
+      <p class="last-updated">Last updated: December 2024</p>
+      <div class="hero-cta">
+        <a href="#host-journey" class="btn">See how hosting a project works</a>
+      </div>
+    </section>
+
+    <!-- Why Extra Hands -->
+    <section id="why-extra-hands" class="content-section">
+      <h2 class="h-sg">Why owners look for extra hands</h2>
+      
+      <div class="section-content">
+        <p>Your business has a running list of important tasks that somehow never get done. Update the website copy. Plan some Instagram posts. Research what competitors are doing. Get customer feedback on that new service idea. These aren't urgent enough to drop everything, but they'd genuinely help your business if someone just handled them.</p>
+        
+        <p>The problem is the gap between "we really should do this" and "we can afford to hire someone for it." Bringing on staff means payroll, benefits, and long-term commitments you might not be ready for. Agencies and freelancers often charge more than your entire monthly marketing budget for projects that should be straightforward.</p>
+        
+        <p>Meanwhile, these tasks pile up on your already full plate. PrePair exists specifically in that gap—giving you access to motivated talent for projects that are important but not mission-critical, at a price that makes sense for small businesses.</p>
+      </div>
+    </section>
+
+    <!-- How PrePair Helps -->
+    <section id="how-prepair-helps" class="content-section">
+      <h2 class="h-sg">How PrePair helps your business</h2>
+      <p class="section-intro">PrePair gives you a simple way to get real work done while supporting local students who need practical experience. You're not just getting help—you're investing in future talent while moving your business forward.</p>
+      
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <div class="benefit-icon">🎓</div>
+          <div class="benefit-content">
+            <h4>Access to motivated students</h4>
+            <p>From nearby universities who are eager to apply their classroom learning</p>
+          </div>
+        </div>
+        
+        <div class="benefit-item">
+          <div class="benefit-icon">⏱️</div>
+          <div class="benefit-content">
+            <h4>Short, scoped projects</h4>
+            <p>With clear deliverables instead of open-ended commitments</p>
+          </div>
+        </div>
+        
+        <div class="benefit-item">
+          <div class="benefit-icon">💰</div>
+          <div class="benefit-content">
+            <h4>Predictable monthly cost</h4>
+            <p>Around $20 instead of large project invoices</p>
+          </div>
+        </div>
+        
+        <div class="benefit-item">
+          <div class="benefit-icon">🤝</div>
+          <div class="benefit-content">
+            <h4>Chance to mentor future talent</h4>
+            <p>And potentially identify strong candidates for future paid roles</p>
+          </div>
+        </div>
+        
+        <div class="benefit-item">
+          <div class="benefit-icon">📋</div>
+          <div class="benefit-content">
+            <h4>Progress on postponed projects</h4>
+            <p>Like social media strategy, website updates, market research, and content creation</p>
+          </div>
+        </div>
+        
+        <div class="benefit-item">
+          <div class="benefit-icon">🏢</div>
+          <div class="benefit-content">
+            <h4>Structured process</h4>
+            <p>That doesn't require HR overhead or complicated onboarding</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Host Journey -->
+    <section id="host-journey" class="content-section">
+      <h2 class="h-sg">Your journey as a host (step by step)</h2>
+      <p class="section-intro">Here's exactly what happens from the moment you decide to try PrePair through completing your first project:</p>
+      
+      <div class="journey-steps">
+        <div class="journey-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>You hear about PrePair</h4>
+            <p>And identify a project you've been putting off—maybe updating your website copy or planning social media content.</p>
+          </div>
+        </div>
+        
+        <div class="journey-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>You create a simple host profile</h4>
+            <p>With basic business information, your industry, and the types of projects that would help your business.</p>
+          </div>
+        </div>
+        
+        <div class="journey-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>You subscribe for about $20/month</h4>
+            <p>To access the platform and start posting projects for local students.</p>
+          </div>
+        </div>
+        
+        <div class="journey-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>You write and post your first project</h4>
+            <p>With a clear scope: what you need done, rough timeline (usually 2-6 weeks), and what type of student might be a good fit.</p>
+          </div>
+        </div>
+        
+        <div class="journey-step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h4>You review student applications</h4>
+            <p>And profiles, then select someone whose background and interests align with your project needs.</p>
+          </div>
+        </div>
+        
+        <div class="journey-step">
+          <div class="step-number">6</div>
+          <div class="step-content">
+            <h4>You have a brief kickoff conversation</h4>
+            <p>To set expectations: what the final deliverable looks like, how often you'll check in, and roughly how many hours you expect it to take.</p>
+          </div>
+        </div>
+        
+        <div class="journey-step">
+          <div class="step-number">7</div>
+          <div class="step-content">
+            <h4>You support the student as they work</h4>
+            <p>By answering questions when they come up, providing feedback at one or two key milestones, and being available for quick clarifications.</p>
+          </div>
+        </div>
+        
+        <div class="journey-step">
+          <div class="step-number">8</div>
+          <div class="step-content">
+            <h4>You receive the completed work</h4>
+            <p>And give feedback, then decide whether you want to work with that student again or try a different type of project.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project Types -->
+    <section id="project-types" class="content-section">
+      <h2 class="h-sg">What kinds of projects students can do</h2>
+      
+      <div class="examples-grid">
+        <div class="example-card card">
+          <h3>Social media content planning</h3>
+          <p>A marketing or communications student creates two weeks of Instagram posts for your coffee shop, including captions and photo suggestions. You get fresh content ideas and they learn about brand voice and social strategy for a real business.</p>
+        </div>
+        
+        <div class="example-card card">
+          <h3>Website copy refresh</h3>
+          <p>A business or English student rewrites your "About Us" and services pages to make them clearer and more engaging. You get professional-quality copy and they gain experience writing for real clients with real business goals.</p>
+        </div>
+        
+        <div class="example-card card">
+          <h3>Customer research project</h3>
+          <p>A business student surveys your customers about what additional services they'd want, then presents findings in a simple report with recommendations. You get valuable insights and they practice research methods on a real business challenge.</p>
+        </div>
+        
+        <div class="example-card card">
+          <h3>Email newsletter setup</h3>
+          <p>A marketing student helps you set up an email newsletter system and creates the first few issues of content. You finally launch that newsletter you've been planning and they learn about email marketing in practice.</p>
+        </div>
+        
+        <div class="example-card card">
+          <h3>Process improvement analysis</h3>
+          <p>A business or operations student analyzes your customer intake process and suggests improvements with simple templates. You streamline operations and they gain hands-on experience with business process optimization.</p>
+        </div>
+        
+        <div class="example-card card">
+          <h3>Brand asset creation</h3>
+          <p>A design student creates simple marketing materials like flyers or social media templates using your existing brand guidelines. You get professional-looking materials and they build their portfolio with real client work.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Time and Oversight -->
+    <section id="time-oversight" class="content-section">
+      <h2 class="h-sg">How much time and oversight it really takes</h2>
+      
+      <div class="section-content">
+        <p>The most common concern business owners have is: "Will managing a student become another full-time job?" The answer is no, but students do need some guidance—that's part of the educational value.</p>
+        
+        <p>Projects are intentionally designed to be manageable for busy owners. They're scoped to focus on specific deliverables, limited in hours (typically 10-30 total), and structured so they enhance rather than interfere with your daily operations.</p>
+        
+        <p>Here's what's typically expected from you as a host: an initial conversation to clarify the project scope and expectations, availability to answer questions when they come up (usually via message, not constant meetings), and time to review work at key milestones and provide feedback.</p>
+        
+        <div class="time-commitment card">
+          <h3>Typical time commitment from your side:</h3>
+          <ul class="time-list">
+            <li>45-60 minutes to define the project and brief the student</li>
+            <li>15-20 minutes every few days for questions and quick check-ins</li>
+            <li>30-45 minutes for final review and feedback</li>
+          </ul>
+          <p class="time-note">Most owners find this manageable because the projects are designed to be self-contained rather than integrated into critical business operations.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison -->
+    <section id="comparison" class="content-section">
+      <h2 class="h-sg">How this compares to hiring, freelancers, and agencies</h2>
+      
+      <div class="section-content">
+        <p>PrePair isn't a replacement for professional staff or agencies when you need expert-level work. It's positioned as a practical middle ground for tasks that are important but not urgent enough to justify major investment.</p>
+        
+        <div class="comparison-table">
+          <h3>Here's how the options compare:</h3>
+          <div class="comparison-grid">
+            <div class="comparison-item">
+              <h4>Hiring full-time staff</h4>
+              <p>Higher ongoing costs with payroll, benefits, and long-term commitment. Makes sense when you have 30+ hours of work per week in a specific area. Requires HR processes, training, and management overhead.</p>
+            </div>
+            <div class="comparison-item">
+              <h4>Freelancers and agencies</h4>
+              <p>Professional-quality work but often $50-150+ per hour or $1,000+ per project. Best when you need expert-level results and have the budget. Less opportunity for ongoing relationship building.</p>
+            </div>
+            <div class="comparison-item">
+              <h4>PrePair</h4>
+              <p>$20/month subscription with projects completed by motivated students. Educational framework means students are learning while helping your business. Opportunity to mentor future talent and potentially identify future hires. Best for moving forward on important but non-critical projects.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="content-section">
+      <h2 class="h-sg">Pricing and what you get for it</h2>
+      <p class="section-intro">PrePair uses one simple monthly subscription designed to be accessible for small businesses operating on tight budgets.</p>
+      
+      <div class="pricing-card card">
+        <h3>About $20 per month gets you:</h3>
+        <ul class="pricing-features">
+          <li>Ability to post clearly scoped projects to students from local universities</li>
+          <li>Access to browse student profiles and review applications</li>
+          <li>Direct messaging and project coordination through the platform</li>
+          <li>A record of projects you've hosted and students you've worked with</li>
+          <li>Support from PrePair if you need help structuring a project or resolving issues</li>
+        </ul>
+        <p class="pricing-note">The goal is to make quality support accessible at a price point that works for small businesses. Instead of choosing between doing everything yourself or paying professional rates, you have a structured way to get help while investing in future talent.</p>
+      </div>
+    </section>
+
+    <!-- Fit Check -->
+    <section id="fit-check" class="content-section">
+      <h2 class="h-sg">Is PrePair a fit for your business?</h2>
+      
+      <div class="fit-check-grid">
+        <div class="fit-check-card card sage">
+          <h3>PrePair is likely a good fit if your business:</h3>
+          <ul>
+            <li>Has a backlog of marketing, content, or research tasks that would help but never quite get prioritized</li>
+            <li>Can break down work into clear, specific projects that a motivated student can own</li>
+            <li>Is open to mentoring and providing feedback to someone who's still learning</li>
+            <li>Values supporting local students while also moving business goals forward</li>
+            <li>Wants to try new approaches without major financial risk</li>
+          </ul>
+        </div>
+        
+        <div class="fit-check-card card sand">
+          <h3>PrePair might not be the right fit if:</h3>
+          <ul>
+            <li>You need immediate professional-level results on mission-critical projects</li>
+            <li>You're looking for guaranteed revenue growth or overnight business transformation</li>
+            <li>You don't have time to provide basic project guidance or answer questions</li>
+            <li>You're uncomfortable with the educational, unpaid framework of student projects</li>
+            <li>You need ongoing, full-time support rather than project-based help</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="business-faq" class="content-section">
+      <h2 class="h-sg">Business FAQ</h2>
+      
+      <div class="faq-grid">
+        <div class="faq-column">
+          <div class="faq-item">
+            <h4>Do I have to pay students directly?</h4>
+            <p>No, students are not paid for PrePair projects. This is an educational framework where students gain experience, portfolio pieces, and mentorship. You pay only the monthly platform subscription.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>What makes unpaid projects fair to students?</h4>
+            <p>Students are the primary beneficiaries—they're gaining real experience, portfolio material, and professional references that help them land paid internships and jobs later. The projects are structured as educational experiences with clear learning outcomes.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>How many hours should a typical project take?</h4>
+            <p>Most projects range from 15-40 total hours over 2-6 weeks, which breaks down to about 5-15 hours per week. You'll see time estimates when reviewing student applications and can adjust scope accordingly.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>What if the student doesn't finish or the work isn't usable?</h4>
+            <p>We provide support to help resolve issues and can connect you with alternative students if needed. Most problems stem from unclear initial expectations, which is why we emphasize thorough project scoping upfront.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>Can I offer a bonus or stipend if I'm happy with the work?</h4>
+            <p>While projects are designed to be unpaid educational experiences, some businesses choose to offer small thank-you gifts, recommendations, or future paid opportunities. This should be discussed openly with students.</p>
+          </div>
+        </div>
+        
+        <div class="faq-column">
+          <div class="faq-item">
+            <h4>Can successful projects lead to paid internships or jobs?</h4>
+            <p>Absolutely. Many businesses use PrePair to evaluate potential talent for future paid positions. It's a low-risk way to see how someone works before making hiring commitments.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>What kinds of businesses can use PrePair?</h4>
+            <p>Any small business, nonprofit, or startup that can benefit from marketing, content, research, or light operational help. We work with restaurants, retail shops, professional services, nonprofits, and local startups.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>Do I need to be in a specific city?</h4>
+            <p>We're starting with NYC-area businesses working with Fordham University students, then expanding campus by campus. If you're interested in other locations, we can notify you when we launch there.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>How much experience do students typically have?</h4>
+            <p>Students range from first-years exploring interests to seniors with some internship experience. We help match student experience levels with appropriate project complexity. Many projects are designed specifically for motivated beginners.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>Is there support if I need help designing a project?</h4>
+            <p>Yes, we provide guidance on structuring projects that work well for both students and businesses. We can help you break down larger goals into manageable student-sized projects.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing CTA -->
+    <section class="closing-cta">
+      <div class="card cta-card">
+        <h2 class="h-sg">Ready to move those postponed projects forward?</h2>
+        <p>PrePair gives you a simple, affordable way to tackle the important tasks that keep getting pushed to tomorrow while providing local students with the real-world experience they need to build their careers.</p>
+        <p>If you can think of at least one project sitting on your to-do list—updating website copy, planning social media content, researching customer needs, or organizing business processes—you're exactly the kind of host PrePair is designed for. The combination of motivated student talent and structured educational framework means you get meaningful help while supporting future professionals in your community.</p>
+        <div class="cta">
+          <a href="apply.html" class="btn">Plan your first PrePair project</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <small>© <span id="year"></span> PrePair. Connecting students and small businesses through meaningful project experiences.</small>
+    </footer>
   </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Island header toggle on scroll
+    (function(){
+      const shell = document.getElementById('header-shell');
+      if(!shell) return;
+      let floating = false;
+      function onScroll(){
+        const want = window.scrollY > 8;
+        if (want !== floating){
+          shell.classList.toggle('is-floating', want);
+          floating = want;
+        }
+      }
+      window.addEventListener('scroll', onScroll, {passive:true});
+      onScroll();
+    })();
+  </script>
+
+  <style>
+    /* Header Navigation Styles - Copied from other pages */
+    #header-shell{ position: sticky; top: 0; z-index: 1000; background: transparent; transition: margin-top .25s ease; }
+    #site-header{
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      background: transparent;
+      border-bottom: 1px solid var(--border);
+      transition: background .25s ease, border-color .25s ease, border-radius .25s ease,
+                  box-shadow .25s ease, margin .25s ease, padding .20s ease;
+    }
+    .nav-left, .nav-right{ display:flex; gap:20px; align-items:center; }
+    .nav-left{ justify-self: start; }
+    .nav-right{ justify-self: end; }
+    .brand-center{ justify-self: center; text-decoration:none; color:inherit; display:flex; gap:10px; align-items:center; }
+    .logo{ width:40px; height:40px; }
+    .logo svg{ stroke:var(--text); stroke-width:2.5; fill:transparent; vector-effect:non-scaling-stroke; }
+    .wordmark{ font-family:"Space Grotesk",Inter,sans-serif; font-weight:700; font-size:30px; letter-spacing:-.02em; line-height:1; position:relative; top:1px; color:var(--text); }
+
+    /* Island state on scroll */
+    :root{ --island-bg:#FFFFFF; }
+    #header-shell.is-floating{
+      padding-top: 20px;
+      background: transparent;
+    }
+    #header-shell.is-floating #site-header{
+      background: var(--island-bg);
+      border: 1px solid var(--border);
+      border-bottom-color: transparent;
+      border-radius: 32px;
+      padding: 10px 30px;
+      box-shadow: 0 16px 40px rgba(15,15,15,.12);
+    }
+
+    /* Link styling */
+    .nav-left a, .nav-right a:not(.btn-chip){ color: var(--muted); text-decoration:none; font-weight:500; }
+    .nav-left a:hover, .nav-right a:not(.btn-chip):hover{ color: var(--text); }
+
+    /* Button chip styling */
+    .btn-chip{
+      appearance: none;
+      border: 1.5px solid var(--text);
+      background: transparent;
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-chip:hover{
+      background: var(--text);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* Current page indicator */
+    .current-page {
+      color: var(--clay) !important;
+      font-weight: 600;
+    }
+
+    /* Mobile navigation */
+    @media (max-width:960px){
+      .nav-left, .nav-right{ display:none; }
+      #site-header{ grid-template-columns: 1fr; }
+      .brand-center{ justify-self:center; }
+    }
+
+    /* For Businesses Page Styles */
+    
+    /* Hero */
+    .hero-simple {
+      text-align: center;
+      padding: 64px 0 48px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .hero-simple h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    
+    .hero-simple .subtitle {
+      font-size: 1.25rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0 0 1rem;
+    }
+    
+    .last-updated {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+    
+    .hero-cta {
+      margin-top: 1.5rem;
+    }
+    
+    /* Content sections */
+    .content-section {
+      margin: 64px 0;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .content-section h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .section-intro {
+      font-size: 1.1rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 3rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .section-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .section-content p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Benefits grid */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+    }
+    
+    .benefit-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    .benefit-content h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .benefit-content p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    /* Journey steps */
+    .journey-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    
+    .journey-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    
+    .step-number {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: var(--clay);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-family: "Space Grotesk", sans-serif;
+      flex-shrink: 0;
+    }
+    
+    .step-content h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .step-content p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    
+    /* Examples grid */
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    
+    .example-card {
+      padding: 1.5rem;
+    }
+    
+    .example-card h3 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 1rem;
+      font-size: 1.25rem;
+    }
+    
+    .example-card p {
+      margin: 0;
+      line-height: 1.6;
+    }
+    
+    /* Time commitment */
+    .time-commitment {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      text-align: left;
+    }
+    
+    .time-commitment h3 {
+      font-family: "Space Grotesk", sans-serif;
+      margin-bottom: 1.5rem;
+      color: var(--clay);
+    }
+    
+    .time-list {
+      margin: 1.5rem 0;
+      padding-left: 1.25rem;
+    }
+    
+    .time-list li {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+    
+    .time-note {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 1.5rem;
+    }
+    
+    /* Comparison table */
+    .comparison-table {
+      margin-top: 2rem;
+    }
+    
+    .comparison-table h3 {
+      font-family: "Space Grotesk", sans-serif;
+      margin-bottom: 1.5rem;
+    }
+    
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .comparison-item {
+      padding: 1.5rem;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+    }
+    
+    .comparison-item h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 1rem;
+      color: var(--clay);
+      font-size: 1.1rem;
+    }
+    
+    .comparison-item p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    
+    /* Pricing */
+    .pricing-card {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      text-align: left;
+    }
+    
+    .pricing-card h3 {
+      font-family: "Space Grotesk", sans-serif;
+      margin-bottom: 1.5rem;
+      color: var(--clay);
+    }
+    
+    .pricing-features {
+      margin: 1.5rem 0;
+      padding-left: 1.25rem;
+    }
+    
+    .pricing-features li {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+    
+    .pricing-note {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 1.5rem;
+    }
+    
+    /* Fit check */
+    .fit-check-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .fit-check-card {
+      padding: 2rem;
+    }
+    
+    .fit-check-card h3 {
+      font-family: "Space Grotesk", sans-serif;
+      margin-bottom: 1.5rem;
+    }
+    
+    .fit-check-card ul {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+    
+    .fit-check-card li {
+      margin-bottom: 0.75rem;
+      line-height: 1.6;
+    }
+    
+    /* FAQ */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+    
+    .faq-item {
+      margin-bottom: 2rem;
+    }
+    
+    .faq-item h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 1rem;
+      font-size: 1.1rem;
+      color: var(--clay);
+    }
+    
+    .faq-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    
+    /* Closing CTA */
+    .closing-cta {
+      margin: 64px 0;
+    }
+    
+    .cta-card {
+      text-align: center;
+      padding: 3rem 2rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .cta-card h2 {
+      margin-bottom: 1.5rem;
+    }
+    
+    .cta-card p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    
+    .cta-card .cta {
+      margin-top: 2rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 960px) {
+      .content-section {
+        margin: 48px 0;
+      }
+      
+      .hero-simple {
+        padding: 48px 0 32px;
+      }
+      
+      .benefits-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .examples-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .fit-check-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .faq-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .journey-step {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+      
+      .benefit-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+    }
+  </style>
 </body>
 </html>
