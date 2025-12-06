@@ -4,31 +4,773 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PrePair — How it works</title>
+  <meta name="description" content="Learn how PrePair connects college students with local small businesses for educational project experiences.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#FAF7F2; --text:#0F0F0F; --muted:#4A4A4A; --clay:#E6764D;
-      --sage:#CFE1D9; --lilac:#DCD8F2; --sand:#EDE4D9; --card:#F5EFE7;
-      --border:#E8E2D9; --radius-lg:20px; --shadow:0 6px 24px rgba(15,15,15,.06);
-      --container:1120px;
-    }
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-      line-height:1.5;
-    }
-    .container{max-width:var(--container);margin:0 auto;padding:24px}
-    h1{font-family:"Space Grotesk",Inter,sans-serif;font-size:clamp(34px,6vw,64px);line-height:1.05;letter-spacing:-.015em;margin:0 0 18px}
-    a{color:var(--clay);text-decoration:none}
-    a:hover{text-decoration:underline}
-  </style>
+  <link rel="stylesheet" href="styles/site.css">
 </head>
 <body>
   <div class="container">
-    <p><a href="index.html">← Back to Home</a></p>
-    <h1>How it works</h1>
-    <p>Placeholder content. This page will be built out later.</p>
+    <!-- Header Navigation -->
+    <div id="header-shell">
+      <header id="site-header">
+        <div class="nav-left">
+          <a href="how-it-works.html" class="current-page">How it works</a>
+          <a href="students.html">For Students</a>
+          <a href="business.html">For Businesses</a>
+        </div>
+
+        <a class="brand brand-center" href="index.html">
+          <div class="logo doodle" aria-hidden="true">
+            <svg viewBox="0 0 64 64" width="40" height="40" preserveAspectRatio="xMidYMid meet" role="img" aria-label="PrePair sprout logo">
+              <path d="M32 56V20m0 0c6 0 10-5 10-10M32 20c-6 0-10-5-10-10M24 36c4 0 8-4 8-8M40 44c4 0 8-4 8-8" />
+              <path d="M20 48c-4 2-6 5-7 8m6-4c2 0 5-1 8-3" />
+            </svg>
+          </div>
+          <span class="wordmark">PrePair</span>
+        </a>
+
+        <div class="nav-right">
+          <a href="about.html">About</a>
+          <div class="nav-guest">
+            <a href="signin.html">Sign in</a>
+            <a class="btn-chip" href="apply.html">Get Started</a>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-simple">
+      <h1>How PrePair Works</h1>
+      <p class="subtitle">
+        A simple, educational framework connecting college students with local small businesses for meaningful project experiences.
+      </p>
+    </section>
+
+    <!-- Overview Section -->
+    <section class="overview-section">
+      <div class="overview-content">
+        <h2 class="h-sg">The Ground Floor Before Internships</h2>
+        <p>PrePair bridges the gap between classroom learning and professional experience. We connect college students with local small businesses for short-term, unpaid, educational projects that provide real-world experience while helping businesses tackle marketing, design, and operations challenges.</p>
+        
+        <div class="key-points">
+          <div class="key-point">
+            <div class="point-icon">🎓</div>
+            <div class="point-content">
+              <h4>Educational Focus</h4>
+              <p>All projects are designed for learning, with students as primary beneficiaries</p>
+            </div>
+          </div>
+          <div class="key-point">
+            <div class="point-icon">🏢</div>
+            <div class="point-content">
+              <h4>Local Businesses</h4>
+              <p>Small businesses get help with real challenges while supporting student development</p>
+            </div>
+          </div>
+          <div class="key-point">
+            <div class="point-icon">⏱️</div>
+            <div class="point-content">
+              <h4>Short-Term Projects</h4>
+              <p>2-8 week projects that fit around academic schedules and provide portfolio pieces</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process Steps -->
+    <section class="process-section">
+      <h2 class="h-sg">The Process</h2>
+      <p class="muted section-subtitle">A clear path from enrollment to experience</p>
+      
+      <div class="process-grid">
+        <!-- For Students -->
+        <div class="process-column">
+          <h3>For Students</h3>
+          
+          <div class="process-steps">
+            <div class="process-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>Subscribe & Create Profile</h4>
+                <p>Pay $2/month to access projects. Complete your academic and skills profile.</p>
+              </div>
+            </div>
+            
+            <div class="process-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>Browse Projects</h4>
+                <p>View vetted projects from local small businesses that match your field of study.</p>
+              </div>
+            </div>
+            
+            <div class="process-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>Apply & Connect</h4>
+                <p>Submit your application. If selected, attend a brief intro meeting with the business.</p>
+              </div>
+            </div>
+            
+            <div class="process-step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h4>Complete Project</h4>
+                <p>Work on the project with business mentorship. Add completed work to your portfolio.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- For Businesses -->
+        <div class="process-column">
+          <h3>For Businesses</h3>
+          
+          <div class="process-steps">
+            <div class="process-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>Subscribe & Post Projects</h4>
+                <p>Pay $20/month to access students. Post short-term projects with clear deliverables.</p>
+              </div>
+            </div>
+            
+            <div class="process-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>Review Applications</h4>
+                <p>See matched student profiles and select the best fit for your project needs.</p>
+              </div>
+            </div>
+            
+            <div class="process-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>Onboard Student</h4>
+                <p>Brief intro meeting to explain project goals, timeline, and expectations.</p>
+              </div>
+            </div>
+            
+            <div class="process-step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h4>Mentor & Receive Work</h4>
+                <p>Provide guidance throughout the project and receive completed deliverables.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project Types -->
+    <section class="projects-section">
+      <h2 class="h-sg">Types of Projects</h2>
+      <p class="muted section-subtitle">Real work that builds skills and helps businesses grow</p>
+      
+      <div class="project-types">
+        <div class="project-type card sage">
+          <div class="project-icon">📱</div>
+          <h4>Social Media & Marketing</h4>
+          <p>Create Instagram content, write blog posts, design marketing materials, conduct market research.</p>
+          <div class="project-examples">
+            <span class="example-tag">Content Creation</span>
+            <span class="example-tag">Brand Design</span>
+            <span class="example-tag">Social Strategy</span>
+          </div>
+        </div>
+        
+        <div class="project-type card lilac">
+          <div class="project-icon">💼</div>
+          <h4>Business Operations</h4>
+          <p>Streamline processes, create training materials, analyze customer data, improve workflows.</p>
+          <div class="project-examples">
+            <span class="example-tag">Process Design</span>
+            <span class="example-tag">Data Analysis</span>
+            <span class="example-tag">Documentation</span>
+          </div>
+        </div>
+        
+        <div class="project-type card sand">
+          <div class="project-icon">🎨</div>
+          <h4>Design & Development</h4>
+          <p>Build websites, create visual assets, design user experiences, develop digital tools.</p>
+          <div class="project-examples">
+            <span class="example-tag">Web Design</span>
+            <span class="example-tag">Graphics</span>
+            <span class="example-tag">UX/UI</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Educational Framework -->
+    <section class="framework-section">
+      <h2 class="h-sg">Educational Framework</h2>
+      <p class="muted section-subtitle">Designed for student development and learning</p>
+      
+      <div class="framework-content">
+        <div class="framework-principles">
+          <h3>Core Principles</h3>
+          
+          <div class="principle-list">
+            <div class="principle">
+              <div class="principle-icon">✓</div>
+              <div class="principle-text">
+                <h4>Student as Primary Beneficiary</h4>
+                <p>All projects are structured so students gain the most value through learning and experience.</p>
+              </div>
+            </div>
+            
+            <div class="principle">
+              <div class="principle-icon">✓</div>
+              <div class="principle-text">
+                <h4>Clear Educational Goals</h4>
+                <p>Every project includes learning objectives and skill development opportunities.</p>
+              </div>
+            </div>
+            
+            <div class="principle">
+              <div class="principle-icon">✓</div>
+              <div class="principle-text">
+                <h4>Meaningful Mentorship</h4>
+                <p>Business owners provide guidance, feedback, and real-world insights throughout the project.</p>
+              </div>
+            </div>
+            
+            <div class="principle">
+              <div class="principle-icon">✓</div>
+              <div class="principle-text">
+                <h4>Portfolio Development</h4>
+                <p>Students create tangible deliverables they can showcase in future applications.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="framework-benefits">
+          <h3>Why This Approach Works</h3>
+          
+          <div class="benefit-cards">
+            <div class="benefit-card">
+              <h4>For Students</h4>
+              <ul>
+                <li>Gain real-world experience in their field</li>
+                <li>Build a portfolio of professional work</li>
+                <li>Receive mentorship from business owners</li>
+                <li>Develop practical skills outside the classroom</li>
+                <li>Perfect for international students (educational, unpaid)</li>
+              </ul>
+            </div>
+            
+            <div class="benefit-card">
+              <h4>For Businesses</h4>
+              <ul>
+                <li>Get fresh perspectives on business challenges</li>
+                <li>Access motivated, educated talent</li>
+                <li>Complete projects without full-time hiring</li>
+                <li>Support local student development</li>
+                <li>Test potential future employees</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section class="cta-section">
+      <div class="card cta-card">
+        <h2 class="h-sg">Ready to Start?</h2>
+        <p class="muted">Join the PrePair community and connect education with opportunity.</p>
+        
+        <div class="cta-options">
+          <div class="cta-option">
+            <h3>Students</h3>
+            <p>Build real experience with local businesses</p>
+            <p class="pricing">$2/month</p>
+            <a href="students.html" class="btn">Get Started</a>
+          </div>
+          
+          <div class="cta-option">
+            <h3>Businesses</h3>
+            <p>Get help from motivated college students</p>
+            <p class="pricing">$20/month</p>
+            <a href="business.html" class="btn ghost">Post Projects</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <h2 class="h-sg">Frequently Asked Questions</h2>
+      
+      <div class="faq-grid">
+        <div class="faq-column">
+          <div class="faq-item">
+            <h4>Why are projects unpaid?</h4>
+            <p>Projects are educational experiences where students are the primary beneficiaries. This framework ensures compliance with educational guidelines and makes the program accessible to international students.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>How long are projects?</h4>
+            <p>Most projects run 2-8 weeks and require 5-15 hours per week, designed to fit around academic schedules while providing substantial experience.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>What kind of support do students get?</h4>
+            <p>Students receive mentorship from business owners, project guidance, and portfolio development support. Each project includes clear learning objectives.</p>
+          </div>
+        </div>
+        
+        <div class="faq-column">
+          <div class="faq-item">
+            <h4>How are students and projects matched?</h4>
+            <p>We match based on academic background, skills, interests, location preferences, and project requirements to ensure good fits for both parties.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>What if a project doesn't work out?</h4>
+            <p>We provide support to resolve issues and can facilitate project transitions when necessary. Clear expectations and communication prevent most problems.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>Can students work on multiple projects?</h4>
+            <p>Yes, students can take on multiple projects over time, but we recommend focusing on one project at a time for the best learning experience.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <small>© <span id="year"></span> PrePair. Connecting students and small businesses through meaningful project experiences.</small>
+    </footer>
   </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Island header toggle on scroll
+    (function(){
+      const shell = document.getElementById('header-shell');
+      if(!shell) return;
+      let floating = false;
+      function onScroll(){
+        const want = window.scrollY > 8;
+        if (want !== floating){
+          shell.classList.toggle('is-floating', want);
+          floating = want;
+        }
+      }
+      window.addEventListener('scroll', onScroll, {passive:true});
+      onScroll();
+    })();
+  </script>
+
+  <style>
+    /* How it Works Page Styles */
+    
+    /* Hero */
+    .hero-simple {
+      text-align: center;
+      padding: 64px 0 48px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .hero-simple h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    
+    .hero-simple .subtitle {
+      font-size: 1.25rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+    
+    /* Sections */
+    section {
+      margin: 64px 0;
+    }
+    
+    .section-subtitle {
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+    
+    /* Overview */
+    .overview-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .overview-content h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .overview-content > p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      text-align: center;
+      margin-bottom: 3rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .key-points {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .key-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+    
+    .point-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    .point-content h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .point-content p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    
+    /* Process */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+    
+    .process-column h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: var(--clay);
+    }
+    
+    .process-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .process-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    
+    .step-number {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: var(--clay);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-family: "Space Grotesk", sans-serif;
+      flex-shrink: 0;
+    }
+    
+    .step-content h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .step-content p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    
+    /* Project Types */
+    .project-types {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .project-type {
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .project-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .project-type h4 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    
+    .project-type p {
+      margin-bottom: 1.5rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    
+    .project-examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    
+    .example-tag {
+      background: rgba(15, 15, 15, 0.08);
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    
+    /* Framework */
+    .framework-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 3rem;
+    }
+    
+    .framework-principles h3,
+    .framework-benefits h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .principle {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .principle-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: var(--sage);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.25rem;
+    }
+    
+    .principle-text h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .principle-text p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    
+    .benefit-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .benefit-card {
+      padding: 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    
+    .benefit-card h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 1rem;
+      color: var(--clay);
+    }
+    
+    .benefit-card ul {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+    
+    .benefit-card li {
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    
+    /* CTA Section */
+    .cta-card {
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    
+    .cta-card h2 {
+      margin-bottom: 1rem;
+    }
+    
+    .cta-card .muted {
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+    }
+    
+    .cta-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .cta-option {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: white;
+    }
+    
+    .cta-option h3 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 1rem;
+      color: var(--clay);
+    }
+    
+    .cta-option p {
+      margin: 0 0 1rem;
+      color: var(--muted);
+    }
+    
+    .pricing {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--text);
+      margin-bottom: 1.5rem !important;
+    }
+    
+    /* FAQ */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+    
+    .faq-item {
+      margin-bottom: 2rem;
+    }
+    
+    .faq-item h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 1rem;
+      font-size: 1.1rem;
+      color: var(--clay);
+    }
+    
+    .faq-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    
+    /* Current page indicator */
+    .current-page {
+      color: var(--clay) !important;
+      font-weight: 600;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 960px) {
+      .framework-content,
+      .process-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      section {
+        margin: 48px 0;
+      }
+      
+      .hero-simple {
+        padding: 48px 0 32px;
+      }
+      
+      .key-points {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .project-types {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .faq-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .process-column {
+        min-width: unset;
+      }
+      
+      .cta-options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </body>
 </html>
