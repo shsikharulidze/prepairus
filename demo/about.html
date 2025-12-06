@@ -4,35 +4,748 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PrePair — About</title>
+  <meta name="description" content="PrePair: Built by students, for students and local businesses. The bridge between classroom learning and real-world experience.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#FAF7F2; --text:#0F0F0F; --muted:#4A4A4A; --clay:#E6764D;
-      --sage:#CFE1D9; --lilac:#DCD8F2; --sand:#EDE4D9; --card:#F5EFE7;
-      --border:#E8E2D9; --radius-lg:20px; --shadow:0 6px 24px rgba(15,15,15,.06);
-      --container:1120px;
-    }
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-      line-height:1.5;
-      name="viewport" content="with=device-widths initial"
-    }
-    .container{max-width:var(--container);margin:0 auto;padding:24px}
-    h1{font-family:"Space Grotesk",Inter,sans-serif;font-size:clamp(34px,6vw,64px);line-height:1.05;letter-spacing:-.015em;margin:0 0 18px}
-    a{color:var(--clay);text-decoration:none}
-    a:hover{text-decoration:underline}
-  </style>
+  <link rel="stylesheet" href="styles/site.css">
 </head>
 <body>
   <div class="container">
-    <p><a href="index.html">← Back to Home</a></p>
-    <h1>About</h1>
-    <p>Placeholder content. This page will be built out later.</p>
-    body{
-      margin:0, backgroudn:var(--bg): color:var(--text)
-    }
+    <!-- Header Navigation -->
+    <div id="header-shell">
+      <header id="site-header">
+        <div class="nav-left">
+          <a href="how-it-works.html">How it works</a>
+          <a href="students.html">For Students</a>
+          <a href="business.html">For Businesses</a>
+        </div>
+
+        <a class="brand brand-center" href="index.html">
+          <div class="logo doodle" aria-hidden="true">
+            <svg viewBox="0 0 64 64" width="40" height="40" preserveAspectRatio="xMidYMid meet" role="img" aria-label="PrePair sprout logo">
+              <path d="M32 56V20m0 0c6 0 10-5 10-10M32 20c-6 0-10-5-10-10M24 36c4 0 8-4 8-8M40 44c4 0 8-4 8-8" />
+              <path d="M20 48c-4 2-6 5-7 8m6-4c2 0 5-1 8-3" />
+            </svg>
+          </div>
+          <span class="wordmark">PrePair</span>
+        </a>
+
+        <div class="nav-right">
+          <a href="about.html" class="current-page">About</a>
+          <div class="nav-guest">
+            <a href="signin.html">Sign in</a>
+            <a class="btn-chip" href="apply.html">Get Started</a>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-about">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>PrePair: Built by students, for students and local businesses</h1>
+          <p class="subtitle">
+            The bridge between classroom learning and real-world experience. PrePair connects college students with local small businesses for short-term, educational project experiences—designed as your first step before traditional internships.
+          </p>
+          <p class="hero-detail">Founded and led by undergraduate students at Fordham University's Gabelli School of Business.</p>
+          <p class="last-updated">Last updated: December 2024</p>
+          <div class="hero-cta">
+            <a href="#mission" class="btn">See how PrePair works</a>
+          </div>
+        </div>
+        <div class="hero-logo">
+          <div class="logo-large">
+            <svg viewBox="0 0 64 64" width="120" height="120" preserveAspectRatio="xMidYMid meet" role="img" aria-label="PrePair large logo">
+              <path d="M32 56V20m0 0c6 0 10-5 10-10M32 20c-6 0-10-5-10-10M24 36c4 0 8-4 8-8M40 44c4 0 8-4 8-8" stroke="var(--clay)" stroke-width="2.5" fill="transparent" vector-effect="non-scaling-stroke"/>
+              <path d="M20 48c-4 2-6 5-7 8m6-4c2 0 5-1 8-3" stroke="var(--clay)" stroke-width="2.5" fill="transparent" vector-effect="non-scaling-stroke"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Mission -->
+    <section id="mission" class="content-section">
+      <h2 class="h-sg">Our Mission</h2>
+      
+      <div class="section-content">
+        <p class="mission-intro">We built PrePair because we saw a gap that affects every student and every small business owner.</p>
+        
+        <div class="mission-statement card">
+          <h3>Our mission is to make real world experience accessible to all students while helping small businesses move important projects forward through meaningful educational partnerships.</h3>
+        </div>
+        
+        <p>We believe the first step into professional life should feel challenging but achievable, not impossible. By connecting motivated students with local businesses that need practical help, we create opportunities that benefit everyone: students gain legitimate experience and portfolio pieces, businesses get fresh perspectives and completed projects, and communities grow stronger through these local connections.</p>
+      </div>
+    </section>
+
+    <!-- Our Story -->
+    <section id="story" class="content-section">
+      <h2 class="h-sg">Our Story</h2>
+      
+      <div class="section-content">
+        <p>It started in the hallways and study rooms of Fordham's Gabelli School of Business. We were watching our classmates stress about internship applications, feeling stuck with resumes full of coursework but thin on real projects. The competition for internships had become brutal, with many positions requiring experience that students had no realistic way to get.</p>
+        
+        <p>At the same time, we were walking through the Bronx and Manhattan, passing small businesses that clearly needed help. Coffee shops with outdated websites. Nonprofits that could benefit from social media strategy. Local retail stores that needed better customer communication. These business owners were smart and hardworking, but they were stretched thin, too busy running their operations to tackle marketing projects, and too cost conscious to hire expensive agencies.</p>
+        
+        <div class="story-highlight card">
+          <p>The insight hit us during a late night conversation in the Gabelli building: there was a match hiding in plain sight. Students who needed real experience, and businesses that needed practical help. The gap was not about ability or motivation on either side, it was about connection and structure.</p>
+        </div>
+        
+        <p>We started talking to other students, professors, and local business owners. The feedback was immediate and clear: students were desperate for ways to apply what they were learning in class to real situations, and small businesses had running lists of important projects that somehow never got done. Everyone could see the logic, but no one had created a systematic way to make these connections happen safely and fairly.</p>
+        
+        <p>PrePair began as our solution to a problem we were living ourselves. Instead of trying to build something global from day one, we decided to start hyper local at Fordham, in New York City, with the businesses and students we could actually see and support.</p>
+      </div>
+    </section>
+
+    <!-- What We Believe -->
+    <section id="beliefs" class="content-section">
+      <h2 class="h-sg">What We Believe</h2>
+      <p class="section-intro">PrePair is built on a few simple beliefs that guide everything we do.</p>
+      
+      <div class="beliefs-grid">
+        <div class="belief-item card">
+          <h4>Real work teaches best.</h4>
+          <p>Students learn fastest when they work on real problems for real people, not only simulated cases. There is something different about knowing that your work will actually be used by a business owner who is counting on you to deliver.</p>
+        </div>
+        
+        <div class="belief-item card">
+          <h4>Opportunity should not depend on connections.</h4>
+          <p>Access to early experience should not be limited to students whose families already know people in the right fields. PrePair creates structured pathways that work for students from any background.</p>
+        </div>
+        
+        <div class="belief-item card">
+          <h4>Small businesses deserve access to talent.</h4>
+          <p>Local business owners and organizations should not have to choose between doing everything alone or hiring expensive agencies. Motivated students can provide real value while learning from experienced mentors.</p>
+        </div>
+        
+        <div class="belief-item card">
+          <h4>International students need practical paths.</h4>
+          <p>Students from other countries should have realistic ways to gain U.S. experience in structured, educational settings that align with their visa requirements and academic goals.</p>
+        </div>
+        
+        <div class="belief-item card">
+          <h4>The first step should feel possible.</h4>
+          <p>Taking the first real step into the professional world should feel challenging but achievable. We design projects that stretch students without overwhelming them.</p>
+        </div>
+        
+        <div class="belief-item card">
+          <h4>Education and ethics come first.</h4>
+          <p>Projects are framed around learning and development, not replacing paid jobs. Students are treated as learners gaining valuable experience, not as free labor.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PrePair at a Glance -->
+    <section id="glance" class="content-section">
+      <h2 class="h-sg">PrePair at a Glance</h2>
+      <p class="section-intro">Here is how PrePair works and who we serve:</p>
+      
+      <div class="glance-grid">
+        <div class="glance-item card">
+          <h4>What we do</h4>
+          <p>Connect college students with local small businesses for short term, project based educational experiences.</p>
+        </div>
+        
+        <div class="glance-item card">
+          <h4>Who we serve</h4>
+          <p>College students (domestic and international) and small businesses, nonprofits, and local startups.</p>
+        </div>
+        
+        <div class="glance-item card">
+          <h4>How it works</h4>
+          <p>Students complete structured, unpaid educational projects that businesses host and mentor.</p>
+        </div>
+        
+        <div class="glance-item card">
+          <h4>Project types</h4>
+          <p>Social media planning, website copy, market research, design assets, process improvement.</p>
+        </div>
+        
+        <div class="glance-item card">
+          <h4>Pricing</h4>
+          <p>Simple low cost subscriptions: about 2 dollars per month for students, about 20 dollars per month for businesses.</p>
+        </div>
+        
+        <div class="glance-item card">
+          <h4>Where we start</h4>
+          <p>Fordham University students and New York City area businesses.</p>
+        </div>
+        
+        <div class="glance-item card">
+          <h4>Long term vision</h4>
+          <p>A network of campuses and local business communities, connected by project based learning.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Built by Gabelli Students -->
+    <section id="gabelli-students" class="content-section">
+      <h2 class="h-sg">Built by Gabelli Students</h2>
+      
+      <div class="section-content">
+        <p>PrePair is founded and led by undergraduate students at Fordham University's Gabelli School of Business. This is not a side detail, it is central to what makes PrePair work.</p>
+        
+        <p>We live the same reality as the students PrePair serves. We see up close how stressful internship competition has become and how many capable students feel stuck without early professional experience. We understand what it is like to have knowledge from business classes but limited opportunities to apply it in real situations. We know the specific challenges international students face in gaining U.S. experience within educational guidelines.</p>
+        
+        <p>At the same time, we are surrounded by small businesses throughout New York City that are constantly stretched for time and resources. We see restaurant owners who need help with social media, nonprofit leaders who could benefit from strategic planning support, and retail shops that need customer communication improvements. Our perspective as students in the city gives us direct insight into both sides of the equation.</p>
+        
+        <div class="gabelli-highlight card">
+          <p>The Gabelli School environment helped us refine PrePair into something more than just a good idea. Through entrepreneurship courses, case competitions, and guidance from professors who pushed us to think seriously about ethics and impact, we developed a framework that prioritizes education and fairness. Being students is not a limitation in building PrePair, it is our biggest advantage in understanding exactly what students and local businesses need.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meet the Founding Team -->
+    <section id="team" class="content-section">
+      <h2 class="h-sg">Meet the Founding Team</h2>
+      <p class="section-intro">PrePair is led by a small founding team of Gabelli students who each bring specific strengths to building and growing the platform.</p>
+      
+      <div class="team-grid">
+        <div class="team-member card">
+          <div class="member-image">
+            <img src="assets/team/shota-sikharulidze.png" alt="Shota Sikharulidze – Co founder, CEO and CTO" />
+          </div>
+          <div class="member-info">
+            <h3>Shota Sikharulidze</h3>
+            <h4>Co founder, CEO and CTO</h4>
+            <p>Shota leads product development and technology while setting the overall vision for PrePair. As a Gabelli student focusing on innovation and entrepreneurship, he combines technical skills with a deep understanding of how students and businesses can work together effectively. Shota makes sure that PrePair's platform serves real needs rather than creating unnecessary complexity.</p>
+          </div>
+        </div>
+        
+        <div class="team-member card">
+          <div class="member-image">
+            <img src="assets/team/seanna-sankar.png" alt="Seanna Sankar – Co founder and CMO" />
+          </div>
+          <div class="member-info">
+            <h3>Seanna Sankar</h3>
+            <h4>Co founder and CMO</h4>
+            <p>Seanna shapes how PrePair communicates with students, businesses, and the broader community. Her focus on marketing and storytelling helps ensure that PrePair's message reaches the people who can benefit most from the platform. As a Gabelli student studying marketing and communications, Seanna understands how to build authentic connections between PrePair and the communities we serve.</p>
+          </div>
+        </div>
+        
+        <div class="team-member card">
+          <div class="member-image">
+            <img src="assets/team/faye-ona.png" alt="Faye Ona – Co founder and CFO" />
+          </div>
+          <div class="member-info">
+            <h3>Faye Ona</h3>
+            <h4>Co founder and CFO</h4>
+            <p>Faye ensures that PrePair's business model works sustainably for everyone involved. Her focus on finance and operations helps maintain the balance between keeping costs low for students and businesses while building a platform that can grow responsibly. As a Gabelli student specializing in finance, Faye brings analytical rigor to decisions about pricing, partnerships, and long term sustainability.</p>
+          </div>
+        </div>
+        
+        <div class="team-member card">
+          <div class="member-image">
+            <img src="assets/team/mia-hernandez.png" alt="Mia Hernandez – Co founder and CIO" />
+          </div>
+          <div class="member-info">
+            <h3>Mia Hernandez</h3>
+            <h4>Co founder and CIO</h4>
+            <p>Mia leads innovation and research, constantly testing new ideas about how students and businesses can work together more effectively. Her role involves studying what works, what does not, and how PrePair can evolve to serve users better. As a Gabelli student focused on innovation and strategy, Mia helps PrePair stay responsive to the real needs of students and local business communities.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Where We Are Going Next -->
+    <section id="future" class="content-section">
+      <h2 class="h-sg">Where We Are Going Next</h2>
+      
+      <div class="section-content">
+        <p>Our vision for PrePair grows directly from what we are learning by starting local and focused.</p>
+        
+        <div class="future-timeline">
+          <div class="timeline-item card">
+            <h4>Short term</h4>
+            <p>We are building the strongest possible version of PrePair at Fordham and in New York City. This means creating meaningful experiences for our early student and business users, refining our matching process, and developing support systems that help both students and business owners succeed. We are listening carefully to feedback and improving the platform based on real use rather than assumptions.</p>
+          </div>
+          
+          <div class="timeline-item card">
+            <h4>Medium term</h4>
+            <p>We plan to expand thoughtfully to additional campuses that share similar needs and local business ecosystems. Rather than scaling quickly everywhere, we want to prove that the PrePair model works consistently before moving to new markets. This phase will also involve improving our tools for project design, communication, and tracking outcomes so that future expansion builds on solid foundations.</p>
+          </div>
+          
+          <div class="timeline-item card">
+            <h4>Long term</h4>
+            <p>We envision PrePair helping to normalize project based experience as a standard part of how students transition from classroom to professional life. We want to build a network where campuses and local business communities are meaningfully connected, where students graduate with real experience and confidence, and where small businesses have reliable access to motivated talent.</p>
+          </div>
+        </div>
+        
+        <p>Our ambitions are big, but they are grounded in what PrePair already is: a practical solution to real problems that students and business owners face every day. We are not trying to revolutionize education or transform entire industries, we are trying to make it easier for good people to work together in ways that benefit everyone.</p>
+      </div>
+    </section>
+
+    <!-- Our Commitments -->
+    <section id="commitments" class="content-section">
+      <h2 class="h-sg">Our Commitments to Students and Businesses</h2>
+      <p class="section-intro">Trust and ethics are fundamental to how PrePair works, so we want to be clear about what you can expect from us.</p>
+      
+      <div class="commitments-grid">
+        <div class="commitment-section card">
+          <h3>Our Commitment to Students</h3>
+          <p>Every project on PrePair is designed as an educational experience first. You are treated as a learner gaining valuable experience, not as free labor replacing a paid position. Projects are scoped to be realistic for students, challenging enough to help you grow but structured so you can succeed with support and guidance.</p>
+          <ul>
+            <li>Projects include clear learning objectives and mentorship from business owners.</li>
+            <li>You have direct channels to ask questions and get feedback throughout your work.</li>
+            <li>Your development, safety, and professional growth are top priorities.</li>
+            <li>All projects are time bounded and educationally focused, never replacing full time roles.</li>
+            <li>We provide support if projects are not working as expected.</li>
+          </ul>
+        </div>
+        
+        <div class="commitment-section card">
+          <h3>Our Commitment to Small Businesses</h3>
+          <p>We present projects honestly with realistic expectations about working with student learners. Students are supported to deliver useful, professional quality work while gaining the experience they need. Clear communication and feedback systems help ensure successful partnerships.</p>
+          <ul>
+            <li>Students are motivated learners who receive guidance on professional communication and project management.</li>
+            <li>Project scopes are designed to be valuable but contained, fitting within educational frameworks.</li>
+            <li>We help structure projects so students can deliver real value while learning.</li>
+            <li>Feedback systems help improve future matches and project designs.</li>
+            <li>Support is available if expectations need adjustment or projects require additional guidance.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join Us -->
+    <section id="join" class="content-section">
+      <h2 class="h-sg">Join Us</h2>
+      
+      <div class="section-content">
+        <p>We started PrePair because we believe that students and small businesses can accomplish meaningful things together when given the right structure and support. Every project creates value for both sides: students gain the real experience they need to take the next step in their careers, and businesses move forward on important projects that might otherwise sit on the back burner.</p>
+        
+        <div class="join-cta-grid">
+          <div class="join-cta card">
+            <p><strong>If you are a student</strong>, we invite you to see what your first real project could look like and how it might change the way you think about your capabilities and your future.</p>
+          </div>
+          
+          <div class="join-cta card">
+            <p><strong>If you run a small business</strong>, we invite you to think of one project you have been putting off and imagine tackling it with an enthusiastic student partner who is eager to learn from your experience.</p>
+          </div>
+        </div>
+        
+        <div class="final-cta">
+          <a href="how-it-works.html" class="btn">Explore what you can build together</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <small>© <span id="year"></span> PrePair. Connecting students and small businesses through meaningful project experiences.</small>
+    </footer>
   </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Island header toggle on scroll
+    (function(){
+      const shell = document.getElementById('header-shell');
+      if(!shell) return;
+      let floating = false;
+      function onScroll(){
+        const want = window.scrollY > 8;
+        if (want !== floating){
+          shell.classList.toggle('is-floating', want);
+          floating = want;
+        }
+      }
+      window.addEventListener('scroll', onScroll, {passive:true});
+      onScroll();
+    })();
+  </script>
+
+  <style>
+    /* About Page Specific Styles */
+    
+    /* Hero About */
+    .hero-about {
+      padding: 64px 0 48px;
+      margin-bottom: 64px;
+    }
+    
+    .hero-content {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .hero-text h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    
+    .hero-text .subtitle {
+      font-size: 1.25rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    
+    .hero-detail {
+      font-size: 1rem;
+      color: var(--clay);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .last-updated {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+    
+    .hero-cta {
+      margin-top: 1.5rem;
+    }
+    
+    .hero-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .logo-large {
+      padding: 2rem;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    
+    /* Content sections */
+    .content-section {
+      margin: 64px 0;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .content-section h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .section-intro {
+      font-size: 1.1rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 3rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .section-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .section-content p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Mission */
+    .mission-intro {
+      font-size: 1.15rem !important;
+      text-align: center;
+      margin-bottom: 2rem !important;
+    }
+    
+    .mission-statement {
+      text-align: center;
+      padding: 2rem;
+      margin: 2rem 0;
+      background: var(--sage);
+    }
+    
+    .mission-statement h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.5rem;
+      line-height: 1.3;
+      margin: 0;
+      color: var(--text);
+    }
+    
+    /* Story */
+    .story-highlight {
+      padding: 2rem;
+      margin: 2rem 0;
+      background: var(--lilac);
+      font-style: italic;
+    }
+    
+    .story-highlight p {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    
+    /* Beliefs */
+    .beliefs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    
+    .belief-item {
+      padding: 1.5rem;
+    }
+    
+    .belief-item h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 1rem;
+      color: var(--clay);
+      font-size: 1.1rem;
+    }
+    
+    .belief-item p {
+      margin: 0;
+      line-height: 1.6;
+    }
+    
+    /* Glance */
+    .glance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    
+    .glance-item {
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .glance-item h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 1rem;
+      color: var(--clay);
+      font-size: 1.1rem;
+    }
+    
+    .glance-item p {
+      margin: 0;
+      line-height: 1.5;
+    }
+    
+    /* Gabelli highlight */
+    .gabelli-highlight {
+      padding: 2rem;
+      margin: 2rem 0;
+      background: var(--sand);
+    }
+    
+    .gabelli-highlight p {
+      margin: 0;
+      font-size: 1.1rem;
+      font-style: italic;
+    }
+    
+    /* Team */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .team-member {
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .member-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 1.5rem;
+      border: 3px solid var(--clay);
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .member-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .member-info h3 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+    }
+    
+    .member-info h4 {
+      color: var(--clay);
+      margin: 0 0 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    
+    .member-info p {
+      margin: 0;
+      text-align: left;
+      line-height: 1.6;
+    }
+    
+    /* Future timeline */
+    .future-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .timeline-item {
+      padding: 2rem;
+    }
+    
+    .timeline-item h4 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 1rem;
+      color: var(--clay);
+      font-size: 1.25rem;
+    }
+    
+    .timeline-item p {
+      margin: 0;
+      line-height: 1.6;
+    }
+    
+    /* Commitments */
+    .commitments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .commitment-section {
+      padding: 2rem;
+    }
+    
+    .commitment-section h3 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 1rem;
+      color: var(--clay);
+    }
+    
+    .commitment-section p {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    
+    .commitment-section ul {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+    
+    .commitment-section li {
+      margin-bottom: 0.75rem;
+      line-height: 1.5;
+    }
+    
+    /* Join */
+    .join-cta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .join-cta {
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .join-cta p {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    
+    .final-cta {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 960px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+      }
+      
+      .content-section {
+        margin: 48px 0;
+      }
+      
+      .beliefs-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .glance-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .team-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .commitments-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .join-cta-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero-about {
+        padding: 48px 0 32px;
+      }
+      
+      .hero-content {
+        gap: 1.5rem;
+      }
+      
+      .logo-large {
+        padding: 1.5rem;
+      }
+      
+      .team-member {
+        padding: 1.5rem;
+      }
+      
+      .member-image {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  </style>
 </body>
 </html>
