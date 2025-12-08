@@ -159,7 +159,7 @@ class PresentationOverlay {
       <div class="presentation-card" onclick="event.stopPropagation()">
         <!-- Header -->
         <div class="presentation-header">
-          <div class="presentation-label">Slide ${slide.id} · ${slide.label}</div>
+          <div class="presentation-label">${slide.label}</div>
           <div class="presentation-divider"></div>
         </div>
         
