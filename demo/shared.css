@@ -1,10 +1,10 @@
 /* PrePair Design System - Extracted from Homepage */
 
 :root {
-  /* Core Brand Colors */
-  --coral: #FF8B7B;
-  --coral-hover: #E6764D;
-  --coral-light: #FFF5F4;
+  /* Core Brand Colors - Updated for PrePair */
+  --coral: #111111;
+  --coral-hover: #333333;
+  --coral-light: #F8F4EC;
   
   /* Background Colors - No Harsh White */
   --bg-primary: #FAFAF8;           /* Warm off-white main backgrounds */
@@ -244,12 +244,12 @@ body {
   color: var(--text);
 }
 
-/* Buttons */
-.btn {
+/* Buttons - PrePair Style */
+.btn, .btn-primary {
   appearance: none;
-  border: 1.5px solid var(--text);
-  background: var(--text);
-  color: #fff;
+  border: 1.5px solid #111111;
+  background: #111111;
+  color: #FDF8F0;
   padding: 12px 16px;
   border-radius: 999px;
   font-weight: 600;
@@ -264,8 +264,11 @@ body {
   color: var(--text);
 }
 
-.btn:hover {
+.btn:hover, .btn-primary:hover {
+  background: #333333;
+  border-color: #333333;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(17, 17, 17, 0.15);
 }
 
 .btn-chip {
