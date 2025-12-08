@@ -1,0 +1,220 @@
+/* PrePair Presentation Overlay Styles */
+
+.presentation-card {
+  background: var(--card, #F5EFE7);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
+  width: 70%;
+  max-width: 900px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.presentation-header {
+  padding: 24px 32px 0;
+}
+
+.presentation-label {
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted, #4A4A4A);
+  margin-bottom: 8px;
+}
+
+.presentation-divider {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  margin-bottom: 24px;
+}
+
+/* Body */
+.presentation-body {
+  padding: 0 32px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.presentation-heading {
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text, #0F0F0F);
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+.presentation-intro {
+  font-size: 16px;
+  color: var(--muted, #4A4A4A);
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.presentation-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.presentation-bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.bullet-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted, #4A4A4A);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.bullet-text {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text, #0F0F0F);
+}
+
+.bullet-text strong {
+  font-weight: 600;
+  color: var(--text, #0F0F0F);
+}
+
+/* Footer */
+.presentation-footer {
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.presentation-page-indicator {
+  font-size: 14px;
+  color: var(--muted, #4A4A4A);
+  font-weight: 500;
+}
+
+.presentation-nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.presentation-nav-btn {
+  appearance: none;
+  border: 1.5px solid transparent;
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text, #0F0F0F);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: Inter, sans-serif;
+}
+
+.presentation-nav-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.presentation-nav-btn-primary {
+  background: var(--text, #0F0F0F);
+  color: white;
+  border-color: var(--text, #0F0F0F);
+}
+
+.presentation-nav-btn-primary:hover {
+  background: rgba(15, 15, 15, 0.9);
+}
+
+.presentation-nav-btn-close {
+  background: transparent;
+  color: var(--muted, #4A4A4A);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.presentation-nav-btn-close:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text, #0F0F0F);
+}
+
+/* Page transition animations */
+.presentation-body {
+  position: relative;
+}
+
+.presentation-body.transitioning {
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.presentation-body.transition-complete {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .presentation-card {
+    width: 90%;
+    max-height: 80vh;
+    margin: 20px;
+  }
+  
+  .presentation-header,
+  .presentation-body,
+  .presentation-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .presentation-heading {
+    font-size: 22px;
+  }
+  
+  .presentation-intro,
+  .bullet-text {
+    font-size: 15px;
+  }
+  
+  .presentation-footer {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .presentation-nav {
+    justify-content: center;
+  }
+  
+  .presentation-nav-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
