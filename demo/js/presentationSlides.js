@@ -6,25 +6,18 @@ const presentationSlides = {
     label: "Slide 1: Hook – Internships are hard to get",
     pages: [
       {
-        id: "1a",
+        id: "1",
         heading: "Internships are hard to get",
-        intro: "Start by grounding the audience in the reality students face when they try to get internships:",
+        intro: "Use this slide to hook the audience by exposing the contradiction at the heart of the current internship system:",
         bullets: [
           "Internships are **HARD** to get.",
           "Competition has increased while the number of available positions has decreased.",
           "Most internships require a certain amount of **prior experience**.",
-          "Experience becomes the main way to differentiate yourself from other candidates."
-        ]
-      },
-      {
-        id: "1b",
-        heading: "The contradiction in the system",
-        intro: "Then highlight the logical contradiction in how internships are supposed to work versus how they actually work today:",
-        bullets: [
+          "Experience becomes the main way to differentiate you from other candidates.",
           "There is a clear **contradiction** in the current internship system.",
           "An internship was originally designed as a college student's **first step** into the professional world.",
           "How can someone claim that an internship is a first step if it already favors **prior experience**?",
-          "The answer is simple: internships are no longer truly the **first step** students take into the professional world. Something needs to come before them."
+          "The answer is simple: internships are no longer truly the **first step** students take to enter the professional world."
         ]
       }
     ]

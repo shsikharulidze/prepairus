@@ -92,14 +92,17 @@ class PresentationOverlay {
   
   nextPage() {
     const slide = window.presentationSlides?.[this.activeSlideId];
-    if (slide && this.activePageIndex < slide.pages.length - 1) {
+    // Only navigate if slide has multiple pages
+    if (slide && slide.pages.length > 1 && this.activePageIndex < slide.pages.length - 1) {
       this.activePageIndex++;
       this.renderOverlay();
     }
   }
   
   previousPage() {
-    if (this.activePageIndex > 0) {
+    const slide = window.presentationSlides?.[this.activeSlideId];
+    // Only navigate if slide has multiple pages
+    if (slide && slide.pages.length > 1 && this.activePageIndex > 0) {
       this.activePageIndex--;
       this.renderOverlay();
     }
@@ -121,6 +124,7 @@ class PresentationOverlay {
     
     const currentPage = slide.pages[this.activePageIndex];
     const totalPages = slide.pages.length;
+    const hasMultiplePages = totalPages > 1;
     
     // Format bullets with bold text
     const formattedBullets = currentPage.bullets.map(bullet => {
@@ -134,14 +138,22 @@ class PresentationOverlay {
       </div>`
     ).join('');
     
-    // Navigation buttons
-    const prevButton = this.activePageIndex > 0 
-      ? `<button class="presentation-nav-btn" onclick="presentationOverlay.previousPage()">← Back</button>`
-      : '';
-    
-    const nextButton = this.activePageIndex < totalPages - 1
-      ? `<button class="presentation-nav-btn presentation-nav-btn-primary" onclick="presentationOverlay.nextPage()">Next →</button>`
-      : `<button class="presentation-nav-btn presentation-nav-btn-close" onclick="presentationOverlay.closeOverlay()">Close</button>`;
+    // Navigation buttons - only show for multi-page slides
+    let navigationButtons = '';
+    if (hasMultiplePages) {
+      const prevButton = this.activePageIndex > 0 
+        ? `<button class="presentation-nav-btn" onclick="presentationOverlay.previousPage()">← Back</button>`
+        : '';
+      
+      const nextButton = this.activePageIndex < totalPages - 1
+        ? `<button class="presentation-nav-btn presentation-nav-btn-primary" onclick="presentationOverlay.nextPage()">Next →</button>`
+        : `<button class="presentation-nav-btn presentation-nav-btn-close" onclick="presentationOverlay.closeOverlay()">Close</button>`;
+      
+      navigationButtons = `${prevButton}${nextButton}`;
+    } else {
+      // Single page - just show close button
+      navigationButtons = `<button class="presentation-nav-btn presentation-nav-btn-close" onclick="presentationOverlay.closeOverlay()">Close</button>`;
+    }
     
     this.overlayElement.innerHTML = `
       <div class="presentation-card" onclick="event.stopPropagation()">
@@ -162,10 +174,9 @@ class PresentationOverlay {
         
         <!-- Footer -->
         <div class="presentation-footer">
-          <div class="presentation-page-indicator">Page ${this.activePageIndex + 1} of ${totalPages}</div>
+          ${hasMultiplePages ? `<div class="presentation-page-indicator">Page ${this.activePageIndex + 1} of ${totalPages}</div>` : '<div class="presentation-page-indicator"></div>'}
           <div class="presentation-nav">
-            ${prevButton}
-            ${nextButton}
+            ${navigationButtons}
           </div>
         </div>
       </div>
