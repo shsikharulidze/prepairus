@@ -224,19 +224,15 @@
     // Authentication check
     async function requireAuth() {
       try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        
-        if (error || !user) {
-          window.location.href = '/signin.html';
-          return false;
-        }
-        
-        currentUser = user;
+        // Demo mode - skip authentication for presentation
+        console.log('🎯 [Applications] Demo mode - skipping authentication');
+        currentUser = { id: 'demo-user', email: 'demo@prepair.co' };
         return true;
       } catch (error) {
         console.error('Auth check failed:', error);
-        window.location.href = '/signin.html';
-        return false;
+        // In demo mode, continue anyway
+        currentUser = { id: 'demo-user', email: 'demo@prepair.co' };
+        return true;
       }
     }
 
