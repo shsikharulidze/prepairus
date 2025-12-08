@@ -240,7 +240,8 @@ async function initAuth() {
     
     // Public pages that don't require auth
     const publicPages = ['/', '/index.html', '/how-it-works.html', '/students.html', 
-                        '/business.html', '/about.html', '/signin.html', '/apply.html', '/welcome.html'];
+                        '/business.html', '/about.html', '/signin.html', '/apply.html', '/welcome.html',
+                        '/dashboard.html', '/applications.html', '/profile.html'];
     
     const isPublicPage = publicPages.some(page => 
       currentPage === page || currentPage.endsWith(page)

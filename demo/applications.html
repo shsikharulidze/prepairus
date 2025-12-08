@@ -221,40 +221,55 @@
     let applications = [];
     let selectedApplicationId = null;
 
-    // Authentication check
+    // Authentication check - ALWAYS BYPASS IN DEMO MODE
     async function requireAuth() {
-      try {
-        // Demo mode - skip authentication for presentation
-        console.log('🎯 [Applications] Demo mode - skipping authentication');
-        currentUser = { id: 'demo-user', email: 'demo@prepair.co' };
-        return true;
-      } catch (error) {
-        console.error('Auth check failed:', error);
-        // In demo mode, continue anyway
-        currentUser = { id: 'demo-user', email: 'demo@prepair.co' };
-        return true;
-      }
+      // DEMO MODE: Always allow access without authentication
+      console.log('🎯 [Applications] Demo mode - ALWAYS allowing access');
+      currentUser = { id: 'demo-user', email: 'demo@prepair.co' };
+      return true;
     }
 
-    // Load applications
+    // Load applications - DEMO MODE WITH MOCK DATA
     async function loadApplications() {
       try {
-        const { data: applicationsData, error } = await supabase
-          .from('applications')
-          .select('*')
-          .eq('user_id', currentUser.id)
-          .order('applied_at', { ascending: false });
+        console.log('🎯 [Applications] Demo mode - loading mock applications');
+        
+        // Mock applications data for demo
+        const mockApplications = [
+          {
+            id: 'demo-1',
+            position: 'Frontend Developer Intern',
+            company: 'TechCorp',
+            status: 'Applied',
+            applied_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+            interview_date: null
+          },
+          {
+            id: 'demo-2', 
+            position: 'Marketing Assistant',
+            company: 'DataFlow Inc',
+            status: 'Interview',
+            applied_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+            interview_date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString()
+          },
+          {
+            id: 'demo-3',
+            position: 'UX Design Intern',
+            company: 'StartupXYZ',
+            status: 'Offered',
+            applied_at: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(),
+            interview_date: null
+          }
+        ];
 
-        if (error) {
-          throw error;
-        }
-
-        applications = applicationsData || [];
+        applications = mockApplications;
+        console.log('🎯 [Applications] Loaded', applications.length, 'mock applications');
         return applications;
       } catch (error) {
         console.error('Error loading applications:', error);
-        showToast('Failed to load applications. Please refresh the page.', 'error');
-        return [];
+        // Even if there's an error, return mock data in demo mode
+        applications = [];
+        return applications;
       }
     }
 
@@ -399,7 +414,7 @@
       modal.style.display = 'flex';
     }
 
-    // Withdraw application
+    // Withdraw application - DEMO MODE
     async function withdrawApplication() {
       if (!selectedApplicationId) return;
 
@@ -408,15 +423,10 @@
         deleteBtn.disabled = true;
         deleteBtn.textContent = 'Withdrawing...';
 
-        const { error } = await supabase
-          .from('applications')
-          .delete()
-          .eq('id', selectedApplicationId)
-          .eq('user_id', currentUser.id);
+        console.log('🎯 [Applications] Demo mode - simulating withdrawal for ID:', selectedApplicationId);
 
-        if (error) {
-          throw error;
-        }
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         // Remove from local array
         applications = applications.filter(app => app.id != selectedApplicationId);
@@ -460,7 +470,7 @@
       selectedApplicationId = null;
     }
 
-    // Handle new application form
+    // Handle new application form - DEMO MODE
     async function handleNewApplicationSubmit(e) {
       e.preventDefault();
       
@@ -479,25 +489,23 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Adding...';
 
-        const { data, error } = await supabase
-          .from('applications')
-          .insert([
-            {
-              user_id: currentUser.id,
-              position,
-              company,
-              status
-            }
-          ])
-          .select()
-          .single();
+        console.log('🎯 [Applications] Demo mode - simulating add application:', { position, company, status });
 
-        if (error) {
-          throw error;
-        }
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Create mock application data
+        const newApplication = {
+          id: 'demo-' + Date.now(),
+          position,
+          company,
+          status,
+          applied_at: new Date().toISOString(),
+          interview_date: null
+        };
 
         // Add to local array
-        applications.unshift(data);
+        applications.unshift(newApplication);
         
         // Re-render grid
         renderApplicationsGrid(applications);
