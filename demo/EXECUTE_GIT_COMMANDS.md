@@ -6,9 +6,7 @@ Copy and paste these commands into Terminal (Applications > Utilities > Terminal
 ```bash
 cd "/Users/shotisikharulidze/Desktop/PrePair"
 git add .
-git commit -m "fix: increase gap between access code input boxes for better spacing
-
-🤖 Generated with AI assistance"
+git commit -m "fix: increase gap between access code input boxes for better spacing"
 git push origin main
 ```
 
@@ -30,9 +28,7 @@ git push origin main
 
 4. **Commit changes**
    ```bash
-   git commit -m "fix: increase gap between access code input boxes for better spacing
-
-🤖 Generated with AI assistance"
+   git commit -m "fix: increase gap between access code input boxes for better spacing"
    ```
 
 5. **Push to GitHub**
