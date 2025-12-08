@@ -730,7 +730,6 @@
         
         return `
           <div class="opportunity-card premium-card ${opp.cardColor}" data-opportunity-id="${opp.id}">
-            ${opp.forYou ? '<div class="for-you-badge"><span class="premium-badge">Perfect Match</span></div>' : ''}
             
             <div class="card-header-opp">
               <div class="company-info">
@@ -1753,7 +1752,7 @@
     }
 
     .premium-card {
-      background: #F8F4EC;
+      background: #FFFFFF;
       border: 1px solid #E2D8C8;
       border-radius: 18px;
       padding: var(--space-6);
@@ -1782,26 +1781,6 @@
       border-left: 3px solid var(--lavender);
     }
     
-    /* Premium Badge - Subtle PrePair Style */
-    .for-you-badge {
-      position: absolute;
-      top: var(--space-4);
-      right: var(--space-4);
-      z-index: 2;
-    }
-
-    .premium-badge {
-      background: #EEF3FF;
-      color: #4B3F72;
-      font-size: var(--text-xs);
-      font-weight: var(--font-semibold);
-      padding: var(--space-2) var(--space-3);
-      border-radius: var(--radius-full);
-      text-transform: none;
-      letter-spacing: 0;
-      box-shadow: none;
-      border: 1px solid #D4CBB8;
-    }
 
     /* Card Header */
     .card-header-opp {
