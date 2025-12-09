@@ -654,6 +654,13 @@
       margin-top: 3rem;
     }
     
+    /* Center the last team member when it's alone in the row */
+    .team-member:last-child:nth-child(5) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      max-width: 400px;
+    }
+    
     .team-member {
       padding: 2rem;
       text-align: center;
