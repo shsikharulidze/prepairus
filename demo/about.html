@@ -649,7 +649,7 @@
     
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(3, 400px);
+      grid-template-columns: 1fr 400px 400px 400px 1fr;
       justify-content: center;
       gap: 30px;
       margin-top: 3rem;
@@ -658,17 +658,28 @@
       margin-right: auto;
     }
     
-    /* Bottom row: center the last two items properly */
+    /* First row: positions 2, 3, 4 */
+    .team-member:nth-child(1) {
+      grid-column: 2;
+    }
+    
+    .team-member:nth-child(2) {
+      grid-column: 3;
+    }
+    
+    .team-member:nth-child(3) {
+      grid-column: 4;
+    }
+    
+    /* Bottom row: center the last two items in positions 2.5 and 3.5 */
     .team-member:nth-child(4) {
-      grid-column: 1 / 2;
-      justify-self: center;
-      margin-left: 100px;
+      grid-column: 2;
+      transform: translateX(115px);
     }
     
     .team-member:nth-child(5) {
-      grid-column: 2 / 3;
-      justify-self: center;
-      margin-right: 100px;
+      grid-column: 3;
+      transform: translateX(115px);
     }
     
     .team-member {
