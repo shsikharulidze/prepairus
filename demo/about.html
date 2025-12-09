@@ -649,15 +649,15 @@
     
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(400px, 400px));
+      grid-template-columns: repeat(4, minmax(400px, 400px));
       justify-content: center;
       gap: 2rem;
       margin-top: 3rem;
     }
     
-    /* Force 3-2 layout: first 3 items span full width, last 2 center themselves */
+    /* Force 3-2 layout: first 3 items span full width, last 2 centered */
     .team-member:nth-child(4) {
-      grid-column: 1 / 2;
+      grid-column: 2 / 3;
     }
     
     .team-member:nth-child(5) {
