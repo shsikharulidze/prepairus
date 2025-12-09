@@ -17,11 +17,12 @@
   
   <!-- Main Styles -->
   <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="styles/presentation.css">
   
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="app-layout">
+<body class="app-layout" data-page="app">
   
   <!-- App Shell -->
   <div class="app-container">
@@ -59,7 +60,7 @@
       <div class="container">
         
         <!-- Welcome Hero Section -->
-        <section class="hero-section">
+        <section id="app-signup" class="hero-section">
           <div class="hero-container">
             <div class="hero-content">
               <!-- Left side: Text content -->
@@ -110,7 +111,7 @@
         </section>
 
         <!-- Dashboard Cards Grid -->
-        <section class="dashboard-cards">
+        <section id="app-dashboard" class="dashboard-cards">
           
           <!-- Profile Completion Card -->
           <div class="dashboard-card profile-card">
@@ -2623,5 +2624,9 @@
       }
     }
   </style>
+
+  <!-- Presentation Scripts -->
+  <script src="js/presentationSlides.js"></script>
+  <script src="js/presentationOverlay.js"></script>
 </body>
 </html>
