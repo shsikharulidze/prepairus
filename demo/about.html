@@ -648,28 +648,10 @@
     }
     
     .team-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
       margin-top: 3rem;
-      max-width: 1400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .team-member {
-      width: 400px;
-      flex: 0 0 400px;
-    }
-    
-    /* Force line break after 3rd member and center last 2 */
-    .team-member:nth-child(3) {
-      margin-right: calc(50% - 200px);
-    }
-    
-    .team-member:nth-child(4) {
-      margin-left: calc(25% - 100px);
     }
     
     .team-member {
