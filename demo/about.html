@@ -645,9 +645,18 @@
     /* Team */
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 2rem;
       margin-top: 3rem;
+    }
+    
+    /* Force 3-2 layout: first 3 items span full width, last 2 center themselves */
+    .team-member:nth-child(4) {
+      grid-column: 1 / 2;
+    }
+    
+    .team-member:nth-child(5) {
+      grid-column: 3 / 4;
     }
     
     .team-member {
@@ -782,6 +791,25 @@
     }
     
     /* Responsive Design */
+    @media (max-width: 1200px) {
+      /* Medium screens: 2-2-1 layout */
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+      
+      .team-member:nth-child(4),
+      .team-member:nth-child(5) {
+        grid-column: auto;
+      }
+      
+      .team-member:nth-child(5) {
+        grid-column: 1 / -1;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+    }
+    
     @media (max-width: 960px) {
       .hero-content {
         grid-template-columns: 1fr;
@@ -806,6 +834,12 @@
       .team-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+      }
+      
+      /* Reset positioning for mobile - stack all vertically */
+      .team-member:nth-child(4),
+      .team-member:nth-child(5) {
+        grid-column: 1 / -1;
       }
       
       .commitments-grid {
