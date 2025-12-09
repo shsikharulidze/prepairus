@@ -649,37 +649,38 @@
     
     .team-grid {
       display: grid;
-      grid-template-columns: 1fr 400px 400px 400px 1fr;
+      grid-template-columns: 200px 400px 30px 400px 30px 400px 200px;
       justify-content: center;
-      gap: 30px;
       margin-top: 3rem;
       max-width: 1400px;
       margin-left: auto;
       margin-right: auto;
     }
     
-    /* First row: positions 2, 3, 4 */
+    /* First row: positions 2, 4, 6 (the 400px columns) */
     .team-member:nth-child(1) {
       grid-column: 2;
     }
     
     .team-member:nth-child(2) {
-      grid-column: 3;
-    }
-    
-    .team-member:nth-child(3) {
       grid-column: 4;
     }
     
-    /* Bottom row: center the last two items in positions 2.5 and 3.5 */
+    .team-member:nth-child(3) {
+      grid-column: 6;
+    }
+    
+    /* Bottom row: center the last two items between positions 2-4 and 4-6 */
     .team-member:nth-child(4) {
-      grid-column: 2;
-      transform: translateX(115px);
+      grid-column: 2 / 5;
+      justify-self: center;
+      width: 400px;
     }
     
     .team-member:nth-child(5) {
-      grid-column: 3;
-      transform: translateX(115px);
+      grid-column: 4 / 7;
+      justify-self: center;
+      width: 400px;
     }
     
     .team-member {
