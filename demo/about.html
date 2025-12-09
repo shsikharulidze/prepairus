@@ -212,7 +212,7 @@
       <div class="team-grid">
         <div class="team-member card">
           <div class="member-image">
-            <img src="Board-Members/Daniel.png" alt="Daniel Lampert – CEO" />
+            <img src="Board-Members/Daniel.png" alt="Daniel Lampert – CEO" class="daniel-image" />
           </div>
           <div class="member-info">
             <h3>Daniel Lampert</h3>
@@ -690,6 +690,12 @@
       object-fit: cover;
       object-position: center 20%;
       transform: scale(1.2);
+    }
+    
+    /* Daniel image specific styling - move face to the right */
+    .member-image img.daniel-image {
+      object-fit: cover;
+      object-position: 60% center;
     }
     
     .member-info h3 {
