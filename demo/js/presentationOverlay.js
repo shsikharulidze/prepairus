@@ -1,14 +1,18 @@
 // PrePair Presentation Overlay System
 class PresentationOverlay {
   constructor() {
-    this.activeSlideId = null;
+    this.activeSlide = null;
     this.activePageIndex = 0;
     this.overlayElement = null;
+    this.currentPageId = null;
     
     this.init();
   }
   
   init() {
+    // Get current page ID
+    this.currentPageId = document.body.dataset.page || null;
+    
     // Create overlay root element
     this.createOverlayRoot();
     
@@ -37,6 +41,12 @@ class PresentationOverlay {
     this.overlayElement = overlayRoot;
   }
   
+  findSlideForKey(pageId, key) {
+    return window.presentationSlides?.find(
+      (slide) => slide.pageId === pageId && slide.key.toLowerCase() === key.toLowerCase()
+    ) || null;
+  }
+  
   attachKeyboardListeners() {
     document.addEventListener('keydown', (event) => {
       // Prevent if user is typing in an input
@@ -44,13 +54,15 @@ class PresentationOverlay {
         return;
       }
       
-      if (!this.activeSlideId) {
+      if (!this.activeSlide) {
         // No overlay open - check for slide triggers
-        if (event.key === '1') {
-          event.preventDefault();
-          this.openSlide(1);
+        if (this.currentPageId) {
+          const slide = this.findSlideForKey(this.currentPageId, event.key);
+          if (slide) {
+            event.preventDefault();
+            this.openSlideWithScroll(slide);
+          }
         }
-        // Future: Add more slide numbers here
       } else {
         // Overlay is open
         switch (event.key) {
@@ -71,38 +83,47 @@ class PresentationOverlay {
     });
   }
   
-  openSlide(slideId) {
-    const slide = window.presentationSlides?.[slideId];
-    if (!slide) {
-      console.warn(`Slide ${slideId} not found`);
-      return;
+  openSlideWithScroll(slide) {
+    const targetSelector = slide.scrollTargetSelector;
+    if (targetSelector) {
+      const targetEl = document.querySelector(targetSelector);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        // Delay showing overlay slightly to let the scroll start.
+        setTimeout(() => {
+          this.openSlide(slide, 0); // start at page index 0
+        }, 350);
+        return;
+      }
     }
-    
-    this.activeSlideId = slideId;
-    this.activePageIndex = 0;
+    // If no target or not found, open immediately.
+    this.openSlide(slide, 0);
+  }
+  
+  openSlide(slide, pageIndex) {
+    this.activeSlide = slide;
+    this.activePageIndex = pageIndex;
     this.renderOverlay();
     this.showOverlay();
   }
   
   closeOverlay() {
-    this.activeSlideId = null;
+    this.activeSlide = null;
     this.activePageIndex = 0;
     this.hideOverlay();
   }
   
   nextPage() {
-    const slide = window.presentationSlides?.[this.activeSlideId];
     // Only navigate if slide has multiple pages
-    if (slide && slide.pages.length > 1 && this.activePageIndex < slide.pages.length - 1) {
+    if (this.activeSlide && this.activeSlide.pages.length > 1 && this.activePageIndex < this.activeSlide.pages.length - 1) {
       this.activePageIndex++;
       this.renderOverlay();
     }
   }
   
   previousPage() {
-    const slide = window.presentationSlides?.[this.activeSlideId];
     // Only navigate if slide has multiple pages
-    if (slide && slide.pages.length > 1 && this.activePageIndex > 0) {
+    if (this.activeSlide && this.activeSlide.pages.length > 1 && this.activePageIndex > 0) {
       this.activePageIndex--;
       this.renderOverlay();
     }
@@ -119,11 +140,10 @@ class PresentationOverlay {
   }
   
   renderOverlay() {
-    const slide = window.presentationSlides?.[this.activeSlideId];
-    if (!slide) return;
+    if (!this.activeSlide) return;
     
-    const currentPage = slide.pages[this.activePageIndex];
-    const totalPages = slide.pages.length;
+    const currentPage = this.activeSlide.pages[this.activePageIndex];
+    const totalPages = this.activeSlide.pages.length;
     const hasMultiplePages = totalPages > 1;
     
     // Format bullets with bold text
@@ -155,11 +175,38 @@ class PresentationOverlay {
       navigationButtons = `<button class="presentation-nav-btn presentation-nav-btn-close" onclick="presentationOverlay.closeOverlay()">Close</button>`;
     }
     
+    // Special handling for operations slide page 2 with agreement visual
+    let specialContent = '';
+    if (this.activeSlide.id === 'app-operations' && this.activePageIndex === 1) {
+      specialContent = `
+        <div style="margin-top: 1rem; padding: 1.5rem; border: 1px solid var(--border, #ddd); border-radius: 12px; background: var(--card, #f9f9f9);">
+          <h4 style="text-align: center; margin: 0 0 1rem; color: var(--clay, #666);">Project Agreement</h4>
+          <div style="display: grid; gap: 0.75rem;">
+            <div style="border: 1px solid var(--border, #ddd); padding: 0.75rem; border-radius: 6px; background: white;">
+              <strong style="color: var(--clay, #666);">Participant</strong>
+              <div style="font-size: 12px; margin-top: 0.25rem;">Student completing project as learning experience</div>
+              <div style="border-bottom: 1px solid var(--border, #ddd); margin-top: 0.5rem; padding-bottom: 0.25rem; font-size: 10px;">Signature: _______________</div>
+            </div>
+            <div style="border: 1px solid var(--border, #ddd); padding: 0.75rem; border-radius: 6px; background: white;">
+              <strong style="color: var(--clay, #666);">Host</strong>
+              <div style="font-size: 12px; margin-top: 0.25rem;">Business defining project and mentoring student</div>
+              <div style="border-bottom: 1px solid var(--border, #ddd); margin-top: 0.5rem; padding-bottom: 0.25rem; font-size: 10px;">Signature: _______________</div>
+            </div>
+            <div style="border: 1px solid var(--border, #ddd); padding: 0.75rem; border-radius: 6px; background: white;">
+              <strong style="color: var(--clay, #666);">Facilitator</strong>
+              <div style="font-size: 12px; margin-top: 0.25rem;">PrePair providing platform and support</div>
+              <div style="border-bottom: 1px solid var(--border, #ddd); margin-top: 0.5rem; padding-bottom: 0.25rem; font-size: 10px;">Signature: _______________</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    
     this.overlayElement.innerHTML = `
       <div class="presentation-card" onclick="event.stopPropagation()">
         <!-- Header -->
         <div class="presentation-header">
-          <div class="presentation-label">${slide.label}</div>
+          <div class="presentation-label">${this.activeSlide.label}</div>
           <div class="presentation-divider"></div>
         </div>
         
@@ -170,6 +217,7 @@ class PresentationOverlay {
           <div class="presentation-bullets">
             ${bulletsHtml}
           </div>
+          ${specialContent}
         </div>
         
         <!-- Footer -->

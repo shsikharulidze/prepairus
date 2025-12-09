@@ -15,8 +15,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/site.css">
+  <link rel="stylesheet" href="styles/presentation.css">
 </head>
-<body>
+<body data-page="students">
   <div class="container">
     <!-- Header Navigation -->
     <div id="header-shell">
@@ -48,7 +49,7 @@
     </div>
 
     <!-- Hero Section -->
-    <section class="hero-simple">
+    <section id="students-hero" class="hero-simple">
       <h1>Your first real step before internships</h1>
       <p class="subtitle">
         PrePair connects college students with local small businesses for short-term educational projects that turn your classroom learning into actual experience you can put on your resume.
@@ -441,6 +442,9 @@
       onScroll();
     })();
   </script>
+
+  <script src="js/presentationSlides.js"></script>
+  <script src="js/presentationOverlay.js"></script>
 
   <style>
     /* Header Navigation Styles - Copied from other pages */

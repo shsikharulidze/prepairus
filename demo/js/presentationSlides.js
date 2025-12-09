@@ -1,14 +1,16 @@
 // PrePair Presentation Slides Configuration
-const presentationSlides = {
-  1: {
-    id: 1,
-    keyboardKey: "1",
-    label: "SLIDE 1 · HOOK: INTERNSHIPS ARE HARD TO GET",
+const presentationSlides = [
+  {
+    id: "home-hook",
+    pageId: "home",
+    key: "1",
+    label: "SLIDE 1 - HOOK: INTERNSHIPS ARE HARD TO GET",
+    scrollTargetSelector: null,
     pages: [
       {
-        id: "1",
+        id: "home-hook-1",
         heading: "Internships are hard to get",
-        intro: "This is what the internship system looks like when you are the student trying to get in:",
+        intro: "This slide hooks the audience by exposing the contradiction at the heart of the internship system.",
         bullets: [
           "Internships are **HARD** to get.",
           "Competition keeps rising while the number of internships barely increases.",
@@ -17,12 +19,312 @@ const presentationSlides = {
           "Internships were supposed to be a college student's **first step** into the professional world.",
           "If they already favor **prior experience**, they are not really a **first step** any more.",
           "So there is a gap: what actually comes **before** an internship now?"
-        ]
+        ],
+        visualHint: "Optional: a small vertical diagram hinting at steps, with 'PrePair' sitting before 'Internship' as the first block."
+      }
+    ]
+  },
+
+  // Home - Agenda
+  {
+    id: "home-agenda",
+    pageId: "home",
+    key: "2",
+    label: "SLIDE 2 - AGENDA",
+    scrollTargetSelector: null,
+    pages: [
+      {
+        id: "home-agenda-1",
+        heading: "Agenda",
+        intro: "This slide gives a quick overview of what we will cover.",
+        bullets: [
+          "Introduction and business description.",
+          "Industry, market and competitive analyses.",
+          "Human Resources and ESG.",
+          "User journey and marketing strategy for students and businesses.",
+          "Operational model and legal structure.",
+          "Financial projections.",
+          "Key takeaways."
+        ],
+        visualHint: "Simple clean list, no extra visual needed. Keep it minimal for speed."
+      }
+    ]
+  },
+
+  // Home - Key Takeaways
+  {
+    id: "home-key-takeaways",
+    pageId: "home",
+    key: "k",
+    label: "SLIDE 3 - KEY TAKEAWAYS",
+    scrollTargetSelector: null,
+    pages: [
+      {
+        id: "home-key-takeaways-1",
+        heading: "Key takeaways",
+        intro: "This slide closes the loop by summarizing what PrePair offers and why it matters.",
+        bullets: [
+          "PrePair is a local, streamlined, affordable and educational platform.",
+          "It creates a ground floor 'first step' for students before they enter the internship race.",
+          "Students gain real, mentored project experience; small businesses get meaningful low-cost support.",
+          "Instead of trying to cheat the internship system, we adapt to it and make early experience more accessible.",
+          "PrePair is a way to invest in yourself before the internship race even starts."
+        ],
+        visualHint: "Optional: a subtle icon or small illustration suggesting 'growth' or 'upward path' next to the final 'invest in yourself' line."
+      }
+    ]
+  },
+
+  // About - Company background and description
+  {
+    id: "about-company",
+    pageId: "about",
+    key: "1",
+    label: "ABOUT - COMPANY BACKGROUND AND DESCRIPTION",
+    scrollTargetSelector: "#about-company",
+    pages: [
+      {
+        id: "about-company-1",
+        heading: "PrePair: local, streamlined, affordable, educational",
+        intro: "This slide describes what PrePair is and how it fills the gap before internships.",
+        bullets: [
+          "PrePair is a local, streamlined, affordable and educational digital platform.",
+          "**Local**: local businesses need help and local students need practical, real-world experience.",
+          "Through unpaid, mentorship-style projects, students gain valuable hands-on experience while small and medium-sized enterprises receive local credibility and low-cost support.",
+          "**Streamlined**: PrePair is a digital marketspace designed specifically for students and local small businesses to make the experience simple and focused.",
+          "**Affordable**: students pay about $2 per month and small businesses pay about $20 per month.",
+          "**Educational**: students are assigned a mentor at the host business and meet at the start and end of projects to discuss logistics and feedback, with a mid-project check-in on longer engagements.",
+          "PrePair aims to be the ground floor for 'first step' professional experiences for students, especially when internships are not guaranteed."
+        ],
+        visualHint: "A small four-quadrant label or icons for Local, Streamlined, Affordable, Educational could sit near the heading."
+      }
+    ]
+  },
+
+  // About - Industry and Market analysis
+  {
+    id: "about-market",
+    pageId: "about",
+    key: "2",
+    label: "ABOUT - INDUSTRY AND MARKET ANALYSIS",
+    scrollTargetSelector: "#about-market",
+    pages: [
+      {
+        id: "about-market-1",
+        heading: "Industry and market context",
+        intro: "This slide situates PrePair in the freelance platforms and online internship markets.",
+        bullets: [
+          "PrePair operates in the fast-growing Freelance Platforms industry and the emerging Online Internship Marketplace.",
+          "The global freelance platforms market is projected to reach about **$5.58 billion** in 2024, growing around **18 percent** per year.",
+          "The virtual internship platforms market was valued at around **$1.82 billion** in 2024, reflecting rising demand for online internship experiences.",
+          "Major platforms such as Upwork, Fiverr, LinkedIn and Handshake mainly serve experienced professionals or larger companies.",
+          "This leaves a gap for entry-level students and small local businesses, which PrePair fills by focusing on local students and nearby small businesses.",
+          "PrePair offers short-term, mentorship-style projects as educational externships so that work remains a learning experience and stays legally compliant.",
+          "We are launching PrePair at Fordham University first and growing through campus partnerships to prove the model before expanding."
+        ],
+        visualHint: "Optional: a simple two-row bullet stack labeled 'Freelance platforms' and 'Virtual internships' with the market size numbers highlighted."
+      }
+    ]
+  },
+
+  // About - Competitive analysis
+  {
+    id: "about-competition",
+    pageId: "about",
+    key: "3",
+    label: "ABOUT - COMPETITIVE ANALYSIS",
+    scrollTargetSelector: "#about-competition",
+    pages: [
+      {
+        id: "about-competition-1",
+        heading: "Where PrePair fits among existing platforms",
+        intro: "This slide explains how PrePair relates to competing platforms and why it is positioned as a complement, not a direct rival.",
+        bullets: [
+          "PrePair is the only platform built exclusively for managing structured project-based partnerships of this kind between students and local small businesses.",
+          "Students are the **primary beneficiaries** of the educational experience, not an afterthought.",
+          "Our mission is to **prepare students** and **pair them with opportunity**.",
+          "PrePair is emerging as a niche within competitive freelance and internship markets, filling the early-experience gap.",
+          "The goal is **not to compete directly** with platforms like Handshake or LinkedIn, but to **complement them**.",
+          "PrePair functions as a stepping stone for students who want to enter the internship market better prepared.",
+          "Internships remain specialized and career-oriented, while PrePair values well-roundedness and serves students even when internships are not guaranteed."
+        ],
+        visualHint: "Consider a simple positioning diagram with axes like 'experience level' and 'local focus', with PrePair in the early-experience, high-local-focus corner."
+      }
+    ]
+  },
+
+  // About - HR / Organization and Management
+  {
+    id: "about-hr",
+    pageId: "about",
+    key: "4",
+    label: "ABOUT - ORGANIZATION AND MANAGEMENT",
+    scrollTargetSelector: "#about-team",
+    pages: [
+      {
+        id: "about-hr-1",
+        heading: "Lean founding team and flexible structure",
+        intro: "This slide shows how roles are divided to keep PrePair efficient, low cost and ready to grow.",
+        bullets: [
+          "PrePair uses a simple, flexible structure as a small, early-stage digital startup.",
+          "Roles are divided by strengths to keep everything efficient and low cost.",
+          "**CEO (Daniel)**: makes strategic decisions and represents PrePair publicly.",
+          "**CTO (Shota)**: oversees website development, technology maintenance and security.",
+          "**CMO (Seanna)**: manages marketing, communication and outreach to both students and businesses.",
+          "**CFO (Faye)**: handles budgeting, payroll planning and cash flow forecasting.",
+          "**CIO (Mia)**: focuses on customer experience, quality control and platform improvement.",
+          "Founders earn modest stipends to keep payroll low; part-time help is hired only when needed.",
+          "Quality control is supported through verified student profiles, reviewed business postings and post-project surveys.",
+          "As PrePair scales, the plan is to grow to 15 plus employees and add legal advisors, cybersecurity experts and additional developers."
+        ],
+        visualHint: "Use the background team masthead as the main visual; the slide itself can stay mostly textual."
+      }
+    ]
+  },
+
+  // About - ESG
+  {
+    id: "about-esg",
+    pageId: "about",
+    key: "5",
+    label: "ABOUT - ESG",
+    scrollTargetSelector: "#about-esg",
+    pages: [
+      {
+        id: "about-esg-1",
+        heading: "ESG - Environmental, Social and Governance",
+        intro: "This slide highlights how PrePair operates responsibly as a fully digital, socially focused platform.",
+        bullets: [
+          "**Environmental**: PrePair is fully digital, which reduces paper use and cuts down on unnecessary in-person trips.",
+          "**Social**: the very low cost model, with students paying around $1 to $3 per month, keeps the platform accessible to all students, including international students and those with limited resources.",
+          "Mentorship-style projects give students practical experience without long unpaid internships, while local businesses receive support without overspending.",
+          "**Governance**: roles are clearly defined so that students act as **Participants**, businesses act as **Hosts** and PrePair acts as the **Facilitator**.",
+          "We protect user data and uphold strict privacy standards.",
+          "By operating transparently and inclusively, PrePair contributes to broader goals around inclusive growth and equal opportunity."
+        ],
+        visualHint: "Optional: a simple three column layout inside the slide labeled Environmental, Social, Governance with one key point under each."
+      }
+    ]
+  },
+
+  // For Students page slide
+  {
+    id: "students-marketing",
+    pageId: "students",
+    key: "1",
+    label: "FOR STUDENTS - MARKETING AND JOURNEY",
+    scrollTargetSelector: "#students-hero",
+    pages: [
+      {
+        id: "students-marketing-1",
+        heading: "From the student point of view",
+        intro: "This slide explains how PrePair reaches students and what the experience feels like from their side.",
+        bullets: [
+          "PrePair bridges the gap between students who need experience and local businesses that need support.",
+          "**Target students**: college students in New York City, especially ages 18 to 24 at Fordham and similar campuses.",
+          "Students use PrePair to gain career exposure, build their resumes and test interests through short projects.",
+          "**Marketing channels**: classroom visits, partnerships with student groups, collaboration with career offices and presence at campus events.",
+          "Once on the platform, students see real project examples and can browse opportunities that match their interests and schedule.",
+          "**Retention** is supported through onboarding, real project examples, reviews and referral rewards, along with feedback loops and follow-up sessions.",
+          "These pieces together create a shared space where students can build skills before internships while still staying inside an educational frame."
+        ],
+        visualHint: "The page itself is the main visual; the slide text can stay clean."
+      }
+    ]
+  },
+
+  // For Businesses page slide
+  {
+    id: "businesses-marketing",
+    pageId: "businesses",
+    key: "1",
+    label: "FOR BUSINESSES - MARKETING AND 4PS",
+    scrollTargetSelector: "#businesses-hero",
+    pages: [
+      {
+        id: "businesses-marketing-1",
+        heading: "From the small business point of view",
+        intro: "This slide shows how PrePair presents itself to local businesses and how the classic 4Ps apply.",
+        bullets: [
+          "PrePair connects small business owners with motivated students for short-term, project-based support.",
+          "**Target businesses**: local small businesses, nonprofits and community organizations that need marketing, research or operations help.",
+          "**Outreach channels**: neighborhood associations, community boards and small business support groups.",
+          "**Product**: short-term, mentorship-style projects that help with tasks like social media, website copy, market research and process improvement.",
+          "**Price**: a simple low subscription fee, about $20 per month for businesses and $2 per month for students.",
+          "**Place**: everything runs online on the PrePair platform, so it is easy to access for both students and business owners.",
+          "**Promotion**: social media presence and testimonials, featuring content generated by both students and small businesses after projects.",
+          "These tactics are designed to create a shared space where businesses receive meaningful support while students build real experience."
+        ],
+        visualHint: "Optional: a compact 4P mini grid inside the slide with Product, Price, Place, Promotion labels."
+      }
+    ]
+  },
+
+  // App - Operations and legal micro demo
+  {
+    id: "app-operations",
+    pageId: "app",
+    key: "1",
+    label: "APP - OPERATIONS AND LEGAL STRUCTURE",
+    scrollTargetSelector: "#app-signup",
+    pages: [
+      {
+        id: "app-operations-1",
+        heading: "How PrePair operates day to day",
+        intro: "This page explains how the platform runs and how we structure things legally to protect everyone.",
+        bullets: [
+          "The platform is developed in-house by the CTO and internal staff.",
+          "PrePair operates as a remote-first digital platform with no physical inventory.",
+          "All data is stored on secure cloud servers.",
+          "The initial hub is based at Fordham University while the platform is in early stages.",
+          "PrePair uses an LLC or similar limited-liability structure to protect founders and manage contractual relationships with students and businesses.",
+          "The legal structure supports compliance with data security standards and labor guidelines.",
+          "Quality is maintained through post-project feedback surveys, internal review of business postings and training staff in communication and user-experience support."
+        ],
+        visualHint: "Text only on this page; the next page of the slide will hold the visual agreement preview."
+      },
+      {
+        id: "app-operations-2",
+        heading: "Sample agreement structure",
+        intro: "This page gives a simple visual of how the Participant, Host and Facilitator roles are defined in a project agreement.",
+        bullets: [
+          "**Participant**: the student who completes the project as a learning experience.",
+          "**Host**: the small business or organization that defines the project and mentors the student.",
+          "**Facilitator**: PrePair, which provides the platform, structure and support.",
+          "Each side understands their responsibilities before a project starts.",
+          "The agreement emphasizes that projects are educational externships and not a substitute for paid employment."
+        ],
+        visualHint: "Important: include a card-like visual of a short sample agreement inside the slide, with three labeled sections (Participant, Host, Facilitator) and placeholder signature lines. This should look like a stylized document, not a full legal text."
+      }
+    ]
+  },
+
+  // App - Financials
+  {
+    id: "app-financials",
+    pageId: "app",
+    key: "2",
+    label: "APP - FINANCIAL PROJECTIONS",
+    scrollTargetSelector: "#app-dashboard",
+    pages: [
+      {
+        id: "app-financials-1",
+        heading: "Financial projections and break-even",
+        intro: "This slide summarizes PrePair's startup costs, operating costs and revenue path.",
+        bullets: [
+          "PrePair launched with a **$100,000** owner investment.",
+          "Because the platform is remote-first, there are no rent costs for office space.",
+          "Monthly operating costs range from about **$3,400 to $4,300**, driven mainly by modest founder stipends, part-time developer support and software subscriptions.",
+          "Startup costs total about **$8,650**, mainly technology build, LLC setup, branding, software upgrades and launch marketing.",
+          "With subscriptions at **$2 per student** and **$20 per business**, early projections estimate about **$5,000** in monthly revenue by the end of the first quarter based on Fordham outreach.",
+          "PrePair reaches **break-even in the fifth month**, once recurring revenue surpasses monthly costs.",
+          "By the end of the first fiscal year, the projected cash balance is around **$188,750**, creating a strong base for expansion."
+        ],
+        visualHint: "Optional: a minimal bar or line graphic hinting at costs vs revenue over time inside the slide; this can be done with simple CSS, no complex chart library needed."
       }
     ]
   }
-  // Future slides will be added here: 2: {...}, 3: {...}, etc.
-};
+];
 
 // Make available globally for static HTML environment
 if (typeof window !== 'undefined') {

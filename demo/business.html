@@ -15,8 +15,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/site.css">
+  <link rel="stylesheet" href="styles/presentation.css">
 </head>
-<body>
+<body data-page="businesses">
   <div class="container">
     <!-- Header Navigation -->
     <div id="header-shell">
@@ -48,14 +49,15 @@
     </div>
 
     <!-- Hero Section -->
-    <section class="hero-simple">
+    <section id="businesses-hero" class="hero-simple">
       <h1>Get real help on projects while mentoring local students</h1>
       <p class="subtitle">
         PrePair connects small businesses with motivated college students for short-term, educational projects. Low cost, simple process, real results on tasks you've been putting off.
       </p>
       <p class="last-updated">Last updated: December 2024</p>
       <div class="hero-cta">
-        <a href="#host-journey" class="btn">See how hosting a project works</a>
+        <a href="#host-journey" class="btn">Post a Project</a>
+        <a href="#host-journey" class="btn ghost">See how hosting works</a>
       </div>
     </section>
 
@@ -431,6 +433,9 @@
       onScroll();
     })();
   </script>
+
+  <script src="js/presentationSlides.js"></script>
+  <script src="js/presentationOverlay.js"></script>
 
   <style>
     /* Header Navigation Styles - Copied from other pages */

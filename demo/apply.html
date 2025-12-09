@@ -17,11 +17,12 @@
   
   <!-- Main Design System -->
   <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="styles/presentation.css">
   
   <!-- Presentation Mode - No Database Dependencies -->
   
 </head>
-<body>
+<body data-page="app">
   <div class="container">
     <div id="header-shell">
       <header id="site-header">
@@ -62,7 +63,8 @@
     </div>
 
     <main class="flex justify-center items-center" style="min-height: 60vh; padding-top: 2rem;">
-      <div class="card auth-card">
+      <section id="app-signup">
+        <div class="card auth-card">
         
         <!-- Presentation Mode Banner -->
         <div style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; padding: 8px 12px; border-radius: 6px; text-align: center; margin-bottom: 20px; font-size: 12px; font-weight: 600;">
@@ -101,7 +103,54 @@
         <div class="footer-link text-center mt-3">
           Already have an account? <a href="signin.html" style="color: var(--clay); font-weight: 500;">Sign in here</a>
         </div>
-      </div>
+        </div>
+      </section>
+
+      <section id="app-dashboard" style="padding: 2rem; display: none;">
+        <h2>Dashboard</h2>
+        <p>Sample dashboard content for presentation demo</p>
+        <div class="project-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          <div class="card" style="padding: 1rem;">
+            <h3>Social Media Project</h3>
+            <p>Help a local boutique create Instagram content</p>
+            <span class="badge" style="background: var(--sage); padding: 4px 8px; border-radius: 4px; font-size: 12px;">Available</span>
+          </div>
+          <div class="card" style="padding: 1rem;">
+            <h3>Website Content</h3>
+            <p>Write web copy for a neighborhood cafe</p>
+            <span class="badge" style="background: var(--lilac); padding: 4px 8px; border-radius: 4px; font-size: 12px;">In Progress</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="app-agreement-preview" style="padding: 2rem; display: none;">
+        <div class="card" style="max-width: 500px; margin: 0 auto; padding: 2rem;">
+          <h3 style="text-align: center; margin-bottom: 1.5rem;">Project Agreement</h3>
+          <div style="display: grid; gap: 1rem;">
+            <div style="border: 1px solid var(--border); padding: 1rem; border-radius: 8px;">
+              <h4 style="margin: 0 0 0.5rem; color: var(--clay);">Participant</h4>
+              <p style="margin: 0; font-size: 14px;">Student completing project as learning experience</p>
+              <div style="border-bottom: 1px solid var(--border); margin-top: 1rem; padding-bottom: 0.5rem;">
+                <small>Signature: ___________________</small>
+              </div>
+            </div>
+            <div style="border: 1px solid var(--border); padding: 1rem; border-radius: 8px;">
+              <h4 style="margin: 0 0 0.5rem; color: var(--clay);">Host</h4>
+              <p style="margin: 0; font-size: 14px;">Business defining project and mentoring student</p>
+              <div style="border-bottom: 1px solid var(--border); margin-top: 1rem; padding-bottom: 0.5rem;">
+                <small>Signature: ___________________</small>
+              </div>
+            </div>
+            <div style="border: 1px solid var(--border); padding: 1rem; border-radius: 8px;">
+              <h4 style="margin: 0 0 0.5rem; color: var(--clay);">Facilitator</h4>
+              <p style="margin: 0; font-size: 14px;">PrePair providing platform and support</p>
+              <div style="border-bottom: 1px solid var(--border); margin-top: 1rem; padding-bottom: 0.5rem;">
+                <small>Signature: ___________________</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer></footer>
@@ -284,5 +333,8 @@
       }
     }
   </style>
+
+  <script src="js/presentationSlides.js"></script>
+  <script src="js/presentationOverlay.js"></script>
 </body>
 </html>
