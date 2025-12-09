@@ -643,9 +643,14 @@
     }
     
     /* Team */
+    #team {
+      max-width: 1300px; /* Wider than other sections for 3-2 layout */
+    }
+    
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(400px, 400px));
+      justify-content: center;
       gap: 2rem;
       margin-top: 3rem;
     }
@@ -791,10 +796,15 @@
     }
     
     /* Responsive Design */
-    @media (max-width: 1200px) {
+    @media (max-width: 1400px) {
       /* Medium screens: 2-2-1 layout */
+      #team {
+        max-width: 900px; /* Back to standard width for smaller screens */
+      }
+      
       .team-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(400px, 400px));
+        justify-content: center;
         gap: 1.5rem;
       }
       
