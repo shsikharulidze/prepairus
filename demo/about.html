@@ -648,28 +648,28 @@
     }
     
     .team-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 30px;
       margin-top: 3rem;
-      max-width: 1600px;
+      max-width: 1400px;
       margin-left: auto;
       margin-right: auto;
-      justify-items: center;
     }
     
     .team-member {
-      width: 100%;
-      max-width: 400px;
+      width: 400px;
+      flex: 0 0 400px;
     }
     
-    /* Position bottom two in center columns */
+    /* Force line break after 3rd member and center last 2 */
+    .team-member:nth-child(3) {
+      margin-right: calc(50% - 200px);
+    }
+    
     .team-member:nth-child(4) {
-      grid-column: 2;
-    }
-    
-    .team-member:nth-child(5) {
-      grid-column: 3;
+      margin-left: calc(25% - 100px);
     }
     
     .team-member {
