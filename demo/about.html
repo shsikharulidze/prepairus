@@ -648,8 +648,8 @@
     }
     
     .team-grid {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 400px);
       justify-content: center;
       gap: 30px;
       margin-top: 3rem;
@@ -658,28 +658,15 @@
       margin-right: auto;
     }
     
-    /* Force 3-2 layout using flexbox */
-    .team-member {
-      width: 400px;
-      flex: 0 0 400px;
-    }
-    
-    /* First three items: full row */
-    .team-member:nth-child(1),
-    .team-member:nth-child(2),
-    .team-member:nth-child(3) {
-      /* First row - will automatically wrap at 3 items */
-    }
-    
-    /* Last two items: force new row and center */
+    /* Bottom row: center the last two items */
     .team-member:nth-child(4) {
-      margin-left: auto;
-      margin-right: 15px;
+      grid-column: 1;
+      justify-self: end;
     }
     
     .team-member:nth-child(5) {
-      margin-left: 15px;
-      margin-right: auto;
+      grid-column: 3;
+      justify-self: start;
     }
     
     .team-member {
