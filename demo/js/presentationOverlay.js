@@ -202,13 +202,43 @@ class PresentationOverlay {
       `;
     }
     
-    // Create visual content if image is available
+    // Determine visual layout
     const hasVisual = this.activeSlide.visualSrc;
+    const visualPlacement = this.activeSlide.visualPlacement || "side";
+    
+    // Create visual content if image is available
     const visualContent = hasVisual ? `
       <div class="slide-visual">
         <img src="${this.activeSlide.visualSrc}" alt="${this.activeSlide.visualAlt || ''}" />
       </div>
     ` : '';
+    
+    // Create text content
+    const textContent = `
+      <div class="slide-text">
+        <h2 class="presentation-heading">${currentPage.heading}</h2>
+        <p class="presentation-intro">${currentPage.intro}</p>
+        <div class="presentation-bullets">
+          ${bulletsHtml}
+        </div>
+        ${specialContent}
+      </div>
+    `;
+    
+    // Determine slide content class and layout
+    let slideContentClass = 'slide-content';
+    let slideContentHTML = '';
+    
+    if (hasVisual && visualPlacement === 'top') {
+      slideContentClass = 'slide-content slide-content--visual-top';
+      slideContentHTML = visualContent + textContent;
+    } else if (hasVisual && visualPlacement === 'side') {
+      slideContentClass = 'slide-content slide-content--with-visual';
+      slideContentHTML = textContent + visualContent;
+    } else {
+      slideContentClass = 'slide-content';
+      slideContentHTML = textContent;
+    }
 
     this.overlayElement.innerHTML = `
       <div class="presentation-card" onclick="event.stopPropagation()">
@@ -220,16 +250,8 @@ class PresentationOverlay {
         
         <!-- Body -->
         <div class="presentation-body">
-          <div class="slide-content ${hasVisual ? 'slide-content--with-visual' : ''}">
-            <div class="slide-text">
-              <h2 class="presentation-heading">${currentPage.heading}</h2>
-              <p class="presentation-intro">${currentPage.intro}</p>
-              <div class="presentation-bullets">
-                ${bulletsHtml}
-              </div>
-              ${specialContent}
-            </div>
-            ${visualContent}
+          <div class="${slideContentClass}">
+            ${slideContentHTML}
           </div>
         </div>
         

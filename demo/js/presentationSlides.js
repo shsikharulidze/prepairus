@@ -86,6 +86,7 @@ const presentationSlides = [
     scrollTargetSelector: "#about-company",
     visualSrc: "/visuals/streamlined.png",
     visualAlt: "Four-pillar foundation illustration representing local, streamlined, affordable, educational",
+    visualPlacement: "top",
     pages: [
       {
         id: "about-company-1",
