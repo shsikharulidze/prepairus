@@ -35,6 +35,7 @@ const presentationSlides = [
     label: "SLIDE 2 - AGENDA",
     scrollTargetSelector: null,
     visualKind: "agendaTimeline",
+    visualPlacement: "inlineAfterIntro",
     visualData: {
       steps: [
         "Intro & Hook",
@@ -73,6 +74,7 @@ const presentationSlides = [
     label: "SLIDE 3 - KEY TAKEAWAYS",
     scrollTargetSelector: null,
     visualKind: "takeawaysStack",
+    visualPlacement: "inlineAfterIntro",
     visualData: {
       layers: [
         "Local & accessible",
@@ -135,6 +137,7 @@ const presentationSlides = [
     label: "ABOUT – INDUSTRY & COMPETITIVE POSITION",
     scrollTargetSelector: "#about-market",
     visualKind: "marketBullseye",
+    visualPlacement: "inlineAfterIntro",
     visualData: {
       outerLabel: "Freelance platforms",
       innerLabel: "Online internship platforms",
@@ -170,6 +173,7 @@ const presentationSlides = [
     label: "ABOUT - ORGANIZATION AND MANAGEMENT",
     scrollTargetSelector: "#about-team",
     visualKind: "teamRow",
+    visualPlacement: "inlineAfterIntro",
     visualData: {
       roles: [
         { tag: "CEO", label: "Strategy" },
@@ -210,6 +214,7 @@ const presentationSlides = [
     label: "ABOUT - ESG",
     scrollTargetSelector: "#about-esg",
     visualKind: "esgPillars",
+    visualPlacement: "inlineAfterIntro",
     visualData: {
       items: [
         { letter: "E", title: "Environmental", note: "Fully digital, low travel" },
@@ -243,6 +248,7 @@ const presentationSlides = [
     label: "FOR STUDENTS - MARKETING AND JOURNEY",
     scrollTargetSelector: "#students-hero",
     visualKind: "studentPath",
+    visualPlacement: "inlineAfterIntro",
     visualData: {
       steps: [
         { title: "Start", note: "Mostly coursework" },
@@ -277,6 +283,7 @@ const presentationSlides = [
     label: "FOR BUSINESSES - MARKETING AND 4PS",
     scrollTargetSelector: "#businesses-hero",
     visualKind: "fourPs",
+    visualPlacement: "inlineAfterIntro",
     visualData: {
       product: "Student project work",
       price: "$2 students / $20 businesses",
@@ -311,6 +318,7 @@ const presentationSlides = [
     label: "APP - OPERATIONS AND LEGAL STRUCTURE",
     scrollTargetSelector: "#app-signup",
     visualKind: "rolesTriangle",
+    visualPlacement: "inlineAfterIntro",
     visualData: {
       participant: "Participant (Student)",
       host: "Host (Business)",
@@ -356,6 +364,7 @@ const presentationSlides = [
     label: "APP - FINANCIAL PROJECTIONS",
     scrollTargetSelector: "#app-dashboard",
     visualKind: "financialSummary",
+    visualPlacement: "inlineAfterIntro",
     visualData: {
       initialInvestment: "$100,000",
       monthlyCosts: "$3.4k–$4.3k",

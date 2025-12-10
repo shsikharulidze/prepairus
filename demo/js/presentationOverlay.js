@@ -228,21 +228,9 @@ class PresentationOverlay {
     let slideContentClass = 'slide-content';
     let slideContentHTML = '';
     
-    if (hasVisual && visualPlacement === 'bottom') {
-      // For bottom placement, create text content without special content at the end
-      const textContentMain = `
-        <div class="slide-text">
-          <h2 class="presentation-heading">${currentPage.heading}</h2>
-          <p class="presentation-intro">${currentPage.intro}</p>
-          <div class="presentation-bullets">
-            ${bulletsHtml}
-          </div>
-        </div>
-      `;
-      slideContentClass = 'slide-content slide-content--visual-bottom';
-      slideContentHTML = textContentMain + visualContent + (specialContent ? `<div class="slide-special">${specialContent}</div>` : '');
-    } else {
-      // Create text content with special content included
+    if (hasImageVisual && visualPlacement === 'top') {
+      // About-1 slide: visual on top, then text
+      slideContentClass = 'slide-content slide-content--visual-top';
       const textContent = `
         <div class="slide-text">
           <h2 class="presentation-heading">${currentPage.heading}</h2>
@@ -253,17 +241,64 @@ class PresentationOverlay {
           ${specialContent}
         </div>
       `;
+      slideContentHTML = visualContent + textContent;
+    } else if (hasImageVisual && visualPlacement === 'side') {
+      // Hook slide: side-by-side layout
+      slideContentClass = 'slide-content slide-content--with-visual';
+      const textContent = `
+        <div class="slide-text">
+          <h2 class="presentation-heading">${currentPage.heading}</h2>
+          <p class="presentation-intro">${currentPage.intro}</p>
+          <div class="presentation-bullets">
+            ${bulletsHtml}
+          </div>
+          ${specialContent}
+        </div>
+      `;
+      slideContentHTML = textContent + visualContent;
+    } else if (hasImageVisual && visualPlacement === 'bottom') {
+      // About-1 slide: visual at bottom
+      slideContentClass = 'slide-content slide-content--visual-bottom';
+      const textContentMain = `
+        <div class="slide-text">
+          <h2 class="presentation-heading">${currentPage.heading}</h2>
+          <p class="presentation-intro">${currentPage.intro}</p>
+          <div class="presentation-bullets">
+            ${bulletsHtml}
+          </div>
+        </div>
+      `;
+      slideContentHTML = textContentMain + visualContent + (specialContent ? `<div class="slide-special">${specialContent}</div>` : '');
+    } else if (hasCodeVisual && visualPlacement === 'inlineAfterIntro') {
+      // Code visuals: single column with visual inline after intro
+      slideContentClass = 'slide-content';
+      const visualNode = this.createVisualNode(this.activeSlide);
+      const visualHtml = visualNode ? visualNode.outerHTML : '';
       
-      if (hasVisual && visualPlacement === 'top') {
-        slideContentClass = 'slide-content slide-content--visual-top';
-        slideContentHTML = visualContent + textContent;
-      } else if (hasVisual && visualPlacement === 'side') {
-        slideContentClass = 'slide-content slide-content--with-visual';
-        slideContentHTML = textContent + visualContent;
-      } else {
-        slideContentClass = 'slide-content';
-        slideContentHTML = textContent;
-      }
+      slideContentHTML = `
+        <div class="slide-text">
+          <h2 class="presentation-heading">${currentPage.heading}</h2>
+          <p class="presentation-intro">${currentPage.intro}</p>
+          ${visualHtml}
+          <div class="presentation-bullets">
+            ${bulletsHtml}
+          </div>
+          ${specialContent}
+        </div>
+      `;
+    } else {
+      // Default: text only
+      slideContentClass = 'slide-content';
+      slideContentHTML = `
+        <div class="slide-text">
+          <h2 class="presentation-heading">${currentPage.heading}</h2>
+          <p class="presentation-intro">${currentPage.intro}</p>
+          <div class="presentation-bullets">
+            ${bulletsHtml}
+          </div>
+          ${specialContent}
+        </div>
+      `;
     }
 
     this.overlayElement.innerHTML = `
