@@ -201,11 +201,6 @@ const presentationSlides = [
         bullets: [
           "PrePair uses a simple, flexible structure as a small, early-stage digital startup.",
           "Roles are divided by strengths to keep everything efficient and low cost.",
-          "**CEO (Daniel)**: makes strategic decisions and represents PrePair publicly.",
-          "**CTO (Shota)**: oversees website development, technology maintenance and security.",
-          "**CMO (Seanna)**: manages marketing, communication and outreach to both students and businesses.",
-          "**CFO (Faye)**: handles budgeting, payroll planning and cash flow forecasting.",
-          "**CIO (Mia)**: focuses on customer experience, quality control and platform improvement.",
           "Founders earn modest stipends to keep payroll low; part-time help is hired only when needed.",
           "Quality control is supported through verified student profiles, reviewed business postings and post-project surveys.",
           "As PrePair scales, the plan is to grow to 15 plus employees and add legal advisors, cybersecurity experts and additional developers."
