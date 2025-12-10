@@ -230,12 +230,14 @@ const presentationSlides = [
         heading: "ESG - Environmental, Social and Governance",
         intro: "This slide highlights how PrePair operates responsibly as a fully digital, socially focused platform.",
         bullets: [
-          "**Environmental**: PrePair is fully digital, which reduces paper use and cuts down on unnecessary in-person trips.",
-          "**Social**: the very low cost model, with students paying around $1 to $3 per month, keeps the platform accessible to all students, including international students and those with limited resources.",
-          "Mentorship-style projects give students practical experience without long unpaid internships, while local businesses receive support without overspending.",
-          "**Governance**: roles are clearly defined so that students act as **Participants**, businesses act as **Hosts** and PrePair acts as the **Facilitator**.",
-          "We protect user data and uphold strict privacy standards.",
-          "By operating transparently and inclusively, PrePair contributes to broader goals around inclusive growth and equal opportunity."
+          "**Environmental**: PrePair is fully digital, which means no paper use and fewer trips are needed – this helps cut down on waste and emissions.",
+          "**Social**: PrePair promotes social equity with a very low-cost model.",
+          "Students pay just $1 to $3 per month, making the platform accessible to all students – including international students and those with limited resources.",
+          "These mentorship-style projects give students practical experience without long unpaid internships, while local businesses receive help without overspending.",
+          "**Governance**: We ensure transparency, fairness, and strong ethics in our operations.",
+          "Each role is clearly defined – the student is a Participant, the business is a Host, and PrePair is the Facilitator – so everyone understands their responsibilities.",
+          "We also protect user data and uphold strict privacy standards.",
+          "By operating responsibly and inclusively, PrePair contributes to global goals of inclusive growth and equal opportunity."
         ],
         visualHint: "Optional: a simple three column layout inside the slide labeled Environmental, Social, Governance with one key point under each."
       }
