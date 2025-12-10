@@ -82,17 +82,17 @@
         <form id="signup-form">
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <input type="email" id="email" name="email" placeholder="Enter your email" value="prepair@gmail.com" required>
           </div>
           
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Create a password (min. 6 characters)" required minlength="6">
+            <input type="password" id="password" name="password" placeholder="Create a password (min. 6 characters)" value="DemoPass123!" required minlength="6">
           </div>
           
           <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" value="DemoPass123!" required>
           </div>
           
           <button type="submit" class="btn" id="signup-btn" style="width: 100%; margin-bottom: 1rem;">
@@ -203,20 +203,25 @@
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
         
-        // Basic validation
-        if (!email || !password || !confirmPassword) {
-          showError('Please fill in all fields.');
-          return;
-        }
+        // Check if using demo credentials - if so, bypass all validation
+        const isDemoCredentials = email === 'prepair@gmail.com' && password === 'DemoPass123!';
         
-        if (password !== confirmPassword) {
-          showError('Passwords do not match.');
-          return;
-        }
-        
-        if (password.length < 6) {
-          showError('Password must be at least 6 characters long.');
-          return;
+        if (!isDemoCredentials) {
+          // Basic validation for non-demo users
+          if (!email || !password || !confirmPassword) {
+            showError('Please fill in all fields.');
+            return;
+          }
+          
+          if (password !== confirmPassword) {
+            showError('Passwords do not match.');
+            return;
+          }
+          
+          if (password.length < 6) {
+            showError('Password must be at least 6 characters long.');
+            return;
+          }
         }
         
         setLoading(signupBtn, true);
@@ -224,8 +229,13 @@
         // Simulate signup process
         console.log('🎯 [Demo] Starting signup process for:', email);
         
-        // Store user data for demo
-        const userData = { email, password, signupTime: new Date().toISOString() };
+        // Store user data for demo with Prof. Filocamo's Class name
+        const userData = { 
+          email, 
+          password, 
+          name: "Prof. Filocamo's Class",
+          signupTime: new Date().toISOString() 
+        };
         sessionStorage.setItem('demoUserData', JSON.stringify(userData));
         
         setTimeout(() => {

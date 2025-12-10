@@ -111,19 +111,19 @@
               
               <div class="form-group">
                 <label for="name">First Name *</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" value="Prof. Filocamo's Class" required>
               </div>
               
               <div class="form-group">
                 <label for="surname">Last Name *</label>
-                <input type="text" id="surname" name="surname" required>
+                <input type="text" id="surname" name="surname" value="Student" required>
               </div>
               
               <div class="form-group">
                 <label for="campus">Campus</label>
                 <select id="campus" name="campus">
                   <option value="">Select your campus</option>
-                  <option value="Rose Hill">Rose Hill (Bronx)</option>
+                  <option value="Rose Hill" selected>Rose Hill (Bronx)</option>
                   <option value="Lincoln Center">Lincoln Center (Manhattan)</option>
                   <option value="Westchester">Westchester</option>
                   <option value="London">London</option>
@@ -145,7 +145,7 @@
               
               <div class="form-group">
                 <label for="major">Major *</label>
-                <input type="text" id="major" name="major" placeholder="e.g., Computer Science, Business Administration" required>
+                <input type="text" id="major" name="major" placeholder="e.g., Computer Science, Business Administration" value="Business Administration" required>
               </div>
               
               <div class="form-group">
@@ -153,7 +153,7 @@
                 <select id="graduation_year" name="graduation_year" required>
                   <option value="">Select graduation year</option>
                   <option value="2024">2024</option>
-                  <option value="2025">2025</option>
+                  <option value="2025" selected>2025</option>
                   <option value="2026">2026</option>
                   <option value="2027">2027</option>
                   <option value="2028">2028</option>
@@ -172,17 +172,17 @@
               
               <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="e.g., (555) 123-4567">
+                <input type="tel" id="phone" name="phone" placeholder="e.g., (555) 123-4567" value="(555) 123-4567">
               </div>
               
               <div class="form-group">
                 <label for="linkedin">LinkedIn Profile</label>
-                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile" value="https://linkedin.com/in/filocamoclass">
               </div>
               
               <div class="form-group">
                 <label for="portfolio_url">Portfolio/Website</label>
-                <input type="url" id="portfolio_url" name="portfolio_url" placeholder="https://yourportfolio.com">
+                <input type="url" id="portfolio_url" name="portfolio_url" placeholder="https://yourportfolio.com" value="https://fordham.edu/business">
               </div>
             </div>
           </div>
@@ -195,24 +195,24 @@
               
               <div class="form-group">
                 <label for="bio">Bio/About Me</label>
-                <textarea id="bio" name="bio" rows="4" placeholder="Brief description about yourself, your interests, and career goals..."></textarea>
+                <textarea id="bio" name="bio" rows="4" placeholder="Brief description about yourself, your interests, and career goals...">Aspiring business student passionate about entrepreneurship and practical learning. Looking to gain real-world experience through hands-on projects that bridge academic knowledge with industry applications.</textarea>
               </div>
               
               <div class="form-group">
                 <label for="skills">Skills & Interests</label>
-                <input type="text" id="skills" name="skills" placeholder="e.g., Marketing, Design, Programming, Business...">
+                <input type="text" id="skills" name="skills" placeholder="e.g., Marketing, Design, Programming, Business..." value="Business Strategy, Marketing, Project Management, Communication">
               </div>
               
               <div class="form-group">
                 <label for="career_goals">Career Goals</label>
-                <textarea id="career_goals" name="career_goals" rows="3" placeholder="What type of internships or career paths interest you?"></textarea>
+                <textarea id="career_goals" name="career_goals" rows="3" placeholder="What type of internships or career paths interest you?">Interested in business development, marketing, and consulting opportunities. Seeking to build a strong foundation in professional skills before pursuing internships at established companies.</textarea>
               </div>
               
               <div class="form-group">
                 <label for="experience_level">Experience Level</label>
                 <select id="experience_level" name="experience_level">
                   <option value="">Select your experience level</option>
-                  <option value="beginner">Beginner - No work experience</option>
+                  <option value="beginner" selected>Beginner - No work experience</option>
                   <option value="some_experience">Some Experience - Part-time jobs, volunteering</option>
                   <option value="experienced">Experienced - Previous internships or relevant work</option>
                 </select>
@@ -469,6 +469,13 @@
   </script>
 
   <style>
+    /* Override transparent navbar for solid background on onboarding */
+    #header-shell,
+    #site-header {
+      background: var(--bg-card) !important;
+      border-bottom: 1px solid var(--border-light) !important;
+    }
+    
     /* Onboarding Layout */
     .onboarding-main {
       min-height: 100vh;
@@ -596,25 +603,30 @@
     }
 
     .form-group input,
-    .form-group select {
+    .form-group select,
+    .form-group textarea {
       width: 100%;
       padding: 0.75rem 1rem;
       border: 2px solid var(--border);
       border-radius: 8px;
       font-family: 'Inter', sans-serif;
       font-size: 1rem;
+      line-height: 1.5;
       transition: border-color 0.2s ease;
       box-sizing: border-box;
+      background-color: #ffffff;
     }
 
     .form-group input:focus,
-    .form-group select:focus {
+    .form-group select:focus,
+    .form-group textarea:focus {
       outline: none;
       border-color: var(--text);
     }
 
     .form-group input.error,
-    .form-group select.error {
+    .form-group select.error,
+    .form-group textarea.error {
       border-color: #dc3545;
       background-color: #fff5f5;
     }
