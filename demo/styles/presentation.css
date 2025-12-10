@@ -221,3 +221,50 @@
     text-align: center;
   }
 }
+
+/* Visual layout support */
+.slide-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+.slide-content--with-visual {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.slide-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Visual area */
+.slide-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide-visual img {
+  max-width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  border-radius: 16px; /* match card radius style */
+}
+
+/* Responsive visual layout */
+@media (max-width: 768px) {
+  .slide-content--with-visual {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .slide-visual img {
+    max-height: 200px;
+  }
+}
