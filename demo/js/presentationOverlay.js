@@ -213,34 +213,46 @@ class PresentationOverlay {
       </div>
     ` : '';
     
-    // Create text content
-    const textContent = `
-      <div class="slide-text">
-        <h2 class="presentation-heading">${currentPage.heading}</h2>
-        <p class="presentation-intro">${currentPage.intro}</p>
-        <div class="presentation-bullets">
-          ${bulletsHtml}
-        </div>
-        ${specialContent}
-      </div>
-    `;
-    
     // Determine slide content class and layout
     let slideContentClass = 'slide-content';
     let slideContentHTML = '';
     
-    if (hasVisual && visualPlacement === 'top') {
-      slideContentClass = 'slide-content slide-content--visual-top';
-      slideContentHTML = visualContent + textContent;
-    } else if (hasVisual && visualPlacement === 'bottom') {
+    if (hasVisual && visualPlacement === 'bottom') {
+      // For bottom placement, create text content without special content at the end
+      const textContentMain = `
+        <div class="slide-text">
+          <h2 class="presentation-heading">${currentPage.heading}</h2>
+          <p class="presentation-intro">${currentPage.intro}</p>
+          <div class="presentation-bullets">
+            ${bulletsHtml}
+          </div>
+        </div>
+      `;
       slideContentClass = 'slide-content slide-content--visual-bottom';
-      slideContentHTML = textContent + visualContent;
-    } else if (hasVisual && visualPlacement === 'side') {
-      slideContentClass = 'slide-content slide-content--with-visual';
-      slideContentHTML = textContent + visualContent;
+      slideContentHTML = textContentMain + visualContent + (specialContent ? `<div class="slide-special">${specialContent}</div>` : '');
     } else {
-      slideContentClass = 'slide-content';
-      slideContentHTML = textContent;
+      // Create text content with special content included
+      const textContent = `
+        <div class="slide-text">
+          <h2 class="presentation-heading">${currentPage.heading}</h2>
+          <p class="presentation-intro">${currentPage.intro}</p>
+          <div class="presentation-bullets">
+            ${bulletsHtml}
+          </div>
+          ${specialContent}
+        </div>
+      `;
+      
+      if (hasVisual && visualPlacement === 'top') {
+        slideContentClass = 'slide-content slide-content--visual-top';
+        slideContentHTML = visualContent + textContent;
+      } else if (hasVisual && visualPlacement === 'side') {
+        slideContentClass = 'slide-content slide-content--with-visual';
+        slideContentHTML = textContent + visualContent;
+      } else {
+        slideContentClass = 'slide-content';
+        slideContentHTML = textContent;
+      }
     }
 
     this.overlayElement.innerHTML = `
