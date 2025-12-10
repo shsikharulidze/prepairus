@@ -7,11 +7,9 @@
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
   width: min(1120px, 92vw);
   max-width: 1120px;
-  max-height: 90vh;
-  padding: 32px 40px;
+  max-height: 80vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   overflow: hidden;
   animation: slideIn 0.3s ease-out;
 }
@@ -29,8 +27,9 @@
 
 /* Header */
 .presentation-header {
-  padding: 0 0 0 0;
-  margin-bottom: 20px;
+  flex: 0 0 auto;
+  padding: 20px 28px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .presentation-label {
@@ -45,16 +44,37 @@
 
 .presentation-divider {
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  margin-bottom: 18px;
 }
 
 /* Body */
 .presentation-body {
-  padding: 0;
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 18px 28px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+}
+
+/* Scrollable container for slide content */
+.presentation-body-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Optional: subtle scrollbar styling */
+.presentation-body-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.presentation-body-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.presentation-body-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.18);
 }
 
 .presentation-heading {
@@ -109,12 +129,12 @@
 
 /* Footer */
 .presentation-footer {
-  padding: 20px 0 0 0;
-  margin-top: 20px;
+  flex: 0 0 auto;
+  padding: 16px 28px 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .presentation-page-indicator {
@@ -189,13 +209,15 @@
 @media (max-width: 768px) {
   .presentation-card {
     width: 94vw;
-    max-width: 94vw;
-    padding: 24px 20px;
-    max-height: 90vh;
+    max-height: 88vh;
+    border-radius: 18px;
   }
   
-  .presentation-header {
-    margin-bottom: 16px;
+  .presentation-header,
+  .presentation-body,
+  .presentation-footer {
+    padding-left: 18px;
+    padding-right: 18px;
   }
   
   .presentation-heading {

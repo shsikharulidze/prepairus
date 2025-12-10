@@ -311,8 +311,10 @@ class PresentationOverlay {
         
         <!-- Body -->
         <div class="presentation-body">
-          <div class="${slideContentClass}">
-            ${slideContentHTML}
+          <div class="presentation-body-scroll">
+            <div class="${slideContentClass}">
+              ${slideContentHTML}
+            </div>
           </div>
         </div>
         
