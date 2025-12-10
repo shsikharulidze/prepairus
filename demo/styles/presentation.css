@@ -5,9 +5,10 @@
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 24px;
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
-  width: 70%;
-  max-width: 900px;
-  max-height: 70vh;
+  width: min(1120px, 92vw);
+  max-width: 1120px;
+  max-height: 90vh;
+  padding: 32px 40px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -28,15 +29,16 @@
 
 /* Header */
 .presentation-header {
-  padding: 20px 28px 0;
+  padding: 0 0 0 0;
+  margin-bottom: 20px;
 }
 
 .presentation-label {
   font-family: "Space Grotesk", Inter, sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.08em;
   color: var(--muted, #4A4A4A);
   margin-bottom: 8px;
 }
@@ -48,7 +50,7 @@
 
 /* Body */
 .presentation-body {
-  padding: 0 28px;
+  padding: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -57,24 +59,24 @@
 
 .presentation-heading {
   font-family: "Space Grotesk", Inter, sans-serif;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 600;
   color: var(--text, #0F0F0F);
-  margin: 0 0 8px 0;
-  line-height: 1.2;
+  margin: 0 0 10px 0;
+  line-height: 1.25;
 }
 
 .presentation-intro {
-  font-size: 15px;
+  font-size: 17px;
   color: var(--muted, #4A4A4A);
-  margin: 0 0 16px 0;
-  line-height: 1.4;
+  margin: 0 0 18px 0;
+  line-height: 1.6;
 }
 
 .presentation-bullets {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   flex: 1;
   overflow: hidden;
 }
@@ -95,8 +97,8 @@
 }
 
 .bullet-text {
-  font-size: 15px;
-  line-height: 1.4;
+  font-size: 17px;
+  line-height: 1.6;
   color: var(--text, #0F0F0F);
 }
 
@@ -107,7 +109,8 @@
 
 /* Footer */
 .presentation-footer {
-  padding: 18px 28px;
+  padding: 20px 0 0 0;
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -115,7 +118,7 @@
 }
 
 .presentation-page-indicator {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--muted, #4A4A4A);
   font-weight: 500;
 }
@@ -131,9 +134,9 @@
   border: 1.5px solid transparent;
   background: rgba(0, 0, 0, 0.04);
   color: var(--text, #0F0F0F);
-  padding: 8px 16px;
+  padding: 10px 18px;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -185,31 +188,31 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .presentation-card {
-    width: 90%;
-    max-height: 80vh;
-    margin: 20px;
+    width: 94vw;
+    max-width: 94vw;
+    padding: 24px 20px;
+    max-height: 90vh;
   }
   
-  .presentation-header,
-  .presentation-body,
-  .presentation-footer {
-    padding-left: 20px;
-    padding-right: 20px;
+  .presentation-header {
+    margin-bottom: 16px;
   }
   
   .presentation-heading {
-    font-size: 22px;
+    font-size: 24px;
   }
   
   .presentation-intro,
   .bullet-text {
-    font-size: 15px;
+    font-size: 16px;
   }
   
   .presentation-footer {
     flex-direction: column;
     gap: 12px;
     align-items: stretch;
+    margin-top: 16px;
+    padding-top: 16px;
   }
   
   .presentation-nav {
@@ -232,8 +235,8 @@
 
 .slide-content--with-visual {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
-  gap: 2rem;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.1fr);
+  gap: 1.75rem;
   align-items: center;
 }
 
@@ -252,7 +255,7 @@
 
 .slide-visual img {
   max-width: 100%;
-  max-height: 240px;
+  max-height: 280px;
   object-fit: contain;
   border-radius: 16px; /* match card radius style */
 }
@@ -265,6 +268,6 @@
   }
 
   .slide-visual img {
-    max-height: 200px;
+    max-height: 220px;
   }
 }
