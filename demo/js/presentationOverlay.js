@@ -203,15 +203,26 @@ class PresentationOverlay {
     }
     
     // Determine visual layout
-    const hasVisual = this.activeSlide.visualSrc;
+    const hasVisual = this.activeSlide.visualSrc || this.activeSlide.visualKind;
     const visualPlacement = this.activeSlide.visualPlacement || "side";
     
-    // Create visual content if image is available
-    const visualContent = hasVisual ? `
-      <div class="slide-visual">
-        <img src="${this.activeSlide.visualSrc}" alt="${this.activeSlide.visualAlt || ''}" />
-      </div>
-    ` : '';
+    // Create visual content (image or code-driven)
+    let visualContent = '';
+    const hasImageVisual = this.activeSlide.visualSrc;
+    const hasCodeVisual = this.activeSlide.visualKind;
+    
+    if (hasImageVisual) {
+      visualContent = `
+        <div class="slide-visual">
+          <img src="${this.activeSlide.visualSrc}" alt="${this.activeSlide.visualAlt || ''}" />
+        </div>
+      `;
+    } else if (hasCodeVisual) {
+      const visualNode = this.createVisualNode(this.activeSlide);
+      if (visualNode) {
+        visualContent = `<div class="slide-visual">${visualNode.outerHTML}</div>`;
+      }
+    }
     
     // Determine slide content class and layout
     let slideContentClass = 'slide-content';
@@ -286,6 +297,338 @@ class PresentationOverlay {
         this.closeOverlay();
       }
     });
+  }
+  
+  createVisualNode(slide) {
+    // Code-driven visuals based on visualKind
+    if (!slide.visualKind) return null;
+
+    switch (slide.visualKind) {
+      case "agendaTimeline":
+        return this.createAgendaTimelineVisual(slide.visualData);
+      case "marketBullseye":
+        return this.createMarketBullseyeVisual(slide.visualData);
+      case "teamRow":
+        return this.createTeamRowVisual(slide.visualData);
+      case "esgPillars":
+        return this.createEsgPillarsVisual(slide.visualData);
+      case "studentPath":
+        return this.createStudentPathVisual(slide.visualData);
+      case "fourPs":
+        return this.createFourPsVisual(slide.visualData);
+      case "rolesTriangle":
+        return this.createRolesTriangleVisual(slide.visualData);
+      case "financialSummary":
+        return this.createFinancialSummaryVisual(slide.visualData);
+      case "takeawaysStack":
+        return this.createTakeawaysStackVisual(slide.visualData);
+      default:
+        return null;
+    }
+  }
+  
+  createAgendaTimelineVisual(data) {
+    const card = document.createElement("div");
+    card.className = "slide-visual-card visual-timeline-card";
+
+    const title = document.createElement("div");
+    title.className = "visual-title";
+    title.textContent = "Flow of the presentation";
+    card.appendChild(title);
+
+    const line = document.createElement("div");
+    line.className = "visual-timeline";
+
+    (data.steps || []).forEach((step) => {
+      const item = document.createElement("div");
+      item.className = "timeline-step";
+
+      const dot = document.createElement("div");
+      dot.className = "timeline-dot";
+
+      const label = document.createElement("div");
+      label.className = "timeline-label";
+      label.textContent = step;
+
+      item.appendChild(dot);
+      item.appendChild(label);
+      line.appendChild(item);
+    });
+
+    card.appendChild(line);
+    return card;
+  }
+  
+  createMarketBullseyeVisual(data) {
+    const card = document.createElement("div");
+    card.className = "slide-visual-card visual-bullseye-card";
+
+    const rings = document.createElement("div");
+    rings.className = "visual-bullseye";
+
+    const outer = document.createElement("div");
+    outer.className = "bullseye-ring bullseye-ring--outer";
+    outer.textContent = data.outerLabel;
+
+    const inner = document.createElement("div");
+    inner.className = "bullseye-ring bullseye-ring--inner";
+    inner.textContent = data.innerLabel;
+
+    const center = document.createElement("div");
+    center.className = "bullseye-center";
+    center.textContent = data.centerLabel;
+
+    rings.appendChild(outer);
+    rings.appendChild(inner);
+    rings.appendChild(center);
+    card.appendChild(rings);
+
+    const metrics = document.createElement("div");
+    metrics.className = "visual-metrics-row";
+
+    [
+      `${data.freelanceMarket} freelance`,
+      `${data.freelanceGrowth} growth`,
+      `${data.internshipMarket} virtual internships`
+    ].forEach((text) => {
+      const chip = document.createElement("div");
+      chip.className = "visual-metric-chip";
+      chip.textContent = text;
+      metrics.appendChild(chip);
+    });
+
+    card.appendChild(metrics);
+    return card;
+  }
+  
+  createTeamRowVisual(data) {
+    const card = document.createElement("div");
+    card.className = "slide-visual-card visual-team-card";
+
+    const row = document.createElement("div");
+    row.className = "visual-team-row";
+
+    (data.roles || []).forEach((role) => {
+      const chip = document.createElement("div");
+      chip.className = "team-chip";
+
+      const tag = document.createElement("div");
+      tag.className = "team-tag";
+      tag.textContent = role.tag;
+
+      const label = document.createElement("div");
+      label.className = "team-label";
+      label.textContent = role.label;
+
+      chip.appendChild(tag);
+      chip.appendChild(label);
+      row.appendChild(chip);
+    });
+
+    card.appendChild(row);
+
+    if (data.futureNote) {
+      const future = document.createElement("div");
+      future.className = "team-future-note";
+      future.textContent = data.futureNote;
+      card.appendChild(future);
+    }
+
+    return card;
+  }
+  
+  createEsgPillarsVisual(data) {
+    const card = document.createElement("div");
+    card.className = "slide-visual-card visual-esg-card";
+
+    const grid = document.createElement("div");
+    grid.className = "visual-esg-grid";
+
+    (data.items || []).forEach((item) => {
+      const col = document.createElement("div");
+      col.className = "esg-col";
+
+      const circle = document.createElement("div");
+      circle.className = "esg-letter";
+      circle.textContent = item.letter;
+
+      const title = document.createElement("div");
+      title.className = "esg-title";
+      title.textContent = item.title;
+
+      const note = document.createElement("div");
+      note.className = "esg-note";
+      note.textContent = item.note;
+
+      col.appendChild(circle);
+      col.appendChild(title);
+      col.appendChild(note);
+      grid.appendChild(col);
+    });
+
+    card.appendChild(grid);
+    return card;
+  }
+  
+  createStudentPathVisual(data) {
+    const card = document.createElement("div");
+    card.className = "slide-visual-card visual-path-card";
+
+    const path = document.createElement("div");
+    path.className = "visual-path";
+
+    (data.steps || []).forEach((step, index, arr) => {
+      const node = document.createElement("div");
+      node.className = "path-step";
+
+      const bubble = document.createElement("div");
+      bubble.className = "path-bubble";
+      bubble.textContent = step.title;
+
+      const note = document.createElement("div");
+      note.className = "path-note";
+      note.textContent = step.note;
+
+      node.appendChild(bubble);
+      node.appendChild(note);
+      path.appendChild(node);
+
+      if (index < arr.length - 1) {
+        const arrow = document.createElement("div");
+        arrow.className = "path-arrow";
+        path.appendChild(arrow);
+      }
+    });
+
+    card.appendChild(path);
+    return card;
+  }
+  
+  createFourPsVisual(data) {
+    const card = document.createElement("div");
+    card.className = "slide-visual-card visual-fourps-card";
+
+    const grid = document.createElement("div");
+    grid.className = "visual-fourps-grid";
+
+    const items = [
+      { key: "P", title: "Product", text: data.product },
+      { key: "P", title: "Price", text: data.price },
+      { key: "P", title: "Place", text: data.place },
+      { key: "P", title: "Promotion", text: data.promotion }
+    ];
+
+    items.forEach((item) => {
+      const cell = document.createElement("div");
+      cell.className = "fourps-cell";
+
+      const badge = document.createElement("div");
+      badge.className = "fourps-badge";
+      badge.textContent = item.title[0]; // P
+
+      const title = document.createElement("div");
+      title.className = "fourps-title";
+      title.textContent = item.title;
+
+      const text = document.createElement("div");
+      text.className = "fourps-text";
+      text.textContent = item.text;
+
+      cell.appendChild(badge);
+      cell.appendChild(title);
+      cell.appendChild(text);
+      grid.appendChild(cell);
+    });
+
+    card.appendChild(grid);
+    return card;
+  }
+  
+  createRolesTriangleVisual(data) {
+    const card = document.createElement("div");
+    card.className = "slide-visual-card visual-roles-card";
+
+    const triangle = document.createElement("div");
+    triangle.className = "visual-roles-triangle";
+
+    const participant = document.createElement("div");
+    participant.className = "roles-node roles-node--bottom-left";
+    participant.textContent = data.participant;
+
+    const host = document.createElement("div");
+    host.className = "roles-node roles-node--bottom-right";
+    host.textContent = data.host;
+
+    const facilitator = document.createElement("div");
+    facilitator.className = "roles-node roles-node--top";
+    facilitator.textContent = data.facilitator;
+
+    triangle.appendChild(participant);
+    triangle.appendChild(host);
+    triangle.appendChild(facilitator);
+
+    card.appendChild(triangle);
+    return card;
+  }
+  
+  createFinancialSummaryVisual(data) {
+    const card = document.createElement("div");
+    card.className = "slide-visual-card visual-financial-card";
+
+    const bars = document.createElement("div");
+    bars.className = "visual-financial-bars";
+
+    const barInitial = document.createElement("div");
+    barInitial.className = "financial-bar financial-bar--initial";
+    barInitial.innerHTML = `<span class="financial-bar-label">Initial</span><span class="financial-bar-value">${data.initialInvestment}</span>`;
+
+    const barYearEnd = document.createElement("div");
+    barYearEnd.className = "financial-bar financial-bar--yearend";
+    barYearEnd.innerHTML = `<span class="financial-bar-label">Year-end cash</span><span class="financial-bar-value">${data.yearEndCash}</span>`;
+
+    bars.appendChild(barInitial);
+    bars.appendChild(barYearEnd);
+    card.appendChild(bars);
+
+    const chips = document.createElement("div");
+    chips.className = "visual-metrics-row";
+
+    [data.monthlyCosts, data.mrrQ1, data.breakEven].forEach((text) => {
+      const chip = document.createElement("div");
+      chip.className = "visual-metric-chip";
+      chip.textContent = text;
+      chips.appendChild(chip);
+    });
+
+    card.appendChild(chips);
+    return card;
+  }
+  
+  createTakeawaysStackVisual(data) {
+    const card = document.createElement("div");
+    card.className = "slide-visual-card visual-takeaways-card";
+
+    const stack = document.createElement("div");
+    stack.className = "visual-takeaways-stack";
+
+    (data.layers || []).forEach((layer, index) => {
+      const bar = document.createElement("div");
+      bar.className = "takeaway-bar";
+      bar.textContent = layer;
+      bar.dataset.index = index;
+      stack.appendChild(bar);
+    });
+
+    card.appendChild(stack);
+
+    if (data.flagText) {
+      const flag = document.createElement("div");
+      flag.className = "takeaway-flag";
+      flag.textContent = data.flagText;
+      card.appendChild(flag);
+    }
+
+    return card;
   }
 }
 

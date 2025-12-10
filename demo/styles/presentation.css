@@ -305,6 +305,374 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Code-driven visual styles */
+.slide-visual-card {
+  background: var(--card, #F5EFE7);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+}
+
+.visual-title {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--muted, #4A4A4A);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Timeline */
+.visual-timeline-card .visual-timeline {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.timeline-step {
+  flex: 1;
+  text-align: center;
+}
+
+.timeline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  margin: 0 auto 4px;
+  background: var(--text, #0F0F0F);
+}
+
+.timeline-label {
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--text, #0F0F0F);
+}
+
+/* Bullseye */
+.visual-bullseye {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 10px;
+}
+
+.bullseye-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  text-align: center;
+  padding: 0 10px;
+  color: var(--text, #0F0F0F);
+}
+
+.bullseye-ring--inner {
+  inset: 20px;
+}
+
+.bullseye-center {
+  position: absolute;
+  inset: 55px;
+  border-radius: 999px;
+  background: var(--text, #0F0F0F);
+  color: var(--card, #F5EFE7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.visual-metrics-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.visual-metric-chip {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  background: rgba(0,0,0,0.06);
+  color: var(--text, #0F0F0F);
+}
+
+/* Team row */
+.visual-team-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.team-chip {
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: var(--text, #0F0F0F);
+  color: var(--card, #F5EFE7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+}
+
+.team-tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.team-label {
+  font-size: 10px;
+  opacity: 0.9;
+}
+
+.team-future-note {
+  margin-top: 8px;
+  font-size: 11px;
+  opacity: 0.7;
+  text-align: center;
+  color: var(--muted, #4A4A4A);
+}
+
+/* ESG */
+.visual-esg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.esg-col {
+  text-align: center;
+}
+
+.esg-letter {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  margin: 0 auto 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--text, #0F0F0F);
+  color: var(--card, #F5EFE7);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.esg-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text, #0F0F0F);
+  margin-bottom: 2px;
+}
+
+.esg-note {
+  font-size: 10px;
+  opacity: 0.8;
+  color: var(--text, #0F0F0F);
+}
+
+/* Path (students) */
+.visual-path {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.path-step {
+  max-width: 130px;
+  text-align: center;
+}
+
+.path-bubble {
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: var(--text, #0F0F0F);
+  color: var(--card, #F5EFE7);
+  font-size: 12px;
+}
+
+.path-note {
+  font-size: 10px;
+  margin-top: 4px;
+  color: var(--text, #0F0F0F);
+}
+
+.path-arrow {
+  width: 18px;
+  height: 1px;
+  background: var(--text, #0F0F0F);
+  position: relative;
+}
+
+.path-arrow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -3px;
+  border-width: 4px 0 4px 6px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--text, #0F0F0F);
+}
+
+/* 4Ps */
+.visual-fourps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.fourps-cell {
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: rgba(0,0,0,0.03);
+  text-align: left;
+}
+
+.fourps-badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--text, #0F0F0F);
+  color: var(--card, #F5EFE7);
+  margin-bottom: 4px;
+}
+
+.fourps-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text, #0F0F0F);
+  margin-bottom: 2px;
+}
+
+.fourps-text {
+  font-size: 10px;
+  color: var(--text, #0F0F0F);
+  line-height: 1.3;
+}
+
+/* Roles triangle */
+.visual-roles-triangle {
+  position: relative;
+  width: 220px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.roles-node {
+  position: absolute;
+  max-width: 90px;
+  padding: 6px 8px;
+  font-size: 10px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 12px;
+  text-align: center;
+  line-height: 1.3;
+  color: var(--text, #0F0F0F);
+}
+
+.roles-node--top {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.roles-node--bottom-left {
+  bottom: 0;
+  left: 5%;
+}
+
+.roles-node--bottom-right {
+  bottom: 0;
+  right: 5%;
+}
+
+/* Financial bars */
+.visual-financial-bars {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+
+.financial-bar {
+  width: 120px;
+  border-radius: 12px;
+  padding: 8px 10px;
+  color: var(--card, #F5EFE7);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+}
+
+.financial-bar--initial {
+  background: #6c757d;
+}
+
+.financial-bar--yearend {
+  background: var(--text, #0F0F0F);
+}
+
+.financial-bar-label {
+  font-size: 10px;
+  opacity: 0.9;
+}
+
+.financial-bar-value {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Takeaways stack */
+.visual-takeaways-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.takeaway-bar {
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  background: rgba(0,0,0,0.05);
+  color: var(--text, #0F0F0F);
+}
+
+.takeaway-bar[data-index="2"] {
+  background: var(--text, #0F0F0F);
+  color: var(--card, #F5EFE7);
+}
+
+.takeaway-flag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-align: center;
+  color: var(--muted, #4A4A4A);
+  font-weight: 600;
+}
+
 /* Responsive visual layout */
 @media (max-width: 768px) {
   .slide-content--with-visual {
@@ -314,5 +682,24 @@
 
   .slide-visual img {
     max-height: 220px;
+  }
+  
+  .visual-bullseye {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .visual-roles-triangle {
+    width: 180px;
+    height: 120px;
+  }
+  
+  .roles-node {
+    max-width: 70px;
+    font-size: 9px;
+  }
+  
+  .financial-bar {
+    width: 100px;
   }
 }

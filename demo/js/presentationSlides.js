@@ -34,6 +34,18 @@ const presentationSlides = [
     key: "2",
     label: "SLIDE 2 - AGENDA",
     scrollTargetSelector: null,
+    visualKind: "agendaTimeline",
+    visualData: {
+      steps: [
+        "Intro & Hook",
+        "Company & Market",
+        "Competition",
+        "HR & ESG",
+        "Operations",
+        "Financials",
+        "Key Takeaways"
+      ]
+    },
     pages: [
       {
         id: "home-agenda-1",
@@ -60,6 +72,15 @@ const presentationSlides = [
     key: "k",
     label: "SLIDE 3 - KEY TAKEAWAYS",
     scrollTargetSelector: null,
+    visualKind: "takeawaysStack",
+    visualData: {
+      layers: [
+        "Local & accessible",
+        "Educational and ethical",
+        "First-step experience"
+      ],
+      flagText: "Invest in yourself"
+    },
     pages: [
       {
         id: "home-key-takeaways-1",
@@ -113,6 +134,15 @@ const presentationSlides = [
     key: "2",
     label: "ABOUT – INDUSTRY & COMPETITIVE POSITION",
     scrollTargetSelector: "#about-market",
+    visualKind: "marketBullseye",
+    visualData: {
+      outerLabel: "Freelance platforms",
+      innerLabel: "Online internship platforms",
+      centerLabel: "PrePair niche",
+      freelanceMarket: "≈ $5.58B",
+      freelanceGrowth: "~18% / year",
+      internshipMarket: "≈ $1.82B"
+    },
     pages: [
       {
         id: "about-market-competition-1",
@@ -139,6 +169,17 @@ const presentationSlides = [
     key: "4",
     label: "ABOUT - ORGANIZATION AND MANAGEMENT",
     scrollTargetSelector: "#about-team",
+    visualKind: "teamRow",
+    visualData: {
+      roles: [
+        { tag: "CEO", label: "Strategy" },
+        { tag: "CTO", label: "Tech & product" },
+        { tag: "CMO", label: "Marketing" },
+        { tag: "CFO", label: "Finance" },
+        { tag: "CIO", label: "Experience" }
+      ],
+      futureNote: "Future: 15+ team, legal & security"
+    },
     pages: [
       {
         id: "about-hr-1",
@@ -168,6 +209,14 @@ const presentationSlides = [
     key: "5",
     label: "ABOUT - ESG",
     scrollTargetSelector: "#about-esg",
+    visualKind: "esgPillars",
+    visualData: {
+      items: [
+        { letter: "E", title: "Environmental", note: "Fully digital, low travel" },
+        { letter: "S", title: "Social", note: "Access & equity for students" },
+        { letter: "G", title: "Governance", note: "Clear roles & data protection" }
+      ]
+    },
     pages: [
       {
         id: "about-esg-1",
@@ -193,6 +242,14 @@ const presentationSlides = [
     key: "1",
     label: "FOR STUDENTS - MARKETING AND JOURNEY",
     scrollTargetSelector: "#students-hero",
+    visualKind: "studentPath",
+    visualData: {
+      steps: [
+        { title: "Start", note: "Mostly coursework" },
+        { title: "PrePair projects", note: "10–120 hour externships" },
+        { title: "Next step", note: "Portfolio & internship-ready" }
+      ]
+    },
     pages: [
       {
         id: "students-marketing-1",
@@ -219,6 +276,13 @@ const presentationSlides = [
     key: "1",
     label: "FOR BUSINESSES - MARKETING AND 4PS",
     scrollTargetSelector: "#businesses-hero",
+    visualKind: "fourPs",
+    visualData: {
+      product: "Student project work",
+      price: "$2 students / $20 businesses",
+      place: "Online, local focus",
+      promotion: "Testimonials & referrals"
+    },
     pages: [
       {
         id: "businesses-marketing-1",
@@ -246,6 +310,12 @@ const presentationSlides = [
     key: "1",
     label: "APP - OPERATIONS AND LEGAL STRUCTURE",
     scrollTargetSelector: "#app-signup",
+    visualKind: "rolesTriangle",
+    visualData: {
+      participant: "Participant (Student)",
+      host: "Host (Business)",
+      facilitator: "PrePair (Facilitator)"
+    },
     pages: [
       {
         id: "app-operations-1",
@@ -285,6 +355,14 @@ const presentationSlides = [
     key: "2",
     label: "APP - FINANCIAL PROJECTIONS",
     scrollTargetSelector: "#app-dashboard",
+    visualKind: "financialSummary",
+    visualData: {
+      initialInvestment: "$100,000",
+      monthlyCosts: "$3.4k–$4.3k",
+      mrrQ1: "$5,000 MRR by Q1 end",
+      breakEven: "Break-even ≈ month 5",
+      yearEndCash: "$188,750 projected cash"
+    },
     pages: [
       {
         id: "app-financials-1",
