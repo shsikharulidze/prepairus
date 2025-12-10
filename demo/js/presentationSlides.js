@@ -101,54 +101,28 @@ const presentationSlides = [
     ]
   },
 
-  // About - Industry and Market analysis
+  // About - Industry and Competitive Analysis (Combined)
   {
-    id: "about-market",
+    id: "about-market-competition",
     pageId: "about",
     key: "2",
-    label: "ABOUT - INDUSTRY AND MARKET ANALYSIS",
+    label: "ABOUT – INDUSTRY & COMPETITIVE POSITION",
     scrollTargetSelector: "#about-market",
     pages: [
       {
-        id: "about-market-1",
-        heading: "Industry and market context",
-        intro: "This slide situates PrePair in the freelance platforms and online internship markets.",
+        id: "about-market-competition-1",
+        heading: "Industry context and where PrePair fits",
+        intro: "This combined slide shows the fast-growing markets we operate in and the specific gap PrePair is built to fill.",
         bullets: [
-          "PrePair operates in the fast-growing Freelance Platforms industry and the emerging Online Internship Marketplace.",
-          "The global freelance platforms market is projected to reach about **$5.58 billion** in 2024, growing around **18 percent** per year.",
-          "The virtual internship platforms market was valued at around **$1.82 billion** in 2024, reflecting rising demand for online internship experiences.",
+          "PrePair operates in the fast-growing freelance platforms industry and the emerging online internship marketplace.",
+          "The global freelance platforms market is projected to reach about $5.58 billion in 2024, growing around 18 percent per year.",
+          "The virtual internship platforms market was valued at around $1.82 billion in 2024, reflecting rising demand for online internship experiences.",
           "Major platforms such as Upwork, Fiverr, LinkedIn and Handshake mainly serve experienced professionals or larger companies.",
-          "This leaves a gap for entry-level students and small local businesses, which PrePair fills by focusing on local students and nearby small businesses.",
-          "PrePair offers short-term, mentorship-style projects as educational externships so that work remains a learning experience and stays legally compliant.",
-          "We are launching PrePair at Fordham University first and growing through campus partnerships to prove the model before expanding."
-        ],
-        visualHint: "Optional: a simple two-row bullet stack labeled 'Freelance platforms' and 'Virtual internships' with the market size numbers highlighted."
-      }
-    ]
-  },
-
-  // About - Competitive analysis
-  {
-    id: "about-competition",
-    pageId: "about",
-    key: "3",
-    label: "ABOUT - COMPETITIVE ANALYSIS",
-    scrollTargetSelector: "#about-competition",
-    pages: [
-      {
-        id: "about-competition-1",
-        heading: "Where PrePair fits among existing platforms",
-        intro: "This slide explains how PrePair relates to competing platforms and why it is positioned as a complement, not a direct rival.",
-        bullets: [
-          "PrePair is the only platform built exclusively for managing structured project-based partnerships of this kind between students and local small businesses.",
-          "Students are the **primary beneficiaries** of the educational experience, not an afterthought.",
-          "Our mission is to **prepare students** and **pair them with opportunity**.",
-          "PrePair is emerging as a niche within competitive freelance and internship markets, filling the early-experience gap.",
-          "The goal is **not to compete directly** with platforms like Handshake or LinkedIn, but to **complement them**.",
-          "PrePair functions as a stepping stone for students who want to enter the internship market better prepared.",
-          "Internships remain specialized and career-oriented, while PrePair values well-roundedness and serves students even when internships are not guaranteed."
-        ],
-        visualHint: "Consider a simple positioning diagram with axes like 'experience level' and 'local focus', with PrePair in the early-experience, high-local-focus corner."
+          "Clearly there is a hole in the market for entry-level students and small local businesses.",
+          "As it stands, PrePair hopes to establish itself as the ground floor for all \"first step\" professional experiences, especially when internships are not guaranteed.",
+          "At PrePair, we value well-roundedness and want students to explore different types of projects.",
+          "PrePair projects help students demonstrate professionalism and accountability in real work settings."
+        ]
       }
     ]
   },
