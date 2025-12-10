@@ -160,6 +160,7 @@ const presentationSlides = [
           "The global freelance platforms market is projected to reach about $5.58 billion in 2024, growing around 18 percent per year.",
           "The virtual internship platforms market was valued at around $1.82 billion in 2024, reflecting rising demand for online internship experiences.",
           "Major platforms such as Upwork, Fiverr, LinkedIn and Handshake mainly serve experienced professionals or larger companies.",
+          "---",
           "PrePair is the only platform built exclusively for managing project-based partnerships of this kind",
           "Students are the primary beneficiaries of this educational experience",
           "Our mission is to prepare students and pair them with opportunity",
