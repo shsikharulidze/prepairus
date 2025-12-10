@@ -124,7 +124,12 @@ const presentationSlides = [
           "**Affordable**: students pay about $2 per month and small businesses pay about $20 per month.",
           "**Educational**: students are assigned a mentor at the host business and meet at the start and end of projects to discuss logistics and feedback, with a mid-project check-in on longer engagements.",
           "PrePair aims to be the ground floor for 'first step' professional experiences for students, especially when internships are not guaranteed."
-        ],
+          "Clearly there is a hole in the market for entry-level students and small local businesses.",
+          "As it stands, PrePair hopes to establish itself as the ground floor for all \"first step\" professional experiences, especially when internships are not guaranteed.",
+          "At PrePair, we value well-roundedness and want students to explore different types of projects.",
+          "PrePair projects help students demonstrate professionalism and accountability in real work settings.""
+        
+       ],
         visualHint: "A small four-quadrant label or icons for Local, Streamlined, Affordable, Educational could sit near the heading."
       }
     ]
@@ -157,10 +162,6 @@ const presentationSlides = [
           "The global freelance platforms market is projected to reach about $5.58 billion in 2024, growing around 18 percent per year.",
           "The virtual internship platforms market was valued at around $1.82 billion in 2024, reflecting rising demand for online internship experiences.",
           "Major platforms such as Upwork, Fiverr, LinkedIn and Handshake mainly serve experienced professionals or larger companies.",
-          "Clearly there is a hole in the market for entry-level students and small local businesses.",
-          "As it stands, PrePair hopes to establish itself as the ground floor for all \"first step\" professional experiences, especially when internships are not guaranteed.",
-          "At PrePair, we value well-roundedness and want students to explore different types of projects.",
-          "PrePair projects help students demonstrate professionalism and accountability in real work settings."
         ]
       }
     ]
