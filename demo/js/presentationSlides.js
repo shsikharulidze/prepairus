@@ -14,13 +14,14 @@ const presentationSlides = [
         heading: "Internships are hard to get",
         intro: "This slide hooks the audience by exposing the contradiction at the heart of the internship system.",
         bullets: [
-          "Internships are **HARD** to get.",
-          "Competition keeps rising while the number of internships barely increases.",
-          "Most internships already ask for **prior experience**.",
-          "That experience becomes the main thing that separates candidates.",
-          "Internships were supposed to be a college student's **first step** into the professional world.",
-          "If they already favor **prior experience**, they are not really a **first step** any more.",
-          "So there is a gap: what actually comes **before** an internship now?"
+          "Hook – Internships are HARD to get",
+          "Increased number of competition and decreased number of available positions",
+          "Require a certain amount of prior experience",
+          "Helps differentiate you from other candidates (this doesn't really favor me)",
+          "There is a clear contradiction in the current internship system",
+          "How can someone claim that an internship is a first step if it favors experience?",
+          "The answer is simple: it is no longer the first step students take to get into the professional world",
+          "We feel we have come up with a viable solution: that solution is PrePair"
         ],
         visualHint: "Optional: a small vertical diagram hinting at steps, with 'PrePair' sitting before 'Internship' as the first block."
       }
