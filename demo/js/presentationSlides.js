@@ -248,15 +248,6 @@ const presentationSlides = [
     key: "1",
     label: "FOR STUDENTS - MARKETING AND JOURNEY",
     scrollTargetSelector: "#students-hero",
-    visualKind: "studentPath",
-    visualPlacement: "inlineAfterIntro",
-    visualData: {
-      steps: [
-        { title: "Start", note: "Mostly coursework" },
-        { title: "PrePair projects", note: "10–120 hour externships" },
-        { title: "Next step", note: "Portfolio & internship-ready" }
-      ]
-    },
     pages: [
       {
         id: "students-marketing-1",
