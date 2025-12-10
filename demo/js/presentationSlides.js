@@ -199,8 +199,6 @@ const presentationSlides = [
         heading: "Lean founding team and flexible structure",
         intro: "This slide shows how roles are divided to keep PrePair efficient, low cost and ready to grow.",
         bullets: [
-          "PrePair uses a simple, flexible structure as a small, early-stage digital startup.",
-          "Roles are divided by strengths to keep everything efficient and low cost.",
           "Founders earn modest stipends to keep payroll low; part-time help is hired only when needed.",
           "Quality control is supported through verified student profiles, reviewed business postings and post-project surveys.",
           "As PrePair scales, the plan is to grow to 15 plus employees and add legal advisors, cybersecurity experts and additional developers."
