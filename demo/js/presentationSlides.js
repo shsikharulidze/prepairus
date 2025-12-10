@@ -54,13 +54,13 @@ const presentationSlides = [
         heading: "Agenda",
         intro: "This slide gives a quick overview of what we will cover.",
         bullets: [
-          "Introduction and business description.",
-          "Industry, market and competitive analyses.",
-          "Human Resources and ESG.",
-          "User journey and marketing strategy for students and businesses.",
-          "Operational model and legal structure.",
-          "Financial projections.",
-          "Key takeaways."
+          "Business Description",
+          "Industry, Market, & Competitive Analyses",
+          "Human Resources",
+          "Marketing Strategy",
+          "Operational Issues",
+          "Financial Projection",
+          "Conclusion"
         ],
         visualHint: "Simple clean list, no extra visual needed. Keep it minimal for speed."
       }
