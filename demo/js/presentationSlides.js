@@ -165,8 +165,8 @@ const presentationSlides = [
           "Students are the primary beneficiaries of this educational experience",
           "Our mission is to prepare students and pair them with opportunity",
           "PrePair is emerging as a niche within the competition heavy markets highlighted in our Industry and Market analysis",
-          "- The goal is not to compete but to complement",
-          "- We want to function as a stepping stone for students looking to enter the internship market",
+          "The goal is not to compete but to complement",
+          "We want to function as a stepping stone for students looking to enter the internship market",
           "We don't want to get rid of internships",
           "There will always be a place for LinkedIn but we feel there will always be a place for PrePair"
         ]
