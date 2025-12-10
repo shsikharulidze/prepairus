@@ -318,13 +318,6 @@ const presentationSlides = [
     key: "1",
     label: "APP - OPERATIONS AND LEGAL STRUCTURE",
     scrollTargetSelector: "#app-signup",
-    visualKind: "rolesTriangle",
-    visualPlacement: "inlineAfterIntro",
-    visualData: {
-      participant: "Participant (Student)",
-      host: "Host (Business)",
-      facilitator: "PrePair (Facilitator)"
-    },
     pages: [
       {
         id: "app-operations-1",
