@@ -232,6 +232,9 @@ class PresentationOverlay {
     if (hasVisual && visualPlacement === 'top') {
       slideContentClass = 'slide-content slide-content--visual-top';
       slideContentHTML = visualContent + textContent;
+    } else if (hasVisual && visualPlacement === 'bottom') {
+      slideContentClass = 'slide-content slide-content--visual-bottom';
+      slideContentHTML = textContent + visualContent;
     } else if (hasVisual && visualPlacement === 'side') {
       slideContentClass = 'slide-content slide-content--with-visual';
       slideContentHTML = textContent + visualContent;

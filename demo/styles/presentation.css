@@ -281,6 +281,27 @@
   border-radius: 16px; /* match card radius style */
 }
 
+.slide-content--visual-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Visual block centered at bottom of slide */
+.slide-content--visual-bottom .slide-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide-content--visual-bottom .slide-visual img {
+  max-width: 100%;
+  max-height: 260px;
+  object-fit: contain;
+  border-radius: 16px;
+  margin-top: 0.5rem;
+}
+
 /* Responsive visual layout */
 @media (max-width: 768px) {
   .slide-content--with-visual {
