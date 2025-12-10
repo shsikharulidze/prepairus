@@ -6,7 +6,7 @@ const presentationSlides = [
     key: "1",
     label: "SLIDE 1 - HOOK: INTERNSHIPS ARE HARD TO GET",
     scrollTargetSelector: null,
-    visualSrc: "demo/visuals/hook.png",
+    visualSrc: "visuals/hook.png",
     visualAlt: "Broken staircase showing why internships feel out of reach",
     pages: [
       {
