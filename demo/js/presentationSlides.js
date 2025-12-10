@@ -330,7 +330,7 @@ const presentationSlides = [
           "The initial hub is based at Fordham University while the platform is in early stages.",
           "PrePair uses an LLC or similar limited-liability structure to protect founders and manage contractual relationships with students and businesses.",
           "The legal structure supports compliance with data security standards and labor guidelines.",
-          "Quality is maintained through post-project feedback surveys, internal review of business postings and training staff in communication and user-experience support."
+          
         ],
         visualHint: "Text only on this page; the next page of the slide will hold the visual agreement preview."
       },
